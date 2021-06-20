@@ -1,33 +1,3 @@
-Skip to content
-Search or jump to…
-
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@luxury1970 
-github
-/
-gitignore
-3.2k
-120k66.2k
-Code
-Pull requests
-276
-Actions
-Security
-Insights
-gitignore/Node.gitignore
-@martinwoodward
-martinwoodward Merge pull request #3651 from kachick/node-ignore-envs
-…
-Latest commit d0f9781 26 days ago
- History
- 61 contributors
-@stuartpb@shiftkey@SimonSiefke@TennyZhuang@venatoria@ro31337@Richienb@melonmanchan@kachick@gouthamve@jucrouzet@cheddar
-118 lines (88 sloc)  1.81 KB
-  
 # Logs
 logs
 *.log
@@ -139,3 +109,10 @@ dist
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
