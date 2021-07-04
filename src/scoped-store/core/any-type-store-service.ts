@@ -7,15 +7,21 @@ export interface AnyTypeState {
     payload: object|null;
 }
 
+export interface StringTypeCommand {
+    sender?:string | undefined;
+    command:string;
+    argument?: any;
+}
+
 const initialState: AnyTypeState = {
     updater:'',
     payload: null
 }
 
-export class AnyTypeStoreService extends BaseStoreService<AnyTypeState> {
-    // public $state: Observable<AnyTypeState> = this.select(state => state);
+export class AnyTypeStoreService extends BaseStoreService<AnyTypeState, StringTypeCommand> {
 
-    public $data: Observable<object|null> = this.select(state => state.payload);
+    public $state: Observable<object|null> = this.select(state => state.payload);
+    public $command: Observable<StringTypeCommand> = this.selectCommand(command => command);
 
     constructor() {
       super(initialState)
@@ -63,5 +69,15 @@ export class AnyTypeStoreService extends BaseStoreService<AnyTypeState> {
             _.set(state.payload,path,payload);
             this.setState(state);
         }
+    }
+
+    public sendCommand(command: string, argument?:any, sender?:string) {
+        const commandObj: StringTypeCommand = {
+            sender,
+            command,
+            argument,
+        };
+
+        this.setCommand(commandObj);
     }
 }

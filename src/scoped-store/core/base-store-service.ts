@@ -1,31 +1,50 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Subject, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
-export class BaseStoreService<T> {
-  private state$: BehaviorSubject<T>;
-  protected get state(): T {
+export const isPrimitive = (value: any): boolean => {
+  const type = typeof value;
+  return value == null || (type !== "object" && type !== "function");
+}
+
+export class BaseStoreService<ST, CT> {
+  private state$: BehaviorSubject<ST>;
+  private commandMapper$: Subject<CT>;
+
+  protected get state(): ST {
     return this.state$.getValue();
   }
 
-  constructor(initialState: T) {
-    this.state$ = new BehaviorSubject<T>(initialState);
+  constructor(initialState: ST) {
+    this.state$ = new BehaviorSubject<ST>(initialState);
+    this.commandMapper$ = new Subject<CT>();
   }
 
-  protected select<K>(mapFn: (state: T) => K): Observable<K> {
+  protected select<K>(mapFn: (state: ST) => K): Observable<K> {
     return this.state$.asObservable().pipe(
-      map((state: T) => mapFn(state)),
+      map((state: ST) => mapFn(state)),
       distinctUntilChanged()
     );
   }
 
-  protected setState(newState: Partial<T>) {
+  protected selectCommand<K>(mapFn: (state: CT) => K): Observable<K> {
+    return this.commandMapper$.asObservable().pipe(
+      map((state: CT) => mapFn(state))
+    );
+  }
+
+  protected setState(newState: Partial<ST>) {
     this.state$.next({
       ...this.state,
       ...newState,
     });
   }
 
+  protected setCommand(newCommand: CT) {
+    this.commandMapper$.next(newCommand);
+  }
+
   public stop() {
     this.state$.complete();
+    this.commandMapper$.complete();
   }
 }

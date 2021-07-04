@@ -24,7 +24,8 @@
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^5.5.12",
-    "vue-class-component": "^7.2.6"
+    "vue-class-component": "^7.2.6",
+    "vue-router": "^3.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
@@ -38,7 +39,7 @@
     "@types/lodash": "^4.14.170",
     "@vue/cli-plugin-babel": "^4.5.10",
     "@vue/cli-plugin-typescript": "^4.5.10",
-    "@vue/cli-service": "^4.5.10",
+    "@vue/cli-service": "^3.12.1",
     "cross-env": "^7.0.3",
     "minimist": "^1.2.5",
     "rollup": "^2.36.1",

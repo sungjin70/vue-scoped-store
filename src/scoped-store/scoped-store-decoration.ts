@@ -1,8 +1,10 @@
 import { createDecorator } from 'vue-class-component';
 import { ComponentOptions } from 'vue';
+import Vue from 'vue';
 import {scopedStoreManager} from './scoped-store-manager';
 import _ from 'lodash';
 var hash = require('object-hash');
+
 
 /**
  * decorator of a watch function

@@ -8,11 +8,22 @@ export default Vue.extend({
   // components: {
   //  VueScopedStoreSample,
   // }
+
 });
 </script>
 
 <template>
   <div id="app">
-    <vue-scoped-store-sample />
+  <p>
+
+    <router-link to="/">Home</router-link>
+    &nbsp;
+    <router-link to="/page1">page1</router-link>
+    &nbsp;
+    <router-link to="/page2">page2</router-link>
+  </p>
+  <h1>Current page: {{$router.currentRoute.path}}</h1>
+
+  <router-view></router-view>
   </div>
 </template>
