@@ -14,8 +14,8 @@ declare module "vue/types/vue" {
     interface Vue {
       $sendGlobalData(key:string, data:any, path:string) : void;
       $setGlobalDataCallback(key:string, callback: (data: any) => void, path:string) : void;
-      $sendPageData(data:any, path:string) : void;
-      $setPageDataCallback(callback: (data: any) => void, path:string) : void;
+      $sendPageData(data:any, path:string, sendOpt?:any) : void;
+      $setPageDataCallback(callback: (data: any,updater?:any) => void, path:string) : void;
       $sendPageCommand(command:string, argument?:any) : void;
       $setPageCommandCallback(callback: (command:string, argument?:any) => void) : void;
       $sendGlobalCommand(key:string, command:string, argument?:any) : void;

@@ -3,24 +3,25 @@ import { Observable } from 'rxjs';
 import _ from 'lodash';
 
 export interface AnyTypeState {
-    updater:string;
+    updater:{};
     payload: object|null;
 }
 
 export interface StringTypeCommand {
-    sender?:string | undefined;
+    sender?:{};
     command:string;
     argument?: any;
 }
 
 const initialState: AnyTypeState = {
-    updater:'',
+    updater:{},
     payload: null
 }
 
 export class AnyTypeStoreService extends BaseStoreService<AnyTypeState, StringTypeCommand> {
 
-    public $state: Observable<object|null> = this.select(state => state.payload);
+    public $state: Observable<any|null> = this.select(state => state);
+    public $payload: Observable<any|null> = this.select(state => state.payload);
     public $command: Observable<StringTypeCommand> = this.selectCommand(command => command);
 
     constructor() {
@@ -45,19 +46,22 @@ export class AnyTypeStoreService extends BaseStoreService<AnyTypeState, StringTy
         return result.map(payload => _.get(payload, path));
     }
 
-    public sendData(payload: any, sender:string, path?:string) {
+    public sendData(payload: any, sendOpt:{}, path?:string) {
+        let copy = _.cloneDeep(payload);
+        // let copy = JSON.parse(JSON.stringify(payload));
+        let state:any;
         if (!path) {
-            this.setState({
-                updater: sender,
+            state = {
+                updater: {...sendOpt},
                 payload: {
                 ...this.state.payload,
-                ...payload,
+                ...copy,
                 },
-            });
+            };
         }
         else {
-            const state = {
-                updater: sender,
+            state = {
+                updater: {...sendOpt},
                 payload: {
                 ...this.state.payload,
                 },
@@ -66,9 +70,14 @@ export class AnyTypeStoreService extends BaseStoreService<AnyTypeState, StringTy
             if (!state.payload)
                 state.payload = {};
 
-            _.set(state.payload,path,payload);
-            this.setState(state);
+            _.set(state.payload, path, copy);
         }
+
+        setTimeout(() => {
+            this.setState(state);
+        }, 0);
+
+        return copy;
     }
 
     public sendCommand(command: string, argument?:any, sender?:string) {

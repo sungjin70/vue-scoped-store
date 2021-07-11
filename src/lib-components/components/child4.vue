@@ -35,14 +35,5 @@ export default class extends Vue {
       this.myObject = data;
     },'pageObject');
   }
-
-
-  updateByDeepCopy(path: string, value: any) {
-    let clone = _.cloneDeep(this.myObject);
-    _.set(clone, path, value);
-    this.myObject = clone;
-  }
-
-
 }
 </script>

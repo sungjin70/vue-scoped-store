@@ -6,7 +6,7 @@ const globalMap = new Map<string,AnyTypeStoreService>();
 const hashedComponentMap = new Map<string, any[]>();
 
 export interface ScopedStoreManager {
-    pageDataService:AnyTypeStoreService | null;
+    pageDataService?:AnyTypeStoreService;
     addPathMetaInComponent:(hash:string, meta:{path:string,options?:{}}) => void;
     getPathMetaInComponent:(hash:string) => any[] | undefined;
     getPathMetaInComponentCount:(hash:string) => number;
@@ -21,7 +21,7 @@ export interface ScopedStoreManager {
 }
 
 export const scopedStoreManager : ScopedStoreManager = {
-    pageDataService:null,
+    pageDataService:undefined,
     addPathMetaInComponent(hash:string, meta:{path:string,options?:{}}) {
         if (!hashedComponentMap.has(hash))
             hashedComponentMap.set(hash,[]);

@@ -27,18 +27,19 @@ import _ from 'lodash';
       path:'pageObject', // a path of store. default:the same as key
       deep:true, //an option of watch
       //immediate:true, //an option of watch
-      // onBeforeSend: function(val:any, oldVal:any, options:{proceed:boolean}) {
-      //   console.log('onBeforeSend for pageObject in child-with-options1', val, oldVal, options);
-      // },
-      // onBeforeReceive: function(val:any, oldVal:any, options:{proceed:boolean}) {
-      //   console.log('onBeforeReceive for pageObject in child-with-options1', val, oldVal, options);
-      // },
+      onBeforeSend: function(val:any, oldVal:any, options:{proceed:boolean}) {
+        console.log('onBeforeSend for pageObject in child-with-options1', val, oldVal, options);
+      },
+      onBeforeReceive: function(val:any, oldVal:any, options:{proceed:boolean}) {
+        console.log('onBeforeReceive for pageObject in child-with-options1', val, oldVal, options);
+      },
     },
     myCounter:{
       //direction:'both', //read / write / both  - default:both
       path:'carCounter', // a path of store. default:the same as key
       // deep:true, //an option of watch
       //immediate:true, //an option of watch
+      shareOnCreated:true,
       // onBeforeSend: function(val:any, oldVal:any, options:{proceed:boolean}) {
       //   console.log('onBeforeSend for carCounter in child-with-options1', val, oldVal, options);
       // },
@@ -62,6 +63,5 @@ export default class extends Vue {
   get title() {
       return 'child-with-options component 1';
   }
-
 }
 </script>

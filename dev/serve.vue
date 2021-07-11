@@ -21,6 +21,10 @@ export default Vue.extend({
     <router-link to="/page1">page1</router-link>
     &nbsp;
     <router-link to="/page2">page2</router-link>
+    &nbsp;
+    <router-link to="/page3">page3</router-link>
+    &nbsp;
+    <router-link to="/page4">page4</router-link>
   </p>
   <h1>Current page: {{$router.currentRoute.path}}</h1>
 

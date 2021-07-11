@@ -27,11 +27,6 @@ import _ from 'lodash';
       // },
     },
   },
-  // watch: {
-  //   'myObject.nestedObj.nestedNumberVal1' : function (newVal : any, oldVal: any) {
-  //     this.$sendPageData(newVal,'nestedObj.nestedNumberVal1');
-  //   },
-  // },
 })
 export default class extends Vue {
 

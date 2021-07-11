@@ -27,11 +27,6 @@ import _ from 'lodash';
       // },
     },
   },
-  // watch: {
-  //   'myObject.nestedObj.nestedStrVal1' : function (newVal : any, oldVal: any) {
-  //     this.$sendPageData(newVal,'nestedObj.nestedStrVal1');
-  //   },
-  // },
 })
 export default class extends Vue {
 
@@ -40,6 +35,5 @@ export default class extends Vue {
   get title() {
       return 'child-with-options component 3';
   }
-
 }
 </script>

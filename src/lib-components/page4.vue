@@ -30,18 +30,18 @@
     <table width='100%' height='500'>
         <tr>
             <td style="background:yellow">
-              <child1 />
+              <child5 />
             </td>
             <td style="background:green">
-              <child2 />
+              <child6 />
             </td>
         </tr>
         <tr>
             <td style="background:gray">
-              <child3 />
+              <child7 />
             </td>
             <td style="background:cyan">
-              <child4 />
+              <child8 />
             </td>
         </tr>
     </table>
@@ -52,30 +52,39 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import _ from 'lodash';
-import child1 from './components/child-with-options1.vue';
-import child2 from './components/child-with-options2.vue';
-import child3 from './components/child-with-options3.vue';
-import child4 from './components/child-with-options4.vue';
+import child5 from './components/child-with-options5.vue';
+import child6 from './components/child-with-options6.vue';
+import child7 from './components/child-with-options7.vue';
+import child8 from './components/child-with-options8.vue';
+import {PageStore,AsPage,PageStoreBeforeSend,PageStoreonBeforeReceive} from '../scoped-store/scoped-store-decoration';
 
 @Component({
   components:{
-    child1,
-    child2,
-    child3,
-    child4,
+    child5,
+    child6,
+    child7,
+    child8,
   },
-  pageStore:{
-    isPage:true,
-    pageObject:{
-      deep:true, //an option of watch
-    },
-    carCounter:{},
-  },
+  // pageStore:{
+  //   isPage:true,
+  // },
 
 })
 export default class extends Vue {
+  @PageStore({deep:true})
+  private pageObject: any = null;
+  @PageStore()
+  private carCounter:number = 100;
 
-  private pageObject: any = {
+  @AsPage()
+  private isPage = true;
+
+  get title() {
+      return this.$router.currentRoute.path;
+  }
+
+  created() {
+    this.pageObject = {
       strValue1:'strValue1 defaule',
       strValue2:'strValue2 defaule',
       numberValue1:10,
@@ -84,13 +93,30 @@ export default class extends Vue {
         nestedNumberVal1:101,
       }
     };
-  private carCounter:number = 100;
 
-  get title() {
-      return this.$router.currentRoute.path;
+    // console.log('created : $sendPageData', this.pageObject);
+    // this.$sendPageData(this.pageObject);
+    // this.$setPageDataCallback((data:any) => {
+    //   console.log('page1.vue : $setPageDataCallback', data);
+    //   this.pageObject = data;
+    // });
+
+    // this.carCounter = 12324;
   }
 
-  created() {
+  @PageStoreBeforeSend('pageObject')
+  onBeforeSendPageObject(val:any, oldVal:any, options:{proceed:boolean}) {
+    console.log('onBeforeSendPageObject for pageObject in page4', val, oldVal, options);
+  }
+
+  @PageStoreonBeforeReceive('pageObject')
+  onBeforeReceivePageObject(val:any, oldVal:any, options:{proceed:boolean}) {
+    console.log('onBeforeReceivePageObject  for pageObject in page4', val, oldVal, options);
+  }
+
+  @PageStoreonBeforeReceive('carCounter')
+  onBeforeReceiveCarCounter(val:any, oldVal:any, options:{proceed:boolean}) {
+    console.log('onBeforeReceiveCarCounter  for carCounter in page4', val, oldVal, options);
   }
 
   updatePageObject() {
@@ -103,6 +129,12 @@ export default class extends Vue {
         nestedNumberVal1:201,
       }
     };
+  }
+
+  updateByDeepCopy(path: string, value: any) {
+    let clone = _.cloneDeep(this.pageObject);
+    _.set(clone, path, value);
+    this.pageObject = clone;
   }
 
 
