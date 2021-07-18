@@ -1,7 +1,7 @@
 <template>
   <div>
       <p><h2>{{title}}</h2></p>
-    <span>myCounter (path:carCounter) : </span>
+    <span>myCounter (path:pageCounter) : </span>
     <br />
     <input v-model="myCounter" type="number" />
     <br />
@@ -11,7 +11,7 @@
     <br />
     <input v-model="myObject.strValue2" />
     <br />
-    <span>pageObject:{{myObject}}</span>
+    <span>myObject (path:pageObject):{{myObject}}</span>
   </div>
 </template>
 
@@ -36,7 +36,7 @@ import _ from 'lodash';
     },
     myCounter:{
       //direction:'both', //read / write / both  - default:both
-      path:'carCounter', // a path of store. default:the same as key
+      path:'pageCounter', // a path of store. default:the same as key
       // deep:true, //an option of watch
       //immediate:true, //an option of watch
       shareOnCreated:true,
@@ -61,7 +61,7 @@ export default class extends Vue {
   private myCounter:number = 5;
 
   get title() {
-      return 'child-with-options component 1';
+      return 'child-with-options component 5';
   }
 }
 </script>

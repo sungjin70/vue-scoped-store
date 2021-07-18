@@ -1,32 +1,68 @@
 <template>
   <div>
-      <p><h2>{{title}}</h2></p>
-      <p>
-        <b>pageObject : {</b>
-        <br />
-        <b>&nbsp;&nbsp;strValue1 : </b><input v-model="pageObject.strValue1" style="width:300px" /> ,
-        <br />
-        <b>&nbsp;&nbsp;strValue2 : </b><input v-model="pageObject.strValue2" style="width:300px" /> ,
-        <br />
-        <b>&nbsp;&nbsp;numberValue1 : </b><input v-model="pageObject.numberValue1" type="number" /> ,
-        <br />
-        <b>&nbsp;&nbsp;nestedObj : {</b>
-        <br />
-        <b>&nbsp;&nbsp;&nbsp;&nbsp;nestedStrVal1 : </b><input v-model="pageObject.nestedObj.nestedStrVal1" style="width:300px" /> ,
-        <br />
-        <b>&nbsp;&nbsp;&nbsp;&nbsp;nestedStrVal1 : </b><input v-model="pageObject.nestedObj.nestedNumberVal1" type="number" /> ,
-        <br />
-        <b>&nbsp;&nbsp;}</b>
-        <br />
-        <b>}</b>
-      </p>
+    <table width='100%' >
+      <tr>
+        <td>
+          <p>
+            <b>pageObject : {</b>
+            <br />
+            <b>&nbsp;&nbsp;strValue1 : </b><input v-model="pageObject.strValue1" style="width:300px" /> ,
+            <br />
+            <b>&nbsp;&nbsp;strValue2 : </b><input v-model="pageObject.strValue2" style="width:300px" /> ,
+            <br />
+            <b>&nbsp;&nbsp;numberValue1 : </b><input v-model="pageObject.numberValue1" type="number" /> ,
+            <br />
+            <b>&nbsp;&nbsp;nestedObj : {</b>
+            <br />
+            <b>&nbsp;&nbsp;&nbsp;&nbsp;nestedStrVal1 : </b><input v-model="pageObject.nestedObj.nestedStrVal1" style="width:300px" /> ,
+            <br />
+            <b>&nbsp;&nbsp;&nbsp;&nbsp;nestedNumberVal1 : </b><input v-model="pageObject.nestedObj.nestedNumberVal1" type="number" /> ,
+            <br />
+            <b>&nbsp;&nbsp;}</b>
+            <br />
+            <b>}</b>
+          </p>
 
-      <button @click="updatePageObject()">updatePageObject()</button>
+          <button @click="updatePageObject()">updatePageObject()</button>
+        </td>
+        <td>
+          <p>
+            <b>globalObject : {</b>
+            <br />
+            <b>&nbsp;&nbsp;strValue1 : </b><input v-model="globalObject.strValue1" style="width:300px" /> ,
+            <br />
+            <b>&nbsp;&nbsp;numberValue1 : </b><input v-model="globalObject.numberValue1" type="number" /> ,
+            <br />
+            <b>&nbsp;&nbsp;nestedObj : {</b>
+            <br />
+            <b>&nbsp;&nbsp;&nbsp;&nbsp;nestedStrVal1 : </b><input v-model="globalObject.nestedObj.nestedStrVal1" style="width:300px" /> ,
+            <br />
+            <b>&nbsp;&nbsp;&nbsp;&nbsp;nestedNumberVal1 : </b><input v-model="globalObject.nestedObj.nestedNumberVal1" type="number" /> ,
+            <br />
+            <b>&nbsp;&nbsp;}</b>
+            <br />
+            <b>}</b>
+          </p>
 
-      <p>
-        <b>pageCounter : </b><input v-model="pageCounter" type="number" /> 
-      </p>
-      <button @click="pageCounter = 4321">update pageCounter</button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>
+            <b>pageCounter : </b><input v-model="pageCounter" type="number" /> 
+          </p>
+          <button @click="pageCounter = Number(pageCounter) + 10">pageCounter + 10</button>
+        </td>
+        <td>
+          <p>
+            <b>globalCounter : </b><input v-model="globalCounter" type="number" /> 
+          </p>
+          <button @click="globalCounter = Number(globalCounter) + 10">globalCounter + 10</button>
+        </td>
+      </tr>
+    </table>
+
+
     <table width='100%' height='500'>
         <tr>
             <td style="background:yellow">
@@ -71,6 +107,12 @@ import child4 from './components/child-with-options4.vue';
     },
     pageCounter:{},
   },
+  globalStore:{
+    globalObject:{
+      deep:true, //an option of watch
+    },
+    globalCounter:{},
+  }
 
 })
 export default class extends Vue {
@@ -85,6 +127,17 @@ export default class extends Vue {
       }
     };
   private pageCounter:number = 100;
+
+  private globalObject: any = {
+      strValue1:'strValue1 defaule',
+      strValue2:'strValue2 defaule',
+      numberValue1:10,
+      nestedObj :{
+        nestedStrVal1:'nestedStrVal1 string',
+        nestedNumberVal1:101,
+      }
+    };
+  private globalCounter:number = 200;
 
   get title() {
       return this.$router.currentRoute.path;

@@ -28,27 +28,26 @@ export class AnyTypeStoreService extends BaseStoreService<AnyTypeState, StringTy
       super(initialState)
     }
 
-    private selectDataFromOthers(receiver:string) {
-        return this.select(state => state)
-            .filter(({updater}) => receiver != updater)
-            .map(state => state.payload);
-    }
+    // private selectDataFromOthers(receiver:string) {
+    //     return this.select(state => state)
+    //         .filter(({updater}) => receiver != updater)
+    //         .map(state => state.payload);
+    // }
 
-    public selectData(path:string, receiver?:string) {
-        let result;
-        if (receiver) {
-            result = this.selectDataFromOthers(receiver)
-        }
-        else {
-            result = this.select(state => state.payload);
-        }
+    // public selectData(path:string, receiver?:string) {
+    //     let result;
+    //     if (receiver) {
+    //         result = this.selectDataFromOthers(receiver)
+    //     }
+    //     else {
+    //         result = this.select(state => state.payload);
+    //     }
         
-        return result.map(payload => _.get(payload, path));
-    }
+    //     return result.map(payload => _.get(payload, path));
+    // }
 
     public sendData(payload: any, sendOpt:{}, path?:string) {
         let copy = _.cloneDeep(payload);
-        // let copy = JSON.parse(JSON.stringify(payload));
         let state:any;
         if (!path) {
             state = {

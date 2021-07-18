@@ -5,6 +5,16 @@ import Vue from 'vue';
 
 export default Vue.extend({
   name: 'ServeDev',
+  data:function() {
+    return {
+      globalObject:{},
+      globalCounter:-100,
+    }
+  },
+  globalStore:{
+    globalObject:{},
+    globalCounter:{},
+  }
   // components: {
   //  VueScopedStoreSample,
   // }
@@ -14,8 +24,9 @@ export default Vue.extend({
 
 <template>
   <div id="app">
+    <p>globalObject:{{globalObject}}</p>
+    <p>globalCounter:{{globalCounter}}</p>
   <p>
-
     <router-link to="/">Home</router-link>
     &nbsp;
     <router-link to="/page1">page1</router-link>

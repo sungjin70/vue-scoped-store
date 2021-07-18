@@ -1,32 +1,67 @@
 <template>
   <div>
-      <p><h2>{{title}}</h2></p>
-      <p>
-        <b>pageObject : {</b>
-        <br />
-        <b>&nbsp;&nbsp;strValue1 : </b><input v-model="pageObject.strValue1" style="width:300px" /> ,
-        <br />
-        <b>&nbsp;&nbsp;strValue2 : </b><input v-model="pageObject.strValue2" style="width:300px" /> ,
-        <br />
-        <b>&nbsp;&nbsp;numberValue1 : </b><input v-model="pageObject.numberValue1" type="number" /> ,
-        <br />
-        <b>&nbsp;&nbsp;nestedObj : {</b>
-        <br />
-        <b>&nbsp;&nbsp;&nbsp;&nbsp;nestedStrVal1 : </b><input v-model="pageObject.nestedObj.nestedStrVal1" style="width:300px" /> ,
-        <br />
-        <b>&nbsp;&nbsp;&nbsp;&nbsp;nestedStrVal1 : </b><input v-model="pageObject.nestedObj.nestedNumberVal1" type="number" /> ,
-        <br />
-        <b>&nbsp;&nbsp;}</b>
-        <br />
-        <b>}</b>
-      </p>
+    <table width='100%' >
+      <tr>
+        <td>
+          <p>
+            <b>pageObject : {</b>
+            <br />
+            <b>&nbsp;&nbsp;strValue1 : </b><input v-model="pageObject.strValue1" style="width:300px" /> ,
+            <br />
+            <b>&nbsp;&nbsp;strValue2 : </b><input v-model="pageObject.strValue2" style="width:300px" /> ,
+            <br />
+            <b>&nbsp;&nbsp;numberValue1 : </b><input v-model="pageObject.numberValue1" type="number" /> ,
+            <br />
+            <b>&nbsp;&nbsp;nestedObj : {</b>
+            <br />
+            <b>&nbsp;&nbsp;&nbsp;&nbsp;nestedStrVal1 : </b><input v-model="pageObject.nestedObj.nestedStrVal1" style="width:300px" /> ,
+            <br />
+            <b>&nbsp;&nbsp;&nbsp;&nbsp;nestedNumberVal1 : </b><input v-model="pageObject.nestedObj.nestedNumberVal1" type="number" /> ,
+            <br />
+            <b>&nbsp;&nbsp;}</b>
+            <br />
+            <b>}</b>
+          </p>
 
-      <button @click="updatePageObject()">updatePageObject()</button>
+          <button @click="updatePageObject()">updatePageObject()</button>
+        </td>
+        <td>
+          <p>
+            <b>globalObject : {</b>
+            <br />
+            <b>&nbsp;&nbsp;strValue1 : </b><input v-model="globalObject.strValue1" style="width:300px" /> ,
+            <br />
+            <b>&nbsp;&nbsp;numberValue1 : </b><input v-model="globalObject.numberValue1" type="number" /> ,
+            <br />
+            <b>&nbsp;&nbsp;nestedObj : {</b>
+            <br />
+            <b>&nbsp;&nbsp;&nbsp;&nbsp;nestedStrVal1 : </b><input v-model="globalObject.nestedObj.nestedStrVal1" style="width:300px" /> ,
+            <br />
+            <b>&nbsp;&nbsp;&nbsp;&nbsp;nestedNumberVal1 : </b><input v-model="globalObject.nestedObj.nestedNumberVal1" type="number" /> ,
+            <br />
+            <b>&nbsp;&nbsp;}</b>
+            <br />
+            <b>}</b>
+          </p>
 
-      <p>
-        <b>carCounter : </b><input v-model="carCounter" type="number" /> 
-      </p>
-      <button @click="carCounter = 4321">update carCounter</button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>
+            <b>myPageCounter : </b><input v-model="myPageCounter" type="number" /> 
+          </p>
+          <button @click="myPageCounter = Number(myPageCounter) + 10">myPageCounter + 10</button>
+        </td>
+        <td>
+          <p>
+            <b>myGlobalCounter : </b><input v-model="myGlobalCounter" type="number" /> 
+          </p>
+          <button @click="myGlobalCounter = Number(myGlobalCounter) + 10">myGlobalCounter + 10</button>
+        </td>
+      </tr>
+    </table>
+
     <table width='100%' height='500'>
         <tr>
             <td style="background:yellow">
@@ -56,7 +91,7 @@ import child5 from './components/child-with-options5.vue';
 import child6 from './components/child-with-options6.vue';
 import child7 from './components/child-with-options7.vue';
 import child8 from './components/child-with-options8.vue';
-import {PageStore,AsPage,PageStoreBeforeSend,PageStoreBeforeReceive} from '../scoped-store/scoped-store-decoration';
+import {PageStore,GlobalStore,AsPage,PageStoreBeforeSend,PageStoreBeforeReceive} from '../scoped-store/scoped-store-decoration';
 
 @Component({
   components:{
@@ -73,11 +108,25 @@ import {PageStore,AsPage,PageStoreBeforeSend,PageStoreBeforeReceive} from '../sc
 export default class extends Vue {
   @PageStore({deep:true})
   private pageObject: any = null;
-  @PageStore()
-  private carCounter:number = 100;
+  @PageStore({path:"pageCounter"})
+  private myPageCounter:number = 100;
 
   @AsPage()
   private isPage = true;
+
+  
+  @GlobalStore({deep:true})
+  private globalObject: any = {
+      strValue1:'strValue1 defaule',
+      strValue2:'strValue2 defaule',
+      numberValue1:10,
+      nestedObj :{
+        nestedStrVal1:'nestedStrVal1 string',
+        nestedNumberVal1:101,
+      }
+    };
+  @GlobalStore({path:"globalCounter"})
+  private myGlobalCounter:number = 500;
 
   get title() {
       return this.$router.currentRoute.path;
@@ -93,15 +142,6 @@ export default class extends Vue {
         nestedNumberVal1:101,
       }
     };
-
-    // console.log('created : $sendPageData', this.pageObject);
-    // this.$sendPageData(this.pageObject);
-    // this.$setPageDataCallback((data:any) => {
-    //   console.log('page1.vue : $setPageDataCallback', data);
-    //   this.pageObject = data;
-    // });
-
-    // this.carCounter = 12324;
   }
 
   @PageStoreBeforeSend('pageObject')
@@ -114,9 +154,9 @@ export default class extends Vue {
     console.log('onBeforeReceivePageObject  for pageObject in page4', val, oldVal, options);
   }
 
-  @PageStoreBeforeReceive('carCounter')
-  onBeforeReceiveCarCounter(val:any, oldVal:any, options:{proceed:boolean}) {
-    console.log('onBeforeReceiveCarCounter  for carCounter in page4', val, oldVal, options);
+  @PageStoreBeforeReceive('myCounter')
+  onBeforeReceiveMyCounter(val:any, oldVal:any, options:{proceed:boolean}) {
+    console.log('onBeforeReceiveMyCounter for myCounter in page4', val, oldVal, options);
   }
 
   updatePageObject() {

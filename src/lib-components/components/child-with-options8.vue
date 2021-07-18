@@ -33,7 +33,7 @@ export default class extends Vue {
   private nestedStrVal1: number = -100;
 
   get title() {
-      return 'child-with-options component 4';
+      return 'child-with-options component 8';
   }
 }
 </script>
