@@ -1,7 +1,7 @@
 <template>
   <div>
       <p><h2>{{title}}</h2></p>
-    <span>myCounter (path:carCounter) : </span>
+    <span>myCounter (path:pageCounter) : </span>
     <br />
     <input v-model="myCounter" type="number" />
     <br />
@@ -36,14 +36,14 @@ import _ from 'lodash';
     },
     myCounter:{
       //direction:'both', //read / write / both  - default:both
-      path:'carCounter', // a path of store. default:the same as key
+      path:'pageCounter', // a path of store. default:the same as key
       // deep:true, //an option of watch
       //immediate:true, //an option of watch
       // onBeforeSend: function(val:any, oldVal:any, options:{proceed:boolean}) {
-      //   console.log('onBeforeSend for carCounter in child-with-options1', val, oldVal, options);
+      //   console.log('onBeforeSend for pageCounter in child-with-options1', val, oldVal, options);
       // },
       // onBeforeReceive: function(val:any, oldVal:any, options:{proceed:boolean}) {
-      //   console.log('onBeforeReceive for carCounter in child-with-options1', val, oldVal, options);
+      //   console.log('onBeforeReceive for pageCounter in child-with-options1', val, oldVal, options);
       // },
     },
   },

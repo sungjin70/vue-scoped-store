@@ -21,7 +21,7 @@ const install: PluginFunction<any> = function installVueScopedStore(Vue: typeof 
       $sendGlobalCommand(key:string, command:string, argument?:any) : void;
       $setGlobalCommandCallback(key:string, callback: (command: string, argument?: any) => void) : void;
   */
-  Vue.prototype.$setGlobalDataCallback = sendGlobalData;
+  Vue.prototype.$sendGlobalData = sendGlobalData;
   Vue.prototype.$setGlobalDataCallback = setGlobalDataCallback;
   Vue.prototype.$sendGlobalCommand = sendGlobalCommand;
   Vue.prototype.$setGlobalCommandCallback = setGlobalCommandCallback;

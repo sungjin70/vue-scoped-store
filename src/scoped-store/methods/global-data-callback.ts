@@ -1,11 +1,11 @@
-export function sendGlobalData(key:string, data:any, path?:string) {
+export function sendGlobalData(data:any, storePath:string, sendOpt?:any) {
     const vm = this;
-    vm.sendGlobalData(key, data, path);
+    vm.sendGlobalData(data, storePath, sendOpt);
 }
 
-export function setGlobalDataCallback(key:string, callback: (data: any) => void, path?:string) {
+export function setGlobalDataCallback(callback: (data: any, updater?:any) => void, storePath:string) {
   const vm = this as any;
-  vm.setGlobalDataCallback(key, callback, path);
+  vm.setGlobalDataCallback(callback, storePath);
 }
 
 export function sendGlobalCommand(key:string, command:string, argument?:any) {

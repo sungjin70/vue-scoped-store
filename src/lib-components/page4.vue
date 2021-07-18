@@ -56,7 +56,7 @@ import child5 from './components/child-with-options5.vue';
 import child6 from './components/child-with-options6.vue';
 import child7 from './components/child-with-options7.vue';
 import child8 from './components/child-with-options8.vue';
-import {PageStore,AsPage,PageStoreBeforeSend,PageStoreonBeforeReceive} from '../scoped-store/scoped-store-decoration';
+import {PageStore,AsPage,PageStoreBeforeSend,PageStoreBeforeReceive} from '../scoped-store/scoped-store-decoration';
 
 @Component({
   components:{
@@ -109,12 +109,12 @@ export default class extends Vue {
     console.log('onBeforeSendPageObject for pageObject in page4', val, oldVal, options);
   }
 
-  @PageStoreonBeforeReceive('pageObject')
+  @PageStoreBeforeReceive('pageObject')
   onBeforeReceivePageObject(val:any, oldVal:any, options:{proceed:boolean}) {
     console.log('onBeforeReceivePageObject  for pageObject in page4', val, oldVal, options);
   }
 
-  @PageStoreonBeforeReceive('carCounter')
+  @PageStoreBeforeReceive('carCounter')
   onBeforeReceiveCarCounter(val:any, oldVal:any, options:{proceed:boolean}) {
     console.log('onBeforeReceiveCarCounter  for carCounter in page4', val, oldVal, options);
   }

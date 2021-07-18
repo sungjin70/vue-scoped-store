@@ -12,8 +12,8 @@ export interface ScopedStore {
 
 declare module "vue/types/vue" {
     interface Vue {
-      $sendGlobalData(key:string, data:any, path:string) : void;
-      $setGlobalDataCallback(key:string, callback: (data: any) => void, path:string) : void;
+      $sendGlobalData(data:any, storePath:string, sendOpt?:any) : void;
+      $setGlobalDataCallback(callback: (data: any, updater?:any) => void, storePath:string) : void;
       $sendPageData(data:any, path:string, sendOpt?:any) : void;
       $setPageDataCallback(callback: (data: any,updater?:any) => void, path:string) : void;
       $sendPageCommand(command:string, argument?:any) : void;

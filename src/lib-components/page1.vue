@@ -24,9 +24,9 @@
       <button @click="updatePageObject()">updatePageObject()</button>
 
       <p>
-        <b>carCounter : </b><input v-model="carCounter" type="number" /> 
+        <b>pageCounter : </b><input v-model="pageCounter" type="number" /> 
       </p>
-      <button @click="carCounter = 4321">update carCounter</button>
+      <button @click="pageCounter = 4321">update pageCounter</button>
     <table width='100%' height='500'>
         <tr>
             <td style="background:yellow">
@@ -69,7 +69,7 @@ import child4 from './components/child-with-options4.vue';
     pageObject:{
       deep:true, //an option of watch
     },
-    carCounter:{},
+    pageCounter:{},
   },
 
 })
@@ -84,7 +84,7 @@ export default class extends Vue {
         nestedNumberVal1:101,
       }
     };
-  private carCounter:number = 100;
+  private pageCounter:number = 100;
 
   get title() {
       return this.$router.currentRoute.path;

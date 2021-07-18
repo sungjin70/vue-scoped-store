@@ -39,7 +39,7 @@ export function PageStoreBeforeSend(key:string) {
   })
 }
 
-export function PageStoreonBeforeReceive(key:string) {
+export function PageStoreBeforeReceive(key:string) {
   return createDecorator((componentOptions, handler) => {
     componentOptions.pageStore = componentOptions.pageStore || Object.create(null);
     const pageStore: any = componentOptions.pageStore;

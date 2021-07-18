@@ -9,6 +9,15 @@ import { Subscription } from 'rxjs';
 export interface ScopedStore {
 }
 
+interface SetupStorePropertyArg {
+    vm:any;
+    key:any;
+    keyStore:any;
+    recentlySent:any;
+    storeKey:string;
+    isForPage:boolean
+}
+
 @Component
 export default class ScopedStoreComponent extends Vue {
 
@@ -68,6 +77,10 @@ export default class ScopedStoreComponent extends Vue {
             if (!this.pathMapForPage.has(key)) {
                 const opt = ps[key];
                 const storeKey = (opt.path || key) as string;
+                const args:SetupStorePropertyArg = {vm,key,keyStore:ps,recentlySent:{},storeKey,isForPage:true};
+                this.setupStoreProperty(args);
+
+/*                 
                 // console.log('registering scopped store for key=', key, storeKey);
                 const onBeforeSendCallback = opt.direction !== 'read' && opt.onBeforeSend && typeof opt.onBeforeSend === 'function' ? opt.onBeforeSend : null;
                 let recentlyRecevied = {}; // to prevent feedback
@@ -94,19 +107,10 @@ export default class ScopedStoreComponent extends Vue {
                     }
                 }
 
-                // if (typeof opt.default !== 'undefined') {
-                //     console.log('vm.$data before', vm, vm.$data);
-                //     // vm.$set(vm, key, opt.default);// vm.$data[key] = opt.default;
-                //     Vue.set(vm, key, opt.default);
-                //     // vm[key] = opt.default;
-                //     console.log('vm.$data after', vm, vm.$data);
-                // }
-
                 vm.$watch(key, onBeforeSend, {deep:!!opt.deep,immediate:!!opt.immediate,});
                 const onBeforeReceive = opt.direction !== 'write' && opt.onBeforeReceive && typeof opt.onBeforeReceive === 'function' ? opt.onBeforeReceive : null;
                 vm.setPageDataCallback((data:any,updater?:any) => {
                     const updaterPath = updater && updater.path ? (updater.path as string) : "";
-
                     //컴포넌트 초기화 때 
                     //이 시점에 프로퍼티에 undefind가 설정되면 
                     //프로퍼티가 반응성 기능을 하지 못한다.
@@ -133,7 +137,7 @@ export default class ScopedStoreComponent extends Vue {
                             if (typeof(data) == "object"){
                                 //vm[key] = recentlyRecevied = {...data};
                                 Object.getOwnPropertyNames(data).forEach(
-                                    (val, idx, array) => {
+                                    (val) => {
                                         Vue.set(vm[key], val, data[val]);
                                     }
                                 );
@@ -142,7 +146,7 @@ export default class ScopedStoreComponent extends Vue {
                             else if (Array.isArray(data)) {
                                 const targetArray = vm[key] as Array<any>;
                                 targetArray.length = 0;
-                                (data as Array<any>).forEach((item, index, array) => {
+                                (data as Array<any>).forEach((item) => {
                                     targetArray.push(item);
                                 });
                                 // recentlyRecevied = data;
@@ -157,11 +161,12 @@ export default class ScopedStoreComponent extends Vue {
                             // console.log('data updated with received one', vm[key]);
                         }
                     }
-                }, storeKey);
+                }, storeKey);             
+ */
 
                 if (opt.shareOnCreated) {
                     if (vm[key] !== undefined) {
-                        recentlySent = vm.sendPageData(vm[key], storeKey,{key, path:storeKey});
+                        args.recentlySent = vm.sendPageData(vm[key], storeKey,{key, path:storeKey});
                     }
                     else {
                         console.warn(`undefined cannot share so shareOnCreated will be ignored. [${key}]`);        
@@ -180,22 +185,112 @@ export default class ScopedStoreComponent extends Vue {
             gs = gs.call(vm)
         }
         if (gs) {
-        //   vm.$observables = {}
-        //   Object.keys(gs).forEach(key => {
-        //     defineReactive(vm, key, undefined)
-        //     const ob = vm.$observables[key] = obs[key]
-        //     if (!isObservable(ob)) {
-        //       warn(
-        //         'Invalid Observable found in subscriptions option with key "' + key + '".',
-        //         vm
-        //       )
-        //       return
-        //     }
-        //     vm._subscription.add(obs[key].subscribe(value => {
-        //       vm[key] = value
-        //     }, (error) => { throw error }))
-        //   })
+
+          Object.keys(gs).forEach(key => {
+            if (!this.pathMapForGlobal.has(key)) {
+                const opt = ps[key];
+                const storeKey = (opt.path || key) as string;
+                const args:SetupStorePropertyArg = {vm,key,keyStore:gs,recentlySent:{},storeKey,isForPage:false};
+                this.setupStoreProperty(args);
+
+                this.pathMapForGlobal.set(key, opt);
+            }
+            
+          })
         }
+    }
+
+
+    private setupStoreProperty(args:SetupStorePropertyArg) {
+        /*vm:any, key:any, keyStore:any, recentlySent:any, storeKey:string, isForPage:boolean */
+        const opt = args.keyStore[args.key];
+        // const storeKey = (opt.path || key) as string;
+        // console.log('registering scopped store for key=', key, storeKey);
+        const onBeforeSendCallback = opt.direction !== 'read' && opt.onBeforeSend && typeof opt.onBeforeSend === 'function' ? opt.onBeforeSend : null;
+        let recentlyRecevied = {}; // to prevent feedback
+        // let recentlySent = {}; // to prevent feedback
+        const onBeforeSend = (val:any, oldVal:any) : any => {
+            // console.log('const onBeforeSend = (val:any, oldVal:any)', 
+            //     val, oldVal,recentlyRecevied,recentlyRecevied !== val);
+            if (!_.isEqual(recentlyRecevied, val)) {
+                let sendData = opt.direction !== 'read';
+                if (onBeforeSendCallback) {
+                    const callbackOpt = {proceed:true, key:args.key, path:args.storeKey};
+                    try {
+                        onBeforeSendCallback(val, oldVal, callbackOpt);
+                        sendData = callbackOpt.proceed;
+                    }
+                    catch(e) {
+                        console.warn(e);
+                    }
+                }
+
+                if (sendData) {
+                    if (args.isForPage)
+                        args.recentlySent = args.vm.sendPageData(val, args.storeKey,{key:args.key, path:args.storeKey});
+                    else
+                        args.recentlySent = args.vm.sendGlobalData(val, args.storeKey,{key:args.key, path:args.storeKey});
+                }
+            }
+        }
+
+        args.vm.$watch(args.key, onBeforeSend, {deep:!!opt.deep,immediate:!!opt.immediate,});
+        const dataCallback = args.isForPage ? args.vm.setPageDataCallback : args.vm.setGlobalDataCallback;
+        const onBeforeReceive = opt.direction !== 'write' && opt.onBeforeReceive && typeof opt.onBeforeReceive === 'function' ? opt.onBeforeReceive : null;
+        dataCallback((data:any,updater?:any) => {
+            const updaterPath = updater && updater.path ? (updater.path as string) : "";
+
+            //컴포넌트 초기화 때 
+            //이 시점에 프로퍼티에 undefind가 설정되면 
+            //프로퍼티가 반응성 기능을 하지 못한다.
+            if (data === undefined)
+                return;
+            
+            const nested = updaterPath.length > args.storeKey.length && updaterPath.startsWith(args.storeKey);
+            if ((args.recentlySent != data && args.vm[args.key] != data) || nested) {
+                // console.log('vm.setPageDataCallback => if (recentlySent != data && vm[key] != data)'
+                //     , key, recentlySent, data, updaterPath, nested, vm[key]);
+                let acceptData = opt.direction !== 'write';
+                if (onBeforeReceive) {
+                    const callbackOpt = {proceed:true, key:args.key, path:args.storeKey, updaterPath};
+                    try {
+                        onBeforeReceive(data, args.vm[args.key], callbackOpt);
+                        acceptData = callbackOpt.proceed;
+                    }
+                    catch(e) {
+                        console.warn(e);
+                    }
+                }
+
+                if (acceptData) {
+                    if (typeof(data) == "object"){
+                        //vm[key] = recentlyRecevied = {...data};
+                        Object.getOwnPropertyNames(data).forEach(
+                            (val) => {
+                                Vue.set(args.vm[args.key], val, data[val]);
+                            }
+                        );
+                        // recentlyRecevied = data;
+                    }
+                    else if (Array.isArray(data)) {
+                        const targetArray = args.vm[args.key] as Array<any>;
+                        targetArray.length = 0;
+                        (data as Array<any>).forEach((item) => {
+                            targetArray.push(item);
+                        });
+                        // recentlyRecevied = data;
+                        //vm[key] = recentlyRecevied = [...data];
+                    }
+                    else
+                        // vm[key] = recentlyRecevied = data;
+                        args.vm[args.key] = data;
+
+                    recentlyRecevied = _.cloneDeep(args.vm[args.key]);
+                    // vm.$data[key] = recentlyRecevied = data;
+                    // console.log('data updated with received one', vm[key]);
+                }
+            }
+        }, args.storeKey);
     }
 
     // private initPageDataService() {
@@ -205,20 +300,24 @@ export default class ScopedStoreComponent extends Vue {
     //     }
     // }
 
-    public sendGlobalData(key:string, data:any, path:string) {
-        const service : AnyTypeStoreService | undefined  = this.dataTranManager.findOfCreateGlobalService(key);
+    private readonly globalDataServiceKey = "$$GLOBAL_STORE_SERVICE$$";
+
+    public sendGlobalData(data:any, storePath:string, sendOpt?:any) {
+        const service : AnyTypeStoreService | undefined  = this.dataTranManager.findOfCreateGlobalService(this.globalDataServiceKey);
         if (service) {
-            service.sendData(data, '', path);
+            service.sendData(data, sendOpt, storePath);
         }
     }
 
-    public setGlobalDataCallback(key:string, callback: (data: any) => void, path?:string) {
-        const service : AnyTypeStoreService | undefined  = this.dataTranManager.findOfCreateGlobalService(key);
+    public setGlobalDataCallback(callback: (data: any, updater?:any) => void, storePath:string) {
+        const service : AnyTypeStoreService | undefined  = this.dataTranManager.findOfCreateGlobalService(this.globalDataServiceKey);
         if (service) {
             this.subscriptionsForGlobal.push(
-                service.$state.subscribe(state => {
+                service.$state.subscribe(({payload,updater}) => {
                     try {
-                        callback(state);
+                        const filtered = _.get(payload, storePath);
+                        // console.log('setPageDataCallback => received:', payload, storePath, filtered);
+                        callback(filtered, updater);
                     } catch (e) {
                         console.warn('setGlobalDataCallback', e);
                     }
@@ -238,18 +337,20 @@ export default class ScopedStoreComponent extends Vue {
     public setPageDataCallback(callback: (data: any, updater?:any) => void, storePath:string) {
         // this.initPageDataService();
 
-        this.subscriptionsForPage.push(
-            // this.dataTranManager.pageDataService.$state.subscribe(state => {
-            this.dataTranManager.pageDataService?.$state.subscribe(({payload,updater}) => {
-                try {
-                    const filtered = _.get(payload, storePath);
-                    // console.log('setPageDataCallback => received:', payload, storePath, filtered);
-                    callback(filtered, updater);
-                } catch (e) {
-                    console.warn('setPageDataCallback', e);
-                }
-            })
-        );
+        if (this.dataTranManager.pageDataService) {
+            this.subscriptionsForPage.push(
+                // this.dataTranManager.pageDataService.$state.subscribe(state => {
+                this.dataTranManager.pageDataService.$state.subscribe(({payload,updater}) => {
+                    try {
+                        const filtered = _.get(payload, storePath);
+                        // console.log('setPageDataCallback => received:', payload, storePath, filtered);
+                        callback(filtered, updater);
+                    } catch (e) {
+                        console.warn('setPageDataCallback', e);
+                    }
+                })
+            );
+        }
     }
 
     public sendPageCommand(command:string, argument?:any) {
@@ -261,15 +362,18 @@ export default class ScopedStoreComponent extends Vue {
     public setPageCommandCallback(callback: (command:string, argument?:any) => void) {
         // this.initPageDataService();
 
-        this.subscriptionsForPage.push(
-            this.dataTranManager.pageDataService?.$command.subscribe(command => {
-                try {
-                    callback(command.command, command.argument);
-                } catch (e) {
-                    console.warn('setPageCommandCallback', e);
-                }
-            })
-        );
+        if (this.dataTranManager.pageDataService) {
+            this.subscriptionsForPage.push(
+                this.dataTranManager.pageDataService.$command.subscribe(command => {
+                    try {
+                        callback(command.command, command.argument);
+                    } catch (e) {
+                        console.warn('setPageCommandCallback', e);
+                    }
+                })
+            );
+        }
+
     }
 
     public sendGlobalCommand(key:string, command:string, argument?:any) {
