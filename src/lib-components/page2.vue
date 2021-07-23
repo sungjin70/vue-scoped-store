@@ -79,10 +79,10 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import _ from 'lodash';
-import child1 from './components/child1.vue';
-import child2 from './components/child2.vue';
-import child3 from './components/child3.vue';
-import child4 from './components/child4.vue';
+import child1 from './components/child-with-api1.vue';
+import child2 from './components/child-with-api2.vue';
+import child3 from './components/child-with-api3.vue';
+import child4 from './components/child-with-api4.vue';
 
 @Component({
   components:{

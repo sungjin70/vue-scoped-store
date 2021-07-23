@@ -63,7 +63,7 @@
     </table>
 
 
-    <table width='100%' height='500'>
+    <table width='100%' >
         <tr>
             <td style="background:yellow">
               <child1 />
@@ -80,6 +80,14 @@
               <child4 />
             </td>
         </tr>
+        <tr>
+            <td style="background:CornflowerBlue">
+              <child5 />
+            </td>
+            <td style="background:DarkGoldenRod">
+              <child6 />
+            </td>
+        </tr>
     </table>
   </div>
 </template>
@@ -93,15 +101,20 @@ import child2 from './components/child-with-options2.vue';
 import child3 from './components/child-with-options3.vue';
 import child4 from './components/child-with-options4.vue';
 
+import child5 from './components/child-with-api1.vue';
+import child6 from './components/child-with-api3.vue';
+
 @Component({
   components:{
     child1,
     child2,
     child3,
     child4,
+    child5,
+    child6,
   },
   pageStore:{
-    isPage:true,
+    isPage:true, //set this component as a page. so all state datas are maintained only while this component is alive.
     pageObject:{
       deep:true, //an option of watch
     },
@@ -144,6 +157,8 @@ export default class extends Vue {
   }
 
   created() {
+    // this.globalCounter = 250;
+    // this.globalObject.strValue2 = 'rrrr';
   }
 
   updatePageObject() {

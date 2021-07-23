@@ -15,25 +15,26 @@ import _ from 'lodash';
 @Component({
   watch: {
     'myObject.nestedObj.nestedStrVal1' : function (newVal : any, oldVal: any) {
-      this.$sendPageData(newVal,'pageObject.nestedObj.nestedStrVal1');
+      //this.$sendPageData(newVal,'pageObject.nestedObj.nestedStrVal1');
     },
   },
 })
 export default class extends Vue {
 
-  private myObject: any = null
+  private myObject: any = {nestedObj:{}};
 
   get title() {
-      return 'child component 3';
+      return 'child-with-api 3';
   }
 
   created() {
     console.log('created')
     this.$setPageDataCallback((data:any) => {
-      console.log('child3.vue : $setPageDataCallback', data);
       // this.myObject = _.get(data, 'nestedObj.nestedStrVal1');
-      this.myObject = data;
-    }, 'pageObject');
+      // this.myObject = data;
+      _.set(this.myObject,'nestedObj.nestedStrVal1',data);
+      console.log('child-with-api3.vue : $setPageDataCallback', data, this.myObject);
+    }, 'pageObject.nestedObj.nestedStrVal1');
   }
 
 }

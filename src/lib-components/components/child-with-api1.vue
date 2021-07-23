@@ -4,6 +4,10 @@
     <span>myObject.strValue1 : </span>
     <br />
     <input v-model="myObject.strValue1" />
+    <br />
+    <span>myCounter : </span>
+    <br />
+    <input v-model="myCounter" type="number" />
   </div>
 </template>
 
@@ -14,17 +18,24 @@ import _ from 'lodash';
 
 @Component({
   watch: {
-    'myObject.strValue1' : function (newVal : any, oldVal: any) {
-      this.$sendPageData(newVal,'pageObject.strValue1');
+    'myObject.strValue1' : {
+      deep: true,
+      handler (newVal : any, oldVal: any) {
+        this.$sendPageData(newVal,'pageObject.strValue1');
+      }
+    },
+    myCounter : function (newVal : any, oldVal: any) {
+      this.$sendPageData(newVal,'pageCounter');
     },
   },
 })
 export default class extends Vue {
 
   private myObject: any = null;
+  private myCounter:number = -5;
 
   get title() {
-      return 'child component 1';
+      return 'child-with-api1 1';
   }
 
   created() {
@@ -34,6 +45,11 @@ export default class extends Vue {
       // this.myObject = _.get(data, 'nestedObj.nestedStrVal1');
       this.myObject = data;
     }, 'pageObject');
+
+    this.$setPageDataCallback((data:any) => {
+      console.log('child1.vue : $setPageDataCallback', data);
+      this.myCounter = data;
+    }, 'pageCounter');
   }
 
 }
