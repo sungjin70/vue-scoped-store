@@ -1,13 +1,33 @@
 import Vue, { PluginFunction, VueConstructor } from 'vue';
 
-declare module 'vue/types/options' {
-    interface ComponentOptions<V extends Vue> {
-      pageStore?: Record<string, any> | ((this: V) => Record<string, any>)
-      globalStore?: Record<string, any> | ((this: V) => Record<string, any>)
-    }
+export interface PageStoreOptions {
+  direction?: 'both'|'read'|'write';
+  path?:string;
+  shareOnCreated?:boolean;
+  deep?:boolean;
+  immediate?: boolean;
 }
 
-export interface ScopedStore {
+export interface PageStoreMethodOptions {
+  key:string;
+}
+
+export interface GlobalStoreOptions {
+  direction?: 'both'|'read'|'write';
+  path?:string;
+  deep?:boolean;
+  immediate?: boolean;
+}
+
+export interface GlobalStoreMethodOptions {
+  key:string;
+}
+
+declare module 'vue/types/options' {
+  interface ComponentOptions<V extends Vue> {
+    pageStore?: Record<string, any> | ((this: V) => Record<string, any>)
+    globalStore?: Record<string, any> | ((this: V) => Record<string, any>)
+  }
 }
 
 declare module "vue/types/vue" {
