@@ -31,7 +31,15 @@ const install: PluginFunction<any> = function installVueScopedStore(Vue: typeof 
 // Create module definition for Vue.use()
 export default install;
 
-export * as decorations from './scoped-store/scoped-store-decoration';
+export {
+  PageStore,
+  AsPage,
+  GlobalStore,
+  GlobalStoreBeforeReceive,
+  GlobalStoreBeforeSend,
+  PageStoreBeforeReceive,
+  PageStoreBeforeSend
+} from './scoped-store/scoped-store-decoration';
 
 // To allow individual component use, export components
 // each can be registered via Vue.component()

@@ -1,6 +1,15 @@
 // iife/cjs usage extends esm default export - so import it all
 // import plugin, * as components from '@/entry.esm';
-import plugin, {decorations} from '@/entry.esm';
+import plugin, 
+{
+  AsPage,
+  GlobalStore,
+  PageStore,
+  GlobalStoreBeforeReceive,
+  GlobalStoreBeforeSend,
+  PageStoreBeforeReceive,
+  PageStoreBeforeSend
+} from '@/entry.esm';
 
 // Attach named exports directly to plugin. IIFE/CJS will
 // only expose one global var, with component exports exposed as properties of
@@ -17,4 +26,12 @@ import plugin, {decorations} from '@/entry.esm';
 
 export default plugin;
 
-export {decorations};
+export {
+  AsPage,
+  GlobalStore,
+  PageStore,
+  GlobalStoreBeforeReceive,
+  GlobalStoreBeforeSend,
+  PageStoreBeforeReceive,
+  PageStoreBeforeSend
+};

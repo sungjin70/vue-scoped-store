@@ -47,4 +47,4 @@ declare module "vue/types/vue" {
 declare const VueScopedStore: PluginFunction<any>;
 export default VueScopedStore;
 
-export const VueScopedStoreSample: VueConstructor<Vue>;
+// export const VueScopedStoreSample: VueConstructor<Vue>;
