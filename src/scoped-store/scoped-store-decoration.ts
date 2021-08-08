@@ -1,5 +1,5 @@
 import { createDecorator } from 'vue-class-component';
-import {PageStoreOptions, GlobalStoreOptions} from '../../options';
+import {PageStoreOptions, GlobalStoreOptions} from '../../vue-scoped-store';
 
 /**
  * decorator of a PageState property
