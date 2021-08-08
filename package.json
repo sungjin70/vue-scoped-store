@@ -1,18 +1,26 @@
 {
   "name": "vue-scoped-store",
   "version": "0.0.1",
-  "description": "",
+  "description": "some easier ways to share states among components and/or pages",
   "main": "dist/vue-scoped-store.ssr.js",
   "browser": "dist/vue-scoped-store.esm.js",
   "module": "dist/vue-scoped-store.esm.js",
   "unpkg": "dist/vue-scoped-store.min.js",
   "types": "vue-scoped-store.d.ts",
+  "keywords": [
+    "vue",
+    "store",
+    "vuex",
+    "decorator"
+  ],
   "files": [
     "dist/*",
     "vue-scoped-store.d.ts",
     "src/**/*.vue"
   ],
   "sideEffects": false,
+  "author": "sungjin70",
+  "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve dev/serve.ts",
     "build": "cross-env NODE_ENV=production rollup --config build/rollup.config.js",
