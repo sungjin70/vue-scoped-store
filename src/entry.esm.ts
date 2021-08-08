@@ -7,6 +7,7 @@ import ScopedStoreMixin from './scoped-store/scoped-store-mixin';
 import {sendGlobalData, setGlobalDataCallback, sendGlobalCommand, setGlobalCommandCallback} from './scoped-store/methods/global-data-callback';
 import {sendPageData, setPageDataCallback, sendPageCommand, setPageCommandCallback} from './scoped-store/methods/page-data-callback';
 
+
 // install function executed by Vue.use()
 const install: PluginFunction<any> = function installVueScopedStore(Vue: typeof _Vue) {
 
@@ -29,6 +30,8 @@ const install: PluginFunction<any> = function installVueScopedStore(Vue: typeof 
 
 // Create module definition for Vue.use()
 export default install;
+
+export * as decorations from './scoped-store/scoped-store-decoration';
 
 // To allow individual component use, export components
 // each can be registered via Vue.component()
