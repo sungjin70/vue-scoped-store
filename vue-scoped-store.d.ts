@@ -48,40 +48,25 @@ declare module "vue/types/vue" {
 declare const VueScopedStore: PluginFunction<any>;
 export default VueScopedStore;
 
-/*
-export function PageStore(options:PageStoreOptions = {}) {
-  return createDecorator((componentOptions, key) => {
-      
-  componentOptions.pageStore = componentOptions.pageStore || Object.create(null);
-  const pageStore: any = componentOptions.pageStore;
-  const propOptions = pageStore[key] || {};
-  pageStore[key] = {...propOptions, ...options};
-  // console.log('PageStore.createDecorator',componentOptions,key,pageStore);
-})
-}
-*/
+// export type PageStoreFunction = (options?: PageStoreOptions) => VueDecorator;
+// export const PageStore : PageStoreFunction;
+declare function PageStore(options?: PageStoreOptions) : VueDecorator;
 
-export type PageStoreFunction = (options?: PageStoreOptions) => VueDecorator;
-export const PageStore : PageStoreFunction;
+declare function AsPage(): VueDecorator;
 
-export type AsPageFunction = () => VueDecorator;
-export const AsPage : AsPageFunction;
+// export type PageStoreBeforeSendFunction = (key: string) => VueDecorator;
+declare function PageStoreBeforeSend(key: string) : VueDecorator;
 
-export type PageStoreBeforeSendFunction = (key: string) => VueDecorator;
-export const PageStoreBeforeSend : PageStoreBeforeSendFunction;
+// export type PageStoreBeforeReceiveFunction = (key: string) => VueDecorator;
+declare function PageStoreBeforeReceive(key: string) : VueDecorator;
 
-export type PageStoreBeforeReceiveFunction = (key: string) => VueDecorator;
-export const PageStoreBeforeReceive : PageStoreBeforeReceiveFunction;
+declare function GlobalStore(options?: GlobalStoreOptions) : VueDecorator;
 
+declare function GlobalStoreBeforeSend(key: string) : VueDecorator;
 
-export type GlobalStoreFunction = (options?: GlobalStoreOptions) => VueDecorator;
-export const GlobalStore : GlobalStoreFunction;
+declare function GlobalStoreBeforeReceive(key: string) : VueDecorator;
 
-export type GlobalStoreBeforeSendFunction = (key: string) => VueDecorator;
-export const GlobalStoreBeforeSend : GlobalStoreBeforeSendFunction;
-
-export type GlobalStoreBeforeReceiveFunction = (key: string) => VueDecorator;
-export const GlobalStoreBeforeReceive : GlobalStoreBeforeReceiveFunction;
+export {PageStore, AsPage, PageStoreBeforeSend, PageStoreBeforeReceive, GlobalStore, GlobalStoreBeforeSend, GlobalStoreBeforeReceive};
 
 
 // export const VueScopedStoreSample: VueConstructor<Vue>;
