@@ -15,7 +15,7 @@ import _ from 'lodash';
 @Component({
   pageStore:{
     nestedStrVal1:{
-      //direction:'both', //read / write / both  - default:both
+      direction:'both', //read / write / both  - default:both
       path:'pageObject.nestedObj.nestedNumberVal1', // a path of store. default:the same as key
       //deep:true, //an option of watch
       //immediate:true, //an option of watch

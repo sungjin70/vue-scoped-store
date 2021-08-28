@@ -113,6 +113,9 @@ import child8 from './components/child-with-options8.vue';
       onBeforeReceive: function(val:any, oldVal:any, options:{proceed:boolean}) {
         console.log('onBeforeReceive for pageObject', val, oldVal, options);
       },
+      onReceived: function(val:any) {
+        console.log('onReceived for pageObject in page1', val);
+      },
     },
     // 'pageObject.strValue1':{
     //   //direction:'both', //read / write / both  - default:both
@@ -151,6 +154,9 @@ import child8 from './components/child-with-options8.vue';
       },
       onBeforeReceive: function(val:any, oldVal:any, options:{proceed:boolean}) {
         console.log('onBeforeReceive for carCounter in page1', val, oldVal, options);
+      },
+      onReceived: function(val:any) {
+        console.log('onReceived for carCounter in page1', val);
       },
     },
   },

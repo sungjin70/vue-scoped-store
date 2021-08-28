@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2>Using decorations like @PageStore, @GlobalStore and so on</h2>
     <table width='100%' >
       <tr>
         <td>
@@ -91,7 +92,14 @@ import child5 from './components/child-with-options5.vue';
 import child6 from './components/child-with-options6.vue';
 import child7 from './components/child-with-options7.vue';
 import child8 from './components/child-with-options8.vue';
-import {PageStore,GlobalStore,AsPage,PageStoreBeforeSend,PageStoreBeforeReceive} from '../scoped-store/scoped-store-decoration';
+import {
+  PageStore,
+  GlobalStore,
+  AsPage,
+  PageStoreBeforeSend,
+  PageStoreBeforeReceive,
+  PageStoreReceived
+} from '../scoped-store/scoped-store-decoration';
 
 @Component({
   components:{
@@ -154,6 +162,11 @@ export default class extends Vue {
     console.log('onBeforeReceivePageObject  for pageObject in page4', val, oldVal, options);
   }
 
+  @PageStoreReceived('pageObject')
+  onReceivedPageObject(val:any) {
+    console.log('onReceivedPageObject for pageObject in page4', val);
+  }
+  
   @PageStoreBeforeReceive('myCounter')
   onBeforeReceiveMyCounter(val:any, oldVal:any, options:{proceed:boolean}) {
     console.log('onBeforeReceiveMyCounter for myCounter in page4', val, oldVal, options);
@@ -180,3 +193,10 @@ export default class extends Vue {
 
 }
 </script>
+
+<style>
+td {
+  text-align: left;
+  width: 50%;
+}
+</style>

@@ -6,8 +6,10 @@ import plugin,
   GlobalStore,
   PageStore,
   GlobalStoreBeforeReceive,
+  GlobalStoreReceived,
   GlobalStoreBeforeSend,
   PageStoreBeforeReceive,
+  PageStoreReceived,
   PageStoreBeforeSend
 } from '@/entry.esm';
 
@@ -31,7 +33,9 @@ export {
   GlobalStore,
   PageStore,
   GlobalStoreBeforeReceive,
+  GlobalStoreReceived,
   GlobalStoreBeforeSend,
   PageStoreBeforeReceive,
+  PageStoreReceived,
   PageStoreBeforeSend
 };

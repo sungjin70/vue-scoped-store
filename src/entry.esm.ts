@@ -36,8 +36,10 @@ export {
   AsPage,
   GlobalStore,
   GlobalStoreBeforeReceive,
+  GlobalStoreReceived,
   GlobalStoreBeforeSend,
   PageStoreBeforeReceive,
+  PageStoreReceived,
   PageStoreBeforeSend
 } from './scoped-store/scoped-store-decoration';
 

@@ -37,7 +37,7 @@ export default Vue.extend({
     &nbsp;
     <router-link to="/page4">page4</router-link>
   </p>
-  <h1>Current page: {{$router.currentRoute.path}}</h1>
+  <h2>Current page: {{$router.currentRoute.path}}</h2>
 
   <router-view></router-view>
   </div>

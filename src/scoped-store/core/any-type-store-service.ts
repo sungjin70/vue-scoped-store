@@ -48,6 +48,7 @@ export class AnyTypeStoreService extends BaseStoreService<AnyTypeState, StringTy
 
     public sendData(payload: any, sendOpt:{}, path?:string) {
         let copy = _.cloneDeep(payload);
+        // console.log('sendData (after cloneDeep)', payload, copy);
         let state:any;
         if (!path) {
             state = {

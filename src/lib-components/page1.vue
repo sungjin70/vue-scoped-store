@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h3>Using typed-store (basic)</h3>
     <table width='100%' >
       <tr>
         <td>
@@ -22,8 +23,9 @@
             <br />
             <b>}</b>
           </p>
-
-          <button @click="updatePageObject()">updatePageObject()</button>
+          <button @click="resetPageObject()">reset PageObject</button>
+          <br />
+          pageBoolean : <input v-model="pageBoolean" type="checkbox" /> : {{pageBoolean}}
         </td>
         <td>
           <p>
@@ -43,7 +45,6 @@
             <br />
             <b>}</b>
           </p>
-
         </td>
       </tr>
       <tr>
@@ -61,7 +62,6 @@
         </td>
       </tr>
     </table>
-
 
     <table width='100%' >
         <tr>
@@ -92,19 +92,17 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="js">
 import Vue from 'vue';
-import Component from 'vue-class-component';
-import _ from 'lodash';
 import child1 from './components/child-with-options1.vue';
 import child2 from './components/child-with-options2.vue';
 import child3 from './components/child-with-options3.vue';
 import child4 from './components/child-with-options4.vue';
-
 import child5 from './components/child-with-api1.vue';
 import child6 from './components/child-with-api3.vue';
 
-@Component({
+export default Vue.extend(
+{
   components:{
     child1,
     child2,
@@ -113,66 +111,83 @@ import child6 from './components/child-with-api3.vue';
     child5,
     child6,
   },
+  data:function() {
+    return {
+      pageObject: {
+        strValue1:'strValue1 default',
+        strValue2:'strValue2 default',
+        numberValue1:10,
+        nestedObj :{
+          nestedStrVal1:'nestedStrVal1 string',
+          nestedNumberVal1:101,
+        }
+      },
+      pageCounter: 100,
+      pageBoolean: true,
+      globalObject: {
+        strValue1:'strValue1 default',
+        strValue2:'strValue2 default',
+        numberValue1:10,
+        nestedObj :{
+          nestedStrVal1:'nestedStrVal1 string',
+          nestedNumberVal1:101,
+        }
+      },
+      globalCounter:200
+    }
+  },
   pageStore:{
-    isPage:true, //set this component as a page. so all state datas are maintained only while this component is alive.
+    isPage:true, //set this component as a page. so all states are maintained only while this component is alive.
     pageObject:{
       deep:true, //an option of watch
     },
     pageCounter:{},
+    pageBoolean:{
+      onBeforeSend: function(val, oldVal, options) {
+        console.log('onBeforeSend for pageBoolean in page1', val, oldVal, options);
+      },
+      onBeforeReceive: function(val, oldVal, options) {
+        console.log('onBeforeReceive for pageBoolean in page1', val, oldVal, options);
+      }
+    },
   },
   globalStore:{
     globalObject:{
       deep:true, //an option of watch
     },
     globalCounter:{},
+  },
+  methods:{
+    resetPageObject() {
+      this.pageObject = {
+        strValue1:'strValue1 default',
+        strValue2:'strValue2 default',
+        numberValue1:10,
+        nestedObj :{
+          nestedStrVal1:'nestedStrVal1 string',
+          nestedNumberVal1:101,
+        }
+      };
+    },
+    resetGlobalObject() {
+      this.globalObject = {
+        strValue1:'strValue1 default',
+        strValue2:'strValue2 default',
+        numberValue1:10,
+        nestedObj :{
+          nestedStrVal1:'nestedStrVal1 string',
+          nestedNumberVal1:101,
+        }
+      };
+    }
   }
-
-})
-export default class extends Vue {
-
-  private pageObject: any = {
-      strValue1:'strValue1 defaule',
-      strValue2:'strValue2 defaule',
-      numberValue1:10,
-      nestedObj :{
-        nestedStrVal1:'nestedStrVal1 string',
-        nestedNumberVal1:101,
-      }
-    };
-  private pageCounter:number = 100;
-
-  private globalObject: any = {
-      strValue1:'strValue1 defaule',
-      strValue2:'strValue2 defaule',
-      numberValue1:10,
-      nestedObj :{
-        nestedStrVal1:'nestedStrVal1 string',
-        nestedNumberVal1:101,
-      }
-    };
-  private globalCounter:number = 200;
-
-  get title() {
-      return this.$router.currentRoute.path;
-  }
-
-  created() {
-    // this.globalCounter = 250;
-    // this.globalObject.strValue2 = 'rrrr';
-  }
-
-  updatePageObject() {
-    this.pageObject = {
-      strValue1:'strValue1 updated',
-      strValue2:'strValue2 updated',
-      numberValue1:20,
-      nestedObj :{
-        nestedStrVal1:'nestedStrVal1 string updated',
-        nestedNumberVal1:201,
-      }
-    };
-  }
-
-
 }
+);
 </script>
+
+<style>
+td {
+  text-align: left;
+  width: 50%;
+}
+</style>

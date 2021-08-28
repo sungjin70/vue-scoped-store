@@ -1,3 +1,4 @@
+
 export function sendGlobalData(data:any, storePath:string, sendOpt?:any) {
     const vm = this;
     vm.sendGlobalData(data, storePath, sendOpt);

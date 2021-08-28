@@ -47,7 +47,7 @@ export default class ScopedStoreComponent extends Vue {
         }
 
         if (this.isPage) {
-            console.log('if (this.isPage) in ScopedStoreComponent.beforeDestroy()');
+            //console.log('if (this.isPage) in ScopedStoreComponent.beforeDestroy()');
             this.pageDataService?.stop();
             // this.dataTranManager.pageDataService = undefined;
         }
@@ -118,7 +118,6 @@ export default class ScopedStoreComponent extends Vue {
 
 
     private setupStoreProperty(args:SetupStorePropertyArg) {
-        /*vm:any, key:any, keyStore:any, recentlySent:any, storeKey:string, isForPage:boolean */
         const opt = args.keyStore[args.key];
         // const storeKey = (opt.path || key) as string;
         // console.log('registering scopped store for key=', key, storeKey);
@@ -127,7 +126,7 @@ export default class ScopedStoreComponent extends Vue {
         // let recentlySent = {}; // to prevent feedback
         const onBeforeSend = (val:any, oldVal:any) : any => {
             // console.log('const onBeforeSend = (val:any, oldVal:any)', 
-            //     val, oldVal,recentlyRecevied,recentlyRecevied !== val);
+            //      val, oldVal,recentlyRecevied,_.isEqual(recentlyRecevied, val));
             if (!_.isEqual(recentlyRecevied, val)) {
                 let sendData = opt.direction !== 'read';
                 if (onBeforeSendCallback) {
@@ -142,6 +141,7 @@ export default class ScopedStoreComponent extends Vue {
                 }
 
                 if (sendData) {
+                    recentlyRecevied = {};
                     if (args.isForPage)
                         args.recentlySent = args.vm.sendPageData(val, args.storeKey,{key:args.key, path:args.storeKey});
                     else
@@ -153,8 +153,11 @@ export default class ScopedStoreComponent extends Vue {
         args.vm.$watch(args.key, onBeforeSend, {deep:!!opt.deep,immediate:!!opt.immediate,});
         const dataCallback = args.isForPage ? args.vm.setPageDataCallback : args.vm.setGlobalDataCallback;
         const onBeforeReceive = opt.direction !== 'write' && opt.onBeforeReceive && typeof opt.onBeforeReceive === 'function' ? opt.onBeforeReceive : null;
+        const onReceived = opt.direction !== 'write' && opt.onReceived && typeof opt.onReceived === 'function' ? opt.onReceived : null;
         dataCallback((data:any,updater?:any) => {
             const updaterPath = updater && updater.path ? (updater.path as string) : "";
+
+            // console.log('dataCallback => ', updaterPath, args.recentlySent, data, args.vm[args.key]);
 
             //컴포넌트 초기화 때 
             //이 시점에 프로퍼티에 undefind가 설정되면 
@@ -163,9 +166,8 @@ export default class ScopedStoreComponent extends Vue {
                 return;
             
             const nested = updaterPath.length > args.storeKey.length && updaterPath.startsWith(args.storeKey);
-            if ((args.recentlySent != data && args.vm[args.key] != data) || nested) {
-                // console.log('vm.setPageDataCallback => if (recentlySent != data && vm[key] != data)'
-                //     , key, recentlySent, data, updaterPath, nested, vm[key]);
+            if ((typeof data !== "object" && args.vm[args.key] !== data) || (args.recentlySent != data && args.vm[args.key] != data) || nested) {
+                // console.log('dataCallback => if ((args.recentlySent != data && args.vm[args.key] != data) || nested)', data, updaterPath, nested);
                 let acceptData = opt.direction !== 'write';
                 if (onBeforeReceive) {
                     const callbackOpt = {proceed:true, key:args.key, path:args.storeKey, updaterPath};
@@ -179,16 +181,7 @@ export default class ScopedStoreComponent extends Vue {
                 }
 
                 if (acceptData) {
-                    if (typeof(data) == "object"){
-                        //vm[key] = recentlyRecevied = {...data};
-                        Object.getOwnPropertyNames(data).forEach(
-                            (val) => {
-                                Vue.set(args.vm[args.key], val, data[val]);
-                            }
-                        );
-                        // recentlyRecevied = data;
-                    }
-                    else if (Array.isArray(data)) {
+                    if (Array.isArray(data)) {
                         const targetArray = args.vm[args.key] as Array<any>;
                         targetArray.length = 0;
                         (data as Array<any>).forEach((item) => {
@@ -197,13 +190,24 @@ export default class ScopedStoreComponent extends Vue {
                         // recentlyRecevied = data;
                         //vm[key] = recentlyRecevied = [...data];
                     }
+                    else if (typeof(data) == "object"){
+                        //vm[key] = recentlyRecevied = {...data};
+                        Object.getOwnPropertyNames(data).forEach(
+                            (val) => {
+                                Vue.set(args.vm[args.key], val, data[val]);
+                            }
+                        );
+                        // recentlyRecevied = data;
+                    }
                     else
                         // vm[key] = recentlyRecevied = data;
                         args.vm[args.key] = data;
 
                     recentlyRecevied = _.cloneDeep(args.vm[args.key]);
-                    // vm.$data[key] = recentlyRecevied = data;
                     // console.log('data updated with received one', vm[key]);
+                    if (onReceived) {
+                        onReceived(args.vm[args.key]);
+                    }
                 }
             }
         }, args.storeKey);

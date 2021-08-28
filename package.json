@@ -1,6 +1,6 @@
 {
   "name": "vue-scoped-store",
-  "version": "0.0.1",
+  "version": "0.5.0",
   "description": "some easier ways to share states among components and/or pages",
   "main": "dist/vue-scoped-store.ssr.js",
   "browser": "dist/vue-scoped-store.esm.js",
@@ -59,7 +59,7 @@
     "vue-template-compiler": "^2.6.12"
   },
   "peerDependencies": {
-    "vue": "^2.6.12"
+    "vue": "^2.6.0"
   },
   "engines": {
     "node": ">=12"

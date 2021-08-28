@@ -47,6 +47,17 @@ export function PageStoreBeforeReceive(key:string) {
   })
 }
 
+export function PageStoreReceived(key:string) {
+  return createDecorator((componentOptions, handler) => {
+    componentOptions.pageStore = componentOptions.pageStore || Object.create(null);
+    const pageStore: any = componentOptions.pageStore;
+    const propOptions = pageStore[key] || {};
+    const originalMethod = componentOptions.methods[handler];
+    pageStore[key] = {...propOptions, onReceived:originalMethod};
+    // console.log('PageStoreonBeforeReceive.createDecorator',componentOptions,key,pageStore);
+  })
+}
+
 
 
 
@@ -76,5 +87,16 @@ export function GlobalStoreBeforeReceive(key:string) {
     const propOptions = globalStore[key] || {};
     const originalMethod = componentOptions.methods[handler];
     globalStore[key] = {...propOptions, onBeforeReceive:originalMethod};
+  })
+}
+
+export function GlobalStoreReceived(key:string) {
+  return createDecorator((componentOptions, handler) => {
+    componentOptions.pageStore = componentOptions.pageStore || Object.create(null);
+    const pageStore: any = componentOptions.pageStore;
+    const propOptions = pageStore[key] || {};
+    const originalMethod = componentOptions.methods[handler];
+    pageStore[key] = {...propOptions, onReceived:originalMethod};
+    // console.log('PageStoreonBeforeReceive.createDecorator',componentOptions,key,pageStore);
   })
 }

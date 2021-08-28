@@ -60,13 +60,17 @@ declare function PageStoreBeforeSend(key: string) : VueDecorator;
 // export type PageStoreBeforeReceiveFunction = (key: string) => VueDecorator;
 declare function PageStoreBeforeReceive(key: string) : VueDecorator;
 
+declare function PageStoreReceived(key: string) : VueDecorator;
+
 declare function GlobalStore(options?: GlobalStoreOptions) : VueDecorator;
 
 declare function GlobalStoreBeforeSend(key: string) : VueDecorator;
 
 declare function GlobalStoreBeforeReceive(key: string) : VueDecorator;
 
-export {PageStore, AsPage, PageStoreBeforeSend, PageStoreBeforeReceive, GlobalStore, GlobalStoreBeforeSend, GlobalStoreBeforeReceive};
+declare function GlobalStoreReceived(key: string) : VueDecorator;
+
+export {PageStore, AsPage, PageStoreBeforeSend, PageStoreBeforeReceive, PageStoreReceived, GlobalStore, GlobalStoreBeforeSend, GlobalStoreBeforeReceive, GlobalStoreReceived};
 
 
 // export const VueScopedStoreSample: VueConstructor<Vue>;

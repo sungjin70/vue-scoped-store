@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2>Using typed-store with API</h2>
     <table width='100%' >
       <tr>
         <td>
@@ -161,3 +162,10 @@ export default class extends Vue {
 
 }
 </script>
+
+<style>
+td {
+  text-align: left;
+  width: 50%;
+}
+</style>

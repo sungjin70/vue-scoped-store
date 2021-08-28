@@ -12,6 +12,9 @@
     <input v-model="myObject.strValue2" />
     <br />
     <span>pageObject:{{myObject}}</span>
+    <br />
+    pageBoolean : <input v-model="pageBoolean" type="checkbox" /> : {{pageBoolean}}
+    
   </div>
 </template>
 
@@ -23,7 +26,7 @@ import _ from 'lodash';
 @Component({
   pageStore:{
     myObject:{
-      //direction:'read', //read / write / both  - default:both
+      direction:'both', //read / write / both  - default:both
       path:'pageObject', // a path of store. default:the same as key
       deep:true, //an option of watch
       //immediate:true, //an option of watch
@@ -46,6 +49,14 @@ import _ from 'lodash';
       //   console.log('onBeforeReceive for pageCounter in child-with-options1', val, oldVal, options);
       // },
     },
+    pageBoolean: {
+      onBeforeSend: function(val:any, oldVal:any, options:{proceed:boolean}) {
+        console.log('onBeforeSend for pageBoolean in child-with-options1', val, oldVal, options);
+      },
+      onBeforeReceive: function(val:any, oldVal:any, options:{proceed:boolean}) {
+        console.log('onBeforeReceive for pageBoolean in child-with-options1', val, oldVal, options);
+      },
+    },
   },
   // watch: {
   //   'myObject.strValue1' : function (newVal : any, oldVal: any) {
@@ -58,6 +69,8 @@ export default class extends Vue {
   private myObject: any = {strValue1:"8888",strValue2:"44444"};
 
   private myCounter:number = 5;
+
+  private pageBoolean = true;
 
   get title() {
       return 'child-with-options component 1';
