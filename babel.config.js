@@ -12,6 +12,15 @@ const buildPresets = [
   ],
   '@babel/preset-typescript',
 ];
+const plugins = [
+  [
+    require('@babel/plugin-proposal-decorators').default,
+    {
+       legacy: true
+    }
+  ]
+];
 module.exports = {
   presets: (process.env.NODE_ENV === 'development' ? devPresets : buildPresets),
+  plugins
 };

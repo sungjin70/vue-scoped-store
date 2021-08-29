@@ -30,6 +30,17 @@
             "scripthost"
         ]
     },
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "src/**/*.vue",
+        "dev/**/*.ts",
+        "dev/**/*.tsx",
+        "dev/**/*.vue",
+        "tests/**/*.ts",
+        "tests/**/*.tsx",
+        "/*.d.ts"
+    ],
     "exclude": [
         "node_modules",
         "dist"
