@@ -37,7 +37,9 @@ Vue.use(ScopedStore);
 
 #### 웝어플리케이션 전역범위 공유
 
-@GlobalStore 데코레이터를 이용해 변수를 어플레케이션 전역에서 공유하는 예입니다.
+@GlobalStore 데코레이터를 이용해 변수값을 어플레케이션 전역에서 공유하는 예입니다.
+<br />
+다음 예에서 페이지 뷰(page1.vue)와 그 안에 포합된 컴포넌트(page1.vue)는 동일한 이름의 변수(hellowWorld)를 각각 가기고 있습니다.
 
 `page1.vue`
 
