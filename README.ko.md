@@ -37,33 +37,61 @@ Vue.use(ScopedStore);
 
 #### 웝어플리케이션 전역범위 공유
 
-``` js
-// provide Rx observables with the `subscriptions` option
-new Vue({
-  el: '#app',
-  subscriptions: {
-    msg: messageObservable
-  }
-})
-```
-
-``` html
-<!-- bind to it normally in templates -->
-<div>{{ msg }}</div>
-```
-
-The `subscriptions` options can also take a function so that you can return unique observables for each component instance:
+`page1.vue`
 
 ``` js
-import { Observable } from 'rxjs'
+<template>
+  <div class="home">
+    <h2>Welcome to the Scoped Store!</h2>
+    <input v-model="hellowWorld" style="width:350px" />
+    <br />
+    <HelloWorldGlobalStore />
+  </div>
+</template>
 
-Vue.component('foo', {
-  subscriptions: function () {
-    return {
-      msg: new Observable(...)
-    }
-  }
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import HelloWorldGlobalStore from '@/components/HelloWorldGlobalStore.vue';
+import { GlobalStore } from 'vue-scoped-store';
+
+@Component({
+  components: {
+    HelloWorldGlobalStore,
+  },
 })
+export default class Home extends Vue {
+  @GlobalStore()
+  private hellowWorld = '';  
+}
+</script>
+```
+
+
+`HelloWorldGlobalStore.vue`
+
+``` js
+<template>
+  <div class="hello">
+    <h3>HelloWorldGlobalStore.vue</h3>
+    <p>
+      The message that you see below is shared using a @GlobalStore decorator.
+      <br />
+      The message will persist even if you navigate other pages around.
+    </p>
+    <h2>{{ hellowWorld }}</h2>
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { GlobalStore } from 'vue-scoped-store';
+
+@Component
+export default class extends Vue {
+  @GlobalStore()
+  private hellowWorld = '';
+}
+</script>
 ```
 
 
