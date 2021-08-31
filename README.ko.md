@@ -112,7 +112,7 @@ export default class extends Vue {
 
 https://user-images.githubusercontent.com/86173989/131511985-44353feb-cb0d-487d-9f8a-7eb294eb7cd1.mp4
 
-
+아직까지는 이 데모영상이 어떻게 동작하는지 완전히 이해하기 어렵습니다. 따라오는 설명을 보시고 전체 소스를 확인해보시기 바랍니다.
 
 
 #### 화면범위 공유
