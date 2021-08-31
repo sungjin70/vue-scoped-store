@@ -33,7 +33,9 @@ Vue.use(ScopedStore);
 ```
 
 
-### Usage
+### 기본 사용방법
+
+#### 웝어플리케이션 전역범위 공유
 
 ``` js
 // provide Rx observables with the `subscriptions` option
@@ -63,3 +65,8 @@ Vue.component('foo', {
   }
 })
 ```
+
+
+#### 화면범위 공유
+
+
