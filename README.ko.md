@@ -67,6 +67,12 @@ Vue.component('foo', {
 ```
 
 
+
+https://user-images.githubusercontent.com/86173989/131511985-44353feb-cb0d-487d-9f8a-7eb294eb7cd1.mp4
+
+
+
+
 #### 화면범위 공유
 
 
