@@ -37,12 +37,19 @@ Vue.use(ScopedStore);
 
 #### 웝어플리케이션 전역범위 공유
 
+@GlobalStore 데코레이터를 이용해 변수를 어플레케이션 전역에서 공유하는 예입니다.
+
 `page1.vue`
 
 ``` js
 <template>
   <div class="home">
     <h2>Welcome to the Scoped Store!</h2>
+    <!-- 
+    사용자의 입력에 의해 hellowWorld값이 변경될 때
+    다른 페이지나 컴포넌트의 같은 이름의 모든 변수 값이 
+    함께 변경됩니다.
+    -->
     <input v-model="hellowWorld" style="width:350px" />
     <br />
     <HelloWorldGlobalStore />
@@ -60,6 +67,8 @@ import { GlobalStore } from 'vue-scoped-store';
   },
 })
 export default class Home extends Vue {
+  // @GlobalStore를 적용하면 
+  // hellowWorld 변수는 어플리케이션 전역에서 공유됩니다.
   @GlobalStore()
   private hellowWorld = '';  
 }
@@ -88,13 +97,16 @@ import { GlobalStore } from 'vue-scoped-store';
 
 @Component
 export default class extends Vue {
+  // 이 컴포넌트 안의 hellowWorld변수 값은
+  // page1.vue의 hellowWorld변수값과 동기화 됩니다.
   @GlobalStore()
   private hellowWorld = '';
 }
 </script>
 ```
 
-
+단지 @GlobalStore 데코레이션을 변수에 적용했습니다.
+이 동영상을 통해 @GlobalStore를 변수에 적용하면 어떤 효과가 나타나는지 확인해보시기 바랍니다.
 
 https://user-images.githubusercontent.com/86173989/131511985-44353feb-cb0d-487d-9f8a-7eb294eb7cd1.mp4
 
