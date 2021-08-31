@@ -3,12 +3,15 @@
 [English](README.md) | 한글
 
 vue-scoped-store는 Vue어플리케이션에서 컴포넌트 및 페이지 간에 쉽게 상태관리를 할 수 있도록 하는 라이브러리입니다.
+<br />
 이 라이브러리를 [Vuex](https://vuex.vuejs.org)처럼 상태를 공유하기위한 라이브러리라고 생각하면 되지만, Vuex를 사용하려면 알아야하는 다소 복잡한 패턴을 이해하지 않아도 되도록 고안되었습니다.
+<br />
 하지만 vue-scoped-store가 Vuex의 모든 기능을 대체하지는 않습니다. vue-scoped-store의 목표는 컴포넌트 또는 페이지 간에 상태를 공유하는 쉬운 방법을 제공하는 것입니다.
+<br />
 vue-scoped-store는 Vue의 data옵션에 선언된 변수들을 여러 컴포넌트에서 공유할 수 있도록 하는 방법을 제공합니다.
 
 
-### Installation
+### 설치
 
 ``` bash
 npm install vue-scoped-store --save
