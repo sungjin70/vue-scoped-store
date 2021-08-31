@@ -39,7 +39,7 @@ Vue.use(ScopedStore);
 
 @GlobalStore 데코레이터를 이용해 변수값을 어플레케이션 전역에서 공유하는 예입니다.
 <br />
-다음 예에서 페이지 뷰(page1.vue)와 그 안에 포합된 컴포넌트(page1.vue)는 동일한 이름의 변수(hellowWorld)를 각각 가기고 있습니다.
+다음 예에서 페이지 뷰(page1.vue)와 그 안에 포함된 컴포넌트(page1.vue)는 동일한 이름의 변수(hellowWorld)를 각각 소유하고 있습니다.
 
 `page1.vue`
 
@@ -107,8 +107,8 @@ export default class extends Vue {
 </script>
 ```
 
-단지 @GlobalStore 데코레이션을 변수에 적용했습니다.
-이 동영상을 통해 @GlobalStore를 변수에 적용하면 어떤 효과가 나타나는지 확인해보시기 바랍니다.
+일반적이 Vue개발에서 달라진 것은 단지 @GlobalStore 데코레이션을 변수에 hellowWorld 적용한 것 뿐입니다.
+이 동영상을 통해 @GlobalStore를 변수에 적용했을 때 어떤 효과가 나타나는지 확인해보시기 바랍니다.
 
 https://user-images.githubusercontent.com/86173989/131511985-44353feb-cb0d-487d-9f8a-7eb294eb7cd1.mp4
 
