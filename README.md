@@ -5,7 +5,7 @@ English | [한글](README.ko.md)
 A simpler way to share data between components in vue application.
 
 <br />
-#### [This document is being translated into English.]
+#### This document is being translated into English.
 <br />
 <br />
 
