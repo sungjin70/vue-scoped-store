@@ -4,9 +4,9 @@
 
 vue-scoped-store는 Vue어플리케이션에서 컴포넌트 및 페이지 사이에서 쉽게 상태관리를 할 수 있는 라이브러리입니다.
 <br />
-이 라이브러리를 [Vuex](https://vuex.vuejs.org)와 비슷한 상태를 공유 라이브러리라고 보면 이해하기쉽지만, Vuex를 사용하려면 알아야하는 다소 복잡한 패턴을 이해하지 않아도 되도록 고안되었습니다.
+이 라이브러리를 [Vuex](https://vuex.vuejs.org)와 비슷하게 상태 공유 라이브러리라고 보면 이해하기쉽지만, Vuex를 사용하려면 알아야하는 다소 복잡한 패턴을 이해하지 않고 상태공유를 할 수 있도록 고안되었습니다.
 <br />
-vue-scoped-store가 Vuex의 모든 기능을 대체하지는 않지만 많은 시나리오에서 이 라이브러리만으로 데이터 공유문제를 해결 할 수 있습니다. 
+vue-scoped-store가 Vuex의 모든 기능을 대체하지는 않지만 많은 시나리오에서 이 라이브러리만으로 데이터 상태공유문제를 해결 할 수 있습니다. 
 vue-scoped-store의 목표는 컴포넌트 또는 페이지 간에 상태를 공유하는 쉬운 방법을 제공하는 것입니다.
 <br />
 vue-scoped-store는 Vue의 data옵션에 선언된 변수들의 값을 여러 컴포넌트에서 동기화할 수 있는 단순한 방법을 제공합니다.
@@ -36,6 +36,8 @@ Vue.use(ScopedStore);
     ],
 ```
 
+<br />
+<br />
 
 ### 기본 사용방법
 
@@ -43,7 +45,8 @@ Vue.use(ScopedStore);
 
 @GlobalStore 데코레이터를 이용해 변수값을 어플레케이션 전역에서 공유하는 예입니다.
 <br />
-다음 예에서 페이지 뷰(page1.vue)와 그 안에 포함된 컴포넌트(GlobalStore.vue)는 동일한 이름의 변수(hellowWorld)를 각각 소유하고 있습니다.
+다음 예에서 페이지 뷰(GlobalStore.vue)와 그 안에 포함된 컴포넌트(GlobalStore.vue)는 동일한 이름의 변수(hellowWorld)를 각각 소유하고 있습니다.
+각 컴포넌트에 포함된 hellowWorld 변수의 값을 동기화 하는 방법이 얼마나 간단한지 확인 해 보십시요.
 
 `GlobalStore.vue`
 
@@ -113,7 +116,7 @@ export default class extends Vue {
 
 @GlobalStore으로 데코레이팅된 컴포넌트들에 포함된 동일한 이름의 모든 변수들은 동일한 값을 가집니다.
 @GlobalStore가 달린 변수 중 하나의 값이 변경되면 그 변경된 값은 변수들사이에서 공유됩니다.
-이렇게 설정된 값은 화면 이동을 하더라도 보존됩니다.
+이렇게 설정된 값은 화면 이동을 하더라도 변수안에 보존됩니다.
 이 동영상을 통해 @GlobalStore를 변수에 데코레이팅되면 얼마나 쉽게 변수 값이 변수들간에 동기화 되는지 확인해보시기 바랍니다.
 
 https://user-images.githubusercontent.com/86173989/131511985-44353feb-cb0d-487d-9f8a-7eb294eb7cd1.mp4
@@ -147,7 +150,7 @@ export default class Home extends Vue {
 ```
 
 데모영상을 통해 @GlobalStore가 무슨일을 하는지 어느정도 이해가 되시겠지만, 아직 @PageStore가 뭔지 궁금하실 겁니다. 이제 화면범위 공유에 대해 섬명할 차례입니다.
-
+<br />
 
 #### 화면범위 공유
 
