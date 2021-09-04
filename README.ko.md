@@ -12,6 +12,10 @@ vue-scoped-store의 목표는 컴포넌트 또는 페이지 간에 상태를 공
 vue-scoped-store는 Vue의 data옵션에 선언된 변수들의 값을 여러 컴포넌트에서 동기화할 수 있는 단순한 방법을 제공합니다.
 
 
+## 문서 작업중..
+현재 이 문서는 작업 중에 있습니다. 부족한 점이 보여도 이해 부탁드립니다.
+
+
 ### 설치
 
 ``` bash
@@ -121,6 +125,8 @@ export default class extends Vue {
 
 https://user-images.githubusercontent.com/86173989/131511985-44353feb-cb0d-487d-9f8a-7eb294eb7cd1.mp4
 
+[CodeSandbox에서 대모 실행해보기](https://codesandbox.io/s/github/sungjin70/scoped-store-basic-demo)
+<br />
 첫회면에서 설정한 값이 About.vue로 화면 이동한 후에도 보존되는 것을 확인 할 수 있습니다.
 
 `About.vue`
@@ -149,7 +155,7 @@ export default class Home extends Vue {
 </script>
 ```
 
-데모영상을 통해 @GlobalStore가 무슨일을 하는지 어느정도 이해가 되시겠지만, 아직 @PageStore가 뭔지 궁금하실 겁니다. 이제 화면범위 공유에 대해 섬명할 차례입니다.
+데모영상을 통해 @GlobalStore가 무슨일을 하는지 어느정도 이해가 되시겠지만, 아직 @PageStore가 뭔지 궁금하실 겁니다. 이제 화면범위 공유에 대해 알아야할 차례입니다.
 <br />
 
 #### 화면범위 공유
@@ -250,5 +256,10 @@ export default class extends Vue {
 
 vue-scoped-store의 특징들을 나열하면 다음과 같습니다.
 
+....
 
 더 자세한 내용은 Wiki를 확인하시기 바랍니다.
+
+
+
+
