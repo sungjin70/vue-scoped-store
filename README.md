@@ -128,6 +128,14 @@ export default class extends Vue {
 
 https://user-images.githubusercontent.com/86173989/131511985-44353feb-cb0d-487d-9f8a-7eb294eb7cd1.mp4
 
+<iframe src="https://codesandbox.io/embed/github/sungjin70/scoped-store-basic-demo/tree/master/?fontsize=14&hidenavigation=1&theme=dark"
+     style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+     title="scoped-store-basic"
+     allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+     sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+   >
+</iframe>
+
 첫회면에서 설정한 값이 About.vue로 화면 이동한 후에도 보존되는 것을 확인 할 수 있습니다.
 
 `About.vue`
