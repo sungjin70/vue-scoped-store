@@ -9,6 +9,12 @@ A simpler way to share data between components in vue application.
 <br />
 <br />
 
+## 문서 작업중..
+현재 이 문서는 작업 중에 있습니다. 부족한 점이 보여도 이해 부탁드립니다.
+
+
+### Introduction to vue-scoped-store
+
 vue-scoped-store는 Vue어플리케이션에서 컴포넌트 및 페이지 사이에서 쉽게 상태관리를 할 수 있는 라이브러리입니다.
 <br />
 이 라이브러리를 [Vuex](https://vuex.vuejs.org)와 비슷하게 상태 공유 라이브러리라고 보면 이해하기쉽지만, Vuex를 사용하려면 알아야하는 다소 복잡한 패턴을 이해하지 않고 상태공유를 할 수 있도록 고안되었습니다.
@@ -128,6 +134,8 @@ export default class extends Vue {
 
 https://user-images.githubusercontent.com/86173989/131511985-44353feb-cb0d-487d-9f8a-7eb294eb7cd1.mp4
 
+[Running this demo in CodeSandbox](https://codesandbox.io/s/github/sungjin70/scoped-store-basic-demo)
+<br />
 
 첫회면에서 설정한 값이 About.vue로 화면 이동한 후에도 보존되는 것을 확인 할 수 있습니다.
 
@@ -157,7 +165,7 @@ export default class Home extends Vue {
 </script>
 ```
 
-데모영상을 통해 @GlobalStore가 무슨일을 하는지 어느정도 이해가 되시겠지만, 아직 @PageStore가 뭔지 궁금하실 겁니다. 이제 화면범위 공유에 대해 섬명할 차례입니다.
+데모영상을 통해 @GlobalStore가 무슨일을 하는지 어느정도 이해가 되시겠지만, 아직 @PageStore가 뭔지 궁금하실 겁니다. 이제 화면범위 공유에 대해 설명할 차례입니다.
 <br />
 
 #### 화면범위 공유
