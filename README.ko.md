@@ -260,6 +260,6 @@ vue-scoped-store의 특징들을 나열하면 다음과 같습니다.
 
 더 자세한 내용은 Wiki를 확인하시기 바랍니다.
 
-
+https://github.com/sungjin70/vue-scoped-store/wiki
 
 

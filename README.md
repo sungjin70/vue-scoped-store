@@ -264,3 +264,5 @@ export default class extends Vue {
 지금까지는 vue-scoped-store의 아주 일부 기능을 보여 드렸습니다.
 <br />
 더 자세한 내용은 Wiki를 확인하시기 바랍니다.
+
+https://github.com/sungjin70/vue-scoped-store/wiki
