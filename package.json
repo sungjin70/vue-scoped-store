@@ -15,12 +15,19 @@
   ],
   "files": [
     "dist/*",
-    "vue-scoped-store.d.ts",
-    "src/**/*.vue"
+    "vue-scoped-store.d.ts"
   ],
   "sideEffects": false,
-  "author": "sungjin70",
+  "author": "sungjin cho",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sungjin70/vue-scoped-store.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sungjin70/vue-scoped-store/issues"
+  },
+  "homepage": "https://github.com/sungjin70/vue-scoped-store#readme",
   "scripts": {
     "serve": "vue-cli-service serve dev/serve.ts",
     "build": "cross-env NODE_ENV=production rollup --config build/rollup.config.js",
@@ -30,7 +37,10 @@
   },
   "dependencies": {
     "@babel/plugin-proposal-decorators": "^7.14.5",
-    "lodash": "^4.17.21",
+    "lodash.clonedeep": "^4.5.0",
+    "lodash.get": "^4.4.2",
+    "lodash.isequal": "^4.5.0",
+    "lodash.set": "^4.3.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^5.5.12",
     "vue-class-component": "^7.2.6",

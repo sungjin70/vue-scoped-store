@@ -239,12 +239,16 @@ export default class extends Vue {
 </script>
 ```
 
-전역 범위의 변수 관리 때는 필요 없었던 @AsPage가 페이지 범위 변수 관리에는 필요 합니다.
-@AsPage는 컴포넌트 안에 선언해 주면 vue-scoped-store가 그 컴포넌트가 소멸되는 시점에 공유된 변수들의 데이터도 삭제합니다.
+전역 범위의 변수 관리 때는 필요 없었던 @AsPage가 페이지 범위에는 필요합니다.
+@AsPage가 있는 컴포넌트는 vue-scoped-store가 그 컴포넌트가 페이지임을 알게 해주고 컴포넌트가 소멸되는 시점에 공유된 변수들의 데이터도 함께 삭제합니다.
 
 
 #### vue-scoped-store Wiki
 
 지금까지는 vue-scoped-store의 아주 일부 기능을 보여 드렸습니다.
 <br />
+
+vue-scoped-store의 특징들을 나열하면 다음과 같습니다.
+
+
 더 자세한 내용은 Wiki를 확인하시기 바랍니다.

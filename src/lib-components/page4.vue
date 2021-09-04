@@ -87,7 +87,6 @@
 <script lang='ts'>
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import _ from 'lodash';
 import child5 from './components/child-with-options5.vue';
 import child6 from './components/child-with-options6.vue';
 import child7 from './components/child-with-options7.vue';
@@ -107,11 +106,7 @@ import {
     child6,
     child7,
     child8,
-  },
-  // pageStore:{
-  //   isPage:true,
-  // },
-
+  }
 })
 export default class extends Vue {
   @PageStore({deep:true})
@@ -183,13 +178,6 @@ export default class extends Vue {
       }
     };
   }
-
-  updateByDeepCopy(path: string, value: any) {
-    let clone = _.cloneDeep(this.pageObject);
-    _.set(clone, path, value);
-    this.pageObject = clone;
-  }
-
 
 }
 </script>
