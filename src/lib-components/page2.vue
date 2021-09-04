@@ -79,7 +79,7 @@
 <script lang='ts'>
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import _ from 'lodash';
+// import _ from 'lodash';
 import child1 from './components/child-with-api1.vue';
 import child2 from './components/child-with-api2.vue';
 import child3 from './components/child-with-api3.vue';

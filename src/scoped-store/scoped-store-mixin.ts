@@ -1,6 +1,9 @@
 import Component from 'vue-class-component';
 import Vue from 'vue';
-import _ from 'lodash';
+//import _ from 'lodash';
+import isEqual from 'lodash.isequal';
+import cloneDeep from 'lodash.clonedeep';
+import get from 'lodash.get';
 
 import {AnyTypeStoreService, StringTypeCommand} from "./core/any-type-store-service";
 import {scopedStoreManager} from "./scoped-store-manager";
@@ -126,8 +129,8 @@ export default class ScopedStoreComponent extends Vue {
         // let recentlySent = {}; // to prevent feedback
         const onBeforeSend = (val:any, oldVal:any) : any => {
             // console.log('const onBeforeSend = (val:any, oldVal:any)', 
-            //      val, oldVal,recentlyRecevied,_.isEqual(recentlyRecevied, val));
-            if (!_.isEqual(recentlyRecevied, val)) {
+            //      val, oldVal,recentlyRecevied,isEqual(recentlyRecevied, val));
+            if (!isEqual(recentlyRecevied, val)) {
                 let sendData = opt.direction !== 'read';
                 if (onBeforeSendCallback) {
                     const callbackOpt = {proceed:true, key:args.key, path:args.storeKey};
@@ -203,7 +206,7 @@ export default class ScopedStoreComponent extends Vue {
                         // vm[key] = recentlyRecevied = data;
                         args.vm[args.key] = data;
 
-                    recentlyRecevied = _.cloneDeep(args.vm[args.key]);
+                    recentlyRecevied = cloneDeep(args.vm[args.key]);
                     // console.log('data updated with received one', vm[key]);
                     if (onReceived) {
                         onReceived(args.vm[args.key]);
@@ -242,7 +245,7 @@ export default class ScopedStoreComponent extends Vue {
                     try {
                         if (updater.identity === this.senderIdentity)
                             return;
-                        const filtered = _.get(payload, storePath);
+                        const filtered = get(payload, storePath);
                         // console.log('setPageDataCallback => received:', payload, storePath, filtered);
                         if (filtered !== undefined)
                             callback(filtered, updater);
@@ -277,7 +280,7 @@ export default class ScopedStoreComponent extends Vue {
                     try {
                         if (updater.identity === this.senderIdentity)
                             return;
-                        const filtered = _.get(payload, storePath);
+                        const filtered = get(payload, storePath);
                         // console.log('setPageDataCallback => received:', payload, storePath, filtered);
                         if (filtered !== undefined)
                             callback(filtered, updater);

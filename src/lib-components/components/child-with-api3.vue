@@ -10,7 +10,7 @@
 <script lang='ts'>
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import _ from 'lodash';
+import set from 'lodash.set';
 
 @Component({
   watch: {
@@ -30,9 +30,7 @@ export default class extends Vue {
   created() {
     console.log('created')
     this.$setPageDataCallback((data:any) => {
-      // this.myObject = _.get(data, 'nestedObj.nestedStrVal1');
-      // this.myObject = data;
-      _.set(this.myObject,'nestedObj.nestedStrVal1',data);
+      set(this.myObject,'nestedObj.nestedStrVal1',data);
       console.log('child-with-api3.vue : $setPageDataCallback', data, this.myObject);
     }, 'pageObject.nestedObj.nestedStrVal1');
   }

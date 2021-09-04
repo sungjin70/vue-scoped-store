@@ -14,7 +14,6 @@
 <script lang='ts'>
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import _ from 'lodash';
 
 @Component({
   watch: {
@@ -42,7 +41,6 @@ export default class extends Vue {
     console.log('created')
     this.$setPageDataCallback((data:any) => {
       console.log('child1.vue : $setPageDataCallback', data);
-      // this.myObject = _.get(data, 'nestedObj.nestedStrVal1');
       this.myObject = data;
     }, 'pageObject');
 

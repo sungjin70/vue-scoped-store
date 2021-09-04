@@ -1,6 +1,7 @@
 import {BaseStoreService} from './base-store-service';
 import { Observable } from 'rxjs';
-import _ from 'lodash';
+import clonedeep from 'lodash.clonedeep';
+import set from 'lodash.set';
 
 export interface AnyTypeState {
     updater:{};
@@ -47,7 +48,7 @@ export class AnyTypeStoreService extends BaseStoreService<AnyTypeState, StringTy
     // }
 
     public sendData(payload: any, sendOpt:{}, path?:string) {
-        let copy = _.cloneDeep(payload);
+        let copy = clonedeep(payload);
         // console.log('sendData (after cloneDeep)', payload, copy);
         let state:any;
         if (!path) {
@@ -70,7 +71,7 @@ export class AnyTypeStoreService extends BaseStoreService<AnyTypeState, StringTy
             if (!state.payload)
                 state.payload = {};
 
-            _.set(state.payload, path, copy);
+            set(state.payload, path, copy);
         }
 
         setTimeout(() => {
