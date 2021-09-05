@@ -3,7 +3,7 @@
 English | [한글](README.ko.md)
 
 
-The vue-scoped-store is a library for Vue application that allows easy state management between components and pages.
+vue-scoped-store is a library for Vue application that allows easy state management across components and pages.
 <br />
 The goal of the vue-scoped-store is to provide an easy way to share state, especially between components or pages.
 <br />
@@ -47,7 +47,7 @@ Vue.use(ScopedStore);
 
 ### Basic Usage
 
-As the purpose of the vue-scoped-store is to make it easy for Vue developers to use state-sharing, this library dose not require learning any new concepts to use.
+As the purpose of the vue-scoped-store is to make it easy for Vue developers to use state-sharing, this library does not require learning any new concepts to use.
 <br />
 With only a few simple example codes, You can understand how this library works and how to use it.
 
@@ -261,7 +261,7 @@ export default class extends Vue {
 
   /*
   There's no @AsPage here 
-  since this component not a page.
+  since this component is not a page.
   */
 }
 </script>
