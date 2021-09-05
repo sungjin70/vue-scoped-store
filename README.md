@@ -2,36 +2,26 @@
 
 English | [한글](README.ko.md)
 
-A simpler way to share data between components in vue application.
 
+The vue-scoped-store is a library for Vue application that allows easy state management between components and pages.
 <br />
-#### This document is being translated into English.
+The goal of the vue-scoped-store is to provide an easy way to share state, especially between components or pages.
+vue-scoped-store provides some simple and easy ways to synchronize the values of variables declared in Vue's data option property across multiple components.
 <br />
+
+You can think of this library as [Vuex](https://vuex.vuejs.org) to make it easier to understand the concept.
+But this library is designed to help you share states without understanding a somewhat complex patterns you need to know to use Vuex.
+This library, Of course, does not replace all of Vuex's features, but in many scenarios, this library can solve the state sharing problem.
 <br />
 
-## 문서 작업중..
-현재 이 문서는 작업 중에 있습니다. 부족한 점이 보여도 이해 부탁드립니다.
 
-
-### Introduction to vue-scoped-store
-
-vue-scoped-store는 Vue어플리케이션에서 컴포넌트 및 페이지 사이에서 쉽게 상태관리를 할 수 있는 라이브러리입니다.
-<br />
-이 라이브러리를 [Vuex](https://vuex.vuejs.org)와 비슷하게 상태 공유 라이브러리라고 보면 이해하기쉽지만, Vuex를 사용하려면 알아야하는 다소 복잡한 패턴을 이해하지 않고 상태공유를 할 수 있도록 고안되었습니다.
-<br />
-vue-scoped-store가 Vuex의 모든 기능을 대체하지는 않지만 많은 시나리오에서 이 라이브러리만으로 데이터 상태공유문제를 해결 할 수 있습니다. 
-vue-scoped-store의 목표는 컴포넌트 또는 페이지 간에 상태를 공유하는 쉬운 방법을 제공하는 것입니다.
-<br />
-vue-scoped-store는 Vue의 data옵션에 선언된 변수들의 값을 여러 컴포넌트에서 동기화할 수 있는 단순한 방법을 제공합니다.
-
-
-### 설치
+### Installation
 
 ``` bash
 npm install vue-scoped-store --save
 ```
 
-``` js
+``` ts
 import Vue from 'vue'
 import ScopedStore from "vue-scoped-store";
 
@@ -52,14 +42,18 @@ Vue.use(ScopedStore);
 <br />
 <br />
 
-### 기본 사용방법
+### Basic Usage
 
-#### Vue 어플리케이션 전역범위 공유
+As the purpose of the vue-scoped-store is to make it easy for Vue developers to use state-sharing, this library dose not require learning any new concepts to use.
+With only a few simple example codes, You can understand how this library works and how to use it.
 
-@GlobalStore 데코레이터를 이용해 변수값을 어플레케이션 전역에서 공유하는 예입니다.
+
+#### Sharing across global scope using @GlobalStore
+
+This is an example of using the @GlobalStore decorator to share values of variable in component's data property across components.
 <br />
-다음 예에서 페이지 뷰(GlobalStore.vue)와 그 안에 포함된 컴포넌트(GlobalStore.vue)는 동일한 이름의 변수(hellowWorld)를 각각 소유하고 있습니다.
-각 컴포넌트에 포함된 hellowWorld 변수의 값을 동기화 하는 방법이 얼마나 간단한지 확인 해 보십시요.
+`GlobalStore.vue`, which is a component that functions as a page view, and a component contained in it, which is called `HelloWorldGlobalStore.vue`, each have a variable with the same name that named helloWorld.
+See how simple it is to synchronize the values of the helloWorld variables included in each component.
 
 `GlobalStore.vue`
 
@@ -68,9 +62,9 @@ Vue.use(ScopedStore);
   <div class="home">
     <h2>Welcome to the Scoped Store!</h2>
     <!-- 
-    사용자의 입력에 의해 hellowWorld값이 변경될 때
-    다른 페이지나 컴포넌트의 같은 이름의 모든 변수 값이 
-    함께 변경됩니다.
+    Whenever the helloWorld value is changed by the user's input, 
+    all variables with the same name on other pages or components 
+    will be changed at the same time.
     -->
     <input v-model="hellowWorld" style="width:350px" />
     <br />
@@ -89,8 +83,8 @@ import { GlobalStore } from 'vue-scoped-store';
   },
 })
 export default class Home extends Vue {
-  // @GlobalStore를 변수에 달아주면 
-  // 이 변수는 어플리케이션 전역에서 공유됩니다.
+  // If you attach @GlobalStore to a variable, 
+  // the value of the variable is shared across components
   @GlobalStore()
   private hellowWorld = '';  
 }
@@ -119,25 +113,30 @@ import { GlobalStore } from 'vue-scoped-store';
 
 @Component
 export default class extends Vue {
-  // 이 컴포넌트 안의 hellowWorld변수 값은
-  // GlobalStore.vue의 hellowWorld변수값과 동기화 됩니다.
+  // The value of the helloWorld variable in this component is synchronized 
+  // with the value of the helloWorld variable in the GlobalStore.
   @GlobalStore()
   private hellowWorld = '';
 }
 </script>
 ```
 
-@GlobalStore으로 데코레이팅된 컴포넌트들에 포함된 동일한 이름의 모든 변수들은 동일한 값을 가집니다.
-@GlobalStore가 달린 변수 중 하나의 값이 변경되면 그 변경된 값은 변수들사이에서 공유됩니다.
-이렇게 설정된 값은 화면 이동을 하더라도 변수안에 보존됩니다.
-이 동영상을 통해 @GlobalStore를 변수에 데코레이팅되면 얼마나 쉽게 변수 값이 변수들간에 동기화 되는지 확인해보시기 바랍니다.
+Once decorated with @GlobalStore, all variables with the same name in components get synchronized to have the same value.
+If one of the variables with @GlobalStore changes, the changed value will be shared among the other variables.
+These values are preserved within the variable even if you navigate to another page.
+
+> Although technically inaccurate, any variables which have 
+> the same name with @GlobalStore can be thought as one variable.
+
+Please watch this video to see how easy it is to synchronize variable values using @GlobalStore.
 
 https://user-images.githubusercontent.com/86173989/131511985-44353feb-cb0d-487d-9f8a-7eb294eb7cd1.mp4
 
 [Running this demo in CodeSandbox](https://codesandbox.io/s/github/sungjin70/scoped-store-basic-demo)
 <br />
 
-첫회면에서 설정한 값이 About.vue로 화면 이동한 후에도 보존되는 것을 확인 할 수 있습니다.
+In this video, you may have noticed that the value set on the first page is preserved after moving to About.vue.
+Here is the source code for About.vue.
 
 `About.vue`
 ``` js
@@ -165,19 +164,19 @@ export default class Home extends Vue {
 </script>
 ```
 
-데모영상을 통해 @GlobalStore가 무슨일을 하는지 어느정도 이해가 되시겠지만, 아직 @PageStore가 뭔지 궁금하실 겁니다. 이제 화면범위 공유에 대해 설명할 차례입니다.
+Now, you understand what @GlobalStore is doing through the demo video and the source codes that you've seen, but you may still be wondering what @PageStore is. Now it's time to talk about what is page scope.
 <br />
 
-#### 화면범위 공유
+#### Sharing across page scope using @PageStore
 
-@PageStore 데코레이터 역시 @GlobalStore와 같이 변수의 값을 공유하도록 해줍니다.
-@GlobalStore와 차이점은 사용자가 페이지 이동을 했을 때 변수들에 저장된 값이 사라진 다는 것입니다.
-즉, @PageStore를 이용해 저장된 변수들의 수명은 페이지 컴포넌트의 수명과 같습니다.
-페이지 이동 후 변수 값이 자동으로 초기화되는 @PageStore의 이런한 특징은 많은 웹 개발 시나리오에 적합니다.
+The @PageStore Decorator also allows you to share any value of variables as the @GlobalStore does.
+But the difference from @GlobalStore is that the values stored in the variables vanish when the user moves the page to another.
+In other words, the lifetime of a value of a variable with @PageStore is equal to the lifetime of the page component.
+This feature in @PageStore, where variable values are automatically initialized after page movement, makes memory management easier in many web development scenarios.
 <br />
 <br />
 
-다음 소스를 위에서 보여드린 @GlobalStore를 사용한  소스와 비교해 봅시다.
+Here's an example of using @PageStore. please compare it to the @GlobalStore shown above.
 
 `PageStore.vue`
 
@@ -261,8 +260,9 @@ export default class extends Vue {
 
 #### vue-scoped-store Wiki
 
-지금까지는 vue-scoped-store의 아주 일부 기능을 보여 드렸습니다.
+What we've discussed so far is part of the vue-scoped-store.
 <br />
-더 자세한 내용은 Wiki를 확인하시기 바랍니다.
+Please consult [Wiki](https://github.com/sungjin70/vue-scoped-store/wiki) to learn vue-scoped-store further.
 
-https://github.com/sungjin70/vue-scoped-store/wiki
+
+
