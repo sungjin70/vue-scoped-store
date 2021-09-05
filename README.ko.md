@@ -18,7 +18,7 @@ vue-scoped-store가 Vuex의 모든 기능을 대체하지는 않지만 많은 �
 npm install vue-scoped-store --save
 ```
 
-``` js
+``` ts
 import Vue from 'vue'
 import ScopedStore from "vue-scoped-store";
 
@@ -54,7 +54,7 @@ vue-scoped-store의 목적이 Vue개발자라면 누구나 쉽게 상태공유 �
 
 `GlobalStore.vue`
 
-``` js
+``` html
 <template>
   <div class="home">
     <h2>Welcome to the Scoped Store!</h2>
@@ -91,7 +91,7 @@ export default class Home extends Vue {
 
 `HelloWorldGlobalStore.vue`
 
-``` js
+``` html
 <template>
   <div class="hello">
     <h3>HelloWorldGlobalStore.vue</h3>
@@ -135,7 +135,7 @@ https://user-images.githubusercontent.com/86173989/131511985-44353feb-cb0d-487d-
 About.vue의 소스코드입니다.
 
 `About.vue`
-``` js
+``` html
 <template>
   <div class="about">
     <h2>This is an about page</h2>
@@ -153,6 +153,8 @@ import { GlobalStore } from 'vue-scoped-store';
 
 @Component
 export default class Home extends Vue {
+  // 이 컴포넌트 안의 hellowWorld변수 값은
+  // GlobalStore.vue의 hellowWorld변수값과 동기화 됩니다.
   @GlobalStore()
   private hellowWorld = '';  
 
@@ -176,7 +178,7 @@ export default class Home extends Vue {
 
 `PageStore.vue`
 
-``` js
+``` html
 <template>
   <div class="home">
     <h2>Welcome to the Scoped Store!</h2>
@@ -218,7 +220,7 @@ export default class Home extends Vue {
 
 `HelloWorldPageStore.vue`
 
-``` js
+``` html
 <template>
   <div class="hello">
     <h3>HelloWorldPageStore.vue</h3>
@@ -258,11 +260,6 @@ export default class extends Vue {
 
 지금까지는 vue-scoped-store의 아주 일부 기능을 보여 드렸습니다.
 <br />
-
-vue-scoped-store의 특징들을 나열하면 다음과 같습니다.
-
-....
-
 더 자세한 내용은 Wiki를 확인하시기 바랍니다.
 
 https://github.com/sungjin70/vue-scoped-store/wiki
