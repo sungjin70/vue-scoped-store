@@ -126,12 +126,12 @@ export default class extends Vue {
 </script>
 ```
 
-Once decorated with @GlobalStore, all variables with the same name in components get synchronized to have the same value.
-If one of the variables with @GlobalStore changes, the changed value will be shared among the other variables.
+Once a variable is decorated with @GlobalStore, all variables named the same name in the component are synchronized to have the same value.
+If one of the variables with @GlobalStore changes, the change be propagated to the other variables that have the same name.
 These values are preserved within the variable even if you navigate to another page.
 
-> Although technically inaccurate, any variables which have the same name with @GlobalStore can be thought as one variable
-> in the sense that all these variables have the same values at any moment like a global variable does.
+> Although this is technically inaccurate, with @GlobalStore all variables which have the same name can be 
+> thought as very one variable in the sense that all these variables have the same values at any moment like a global variable does.
 
 Please watch this video to see how easy it is to synchronize variable values using @GlobalStore.
 
@@ -184,7 +184,7 @@ But the difference from @GlobalStore is that the values stored in the variables 
 <br />
 In other words, the lifetime of a value of a variable with @PageStore is equal to the lifetime of the page component.
 <br />
-This feature in @PageStore, where variable values are automatically initialized after page movement, makes memory management easier in many web development scenarios.
+With this way, where variable values are automatically initialized after page movement, it makes memory management easier in many web development scenarios.
 <br />
 Here's an example of using @PageStore. please compare it to the @GlobalStore shown above.
 
