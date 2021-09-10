@@ -5531,13 +5531,11 @@ class Observable {
     const {
       operator
     } = this;
-    const sink = toSubscriber(observerOrNext, error, complete); // console.log('subscribe called', observerOrNext, sink, operator);
+    const sink = toSubscriber(observerOrNext, error, complete);
 
     if (operator) {
-      console.log('operator.call(sink, this.source)', observerOrNext, sink, operator);
       operator.call(sink, this.source);
     } else {
-      console.log('sink.add((this.source as any) || this._trySubscribe(sink))', observerOrNext, sink, operator);
       sink.add(this.source || this._trySubscribe(sink));
     }
 
@@ -5548,7 +5546,6 @@ class Observable {
 
   _trySubscribe(sink) {
     try {
-      console.log('_trySubscribe(sink: Subscriber<T>) called', sink);
       return this._subscribe(sink);
     } catch (err) {
       sink.error(err);
@@ -5837,8 +5834,6 @@ class Subject extends Observable {
 
 
   _subscribe(subscriber) {
-    console.log('_subscribe(subscriber: Subscriber<T>):');
-
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     } else if (this.hasError) {
@@ -5848,7 +5843,6 @@ class Subject extends Observable {
       subscriber.complete();
       return Subscription.EMPTY;
     } else {
-      console.log('_subscribe(subscriber: Subscriber<T>): } else {');
       this.observers.push(subscriber);
       return new SubjectSubscription(this, subscriber);
     }
@@ -7379,41 +7373,6 @@ let ScopedStoreComponent = Component(_class = class ScopedStoreComponent extends
   }
 
   created() {
-    // console.log('ScopedStoreComponent.created()');
-    // const subject = new Subject<number>();
-    // subject.subscribe({
-    //     next: (v) => console.log(`observerA: ${v}`)
-    // });
-    // subject.subscribe({
-    //     next: (v) => console.log(`observerB: ${v}`)
-    // });
-    // subject.next(1);
-    // subject.next(2);
-    // subject.next(3);
-    const subject = new BehaviorSubject({
-      a: 0
-    }); // 0 is the initial value
-    // let a = subject.subscribe(({a}) => {
-    //     console.log(`observerA: ${a}`)
-    // })
-
-    subject.asObservable().subscribe(({
-      a
-    }) => console.log(`observerA: ${a}`));
-    subject.next({
-      a: 1
-    });
-    subject.next({
-      a: 2
-    });
-    subject.subscribe({
-      next: ({
-        a
-      }) => console.log(`observerB: ${a}`)
-    });
-    subject.next({
-      a: 3
-    });
     this.init();
   }
 
@@ -7437,7 +7396,6 @@ let ScopedStoreComponent = Component(_class = class ScopedStoreComponent extends
 
   init() {
     const vm = this;
-    console.log('ScopedStoreComponent.init()');
     let ps = vm.$options.pageStore;
 
     if (typeof ps === 'function') {
@@ -7753,7 +7711,6 @@ function sendPageData(data, path, sendOpt) {
 }
 function setPageDataCallback(callback, path) {
   const vm = this;
-  console.log('calling setPageDataCallback');
   vm.setPageDataCallback(callback, path);
 }
 function sendPageCommand(command, argument) {

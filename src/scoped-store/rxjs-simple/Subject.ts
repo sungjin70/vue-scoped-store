@@ -112,7 +112,6 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   /** @deprecated This is an internal implementation detail, do not use. */
   _subscribe(subscriber: Subscriber<T>): Subscription {
-    console.log('_subscribe(subscriber: Subscriber<T>):');
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     } else if (this.hasError) {
@@ -122,7 +121,6 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
       subscriber.complete();
       return Subscription.EMPTY;
     } else {
-      console.log('_subscribe(subscriber: Subscriber<T>): } else {');
       this.observers.push(subscriber);
       return new SubjectSubscription(this, subscriber);
     }

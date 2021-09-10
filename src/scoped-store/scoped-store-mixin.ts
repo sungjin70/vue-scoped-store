@@ -5,10 +5,10 @@ import isEqual from 'lodash.isequal';
 import cloneDeep from 'lodash.clonedeep';
 import get from 'lodash.get';
 
+import { Subscription } from './rxjs-simple';
+
 import {AnyTypeStoreService, StringTypeCommand} from "./core/any-type-store-service";
 import {scopedStoreManager} from "./scoped-store-manager";
-import { BehaviorSubject, Subject, Subscription } from './rxjs-simple';
-import { distinctUntilChanged, map } from './rxjs-simple/operators';
 
 export interface ScopedStore {
 }
@@ -36,37 +36,6 @@ export default class ScopedStoreComponent extends Vue {
     private pageDataService!:any;
 
     created() {
-        // console.log('ScopedStoreComponent.created()');
-
-        // const subject = new Subject<number>();
- 
-        // subject.subscribe({
-        //     next: (v) => console.log(`observerA: ${v}`)
-        // });
-        // subject.subscribe({
-        //     next: (v) => console.log(`observerB: ${v}`)
-        // });
-        
-        // subject.next(1);
-        // subject.next(2);
-        // subject.next(3);
-
-        const subject = new BehaviorSubject({a:0}); // 0 is the initial value
- 
-        // let a = subject.subscribe(({a}) => {
-        //     console.log(`observerA: ${a}`)
-        // })
-
-        subject.asObservable().subscribe( ({a}) => console.log(`observerA: ${a}`))
-         
-        subject.next({a:1});
-        subject.next({a:2});
-         
-        let b = subject.subscribe({
-          next: ({a}) => console.log(`observerB: ${a}`)
-        });
-         
-        subject.next({a:3});
 
         this.init();
     }
@@ -90,8 +59,6 @@ export default class ScopedStoreComponent extends Vue {
 
     private init() {
         const vm = this as any;
-
-        console.log('ScopedStoreComponent.init()');
 
         let ps = vm.$options.pageStore;
         if (typeof ps === 'function') {

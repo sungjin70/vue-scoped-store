@@ -5727,13 +5727,11 @@ var Observable = /*#__PURE__*/function () {
     key: "subscribe",
     value: function subscribe(observerOrNext, error, complete) {
       var operator = this.operator;
-      var sink = toSubscriber(observerOrNext, error, complete); // console.log('subscribe called', observerOrNext, sink, operator);
+      var sink = toSubscriber(observerOrNext, error, complete);
 
       if (operator) {
-        console.log('operator.call(sink, this.source)', observerOrNext, sink, operator);
         operator.call(sink, this.source);
       } else {
-        console.log('sink.add((this.source as any) || this._trySubscribe(sink))', observerOrNext, sink, operator);
         sink.add(this.source || this._trySubscribe(sink));
       }
 
@@ -5745,7 +5743,6 @@ var Observable = /*#__PURE__*/function () {
     key: "_trySubscribe",
     value: function _trySubscribe(sink) {
       try {
-        console.log('_trySubscribe(sink: Subscriber<T>) called', sink);
         return this._subscribe(sink);
       } catch (err) {
         sink.error(err);
@@ -6085,8 +6082,6 @@ var Subject = /*#__PURE__*/function (_Observable) {
   }, {
     key: "_subscribe",
     value: function _subscribe(subscriber) {
-      console.log('_subscribe(subscriber: Subscriber<T>):');
-
       if (this.closed) {
         throw new ObjectUnsubscribedError();
       } else if (this.hasError) {
@@ -6096,7 +6091,6 @@ var Subject = /*#__PURE__*/function (_Observable) {
         subscriber.complete();
         return Subscription.EMPTY;
       } else {
-        console.log('_subscribe(subscriber: Subscriber<T>): } else {');
         this.observers.push(subscriber);
         return new SubjectSubscription(this, subscriber);
       }
@@ -7715,43 +7709,6 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
   _createClass(ScopedStoreComponent, [{
     key: "created",
     value: function created() {
-      // console.log('ScopedStoreComponent.created()');
-      // const subject = new Subject<number>();
-      // subject.subscribe({
-      //     next: (v) => console.log(`observerA: ${v}`)
-      // });
-      // subject.subscribe({
-      //     next: (v) => console.log(`observerB: ${v}`)
-      // });
-      // subject.next(1);
-      // subject.next(2);
-      // subject.next(3);
-      var subject = new BehaviorSubject({
-        a: 0
-      }); // 0 is the initial value
-      // let a = subject.subscribe(({a}) => {
-      //     console.log(`observerA: ${a}`)
-      // })
-
-      subject.asObservable().subscribe(function (_ref) {
-        var a = _ref.a;
-        return console.log("observerA: ".concat(a));
-      });
-      subject.next({
-        a: 1
-      });
-      subject.next({
-        a: 2
-      });
-      subject.subscribe({
-        next: function next(_ref2) {
-          var a = _ref2.a;
-          return console.log("observerB: ".concat(a));
-        }
-      });
-      subject.next({
-        a: 3
-      });
       this.init();
     }
   }, {
@@ -7779,7 +7736,6 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
       var _this2 = this;
 
       var vm = this;
-      console.log('ScopedStoreComponent.init()');
       var ps = vm.$options.pageStore;
 
       if (typeof ps === 'function') {
@@ -7987,9 +7943,9 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
       var service = this.dataTranManager.findOfCreateGlobalService(this.globalDataServiceKey);
 
       if (service) {
-        this.subscriptionsForGlobal.push(service.$state.subscribe(function (_ref3) {
-          var payload = _ref3.payload,
-              updater = _ref3.updater;
+        this.subscriptionsForGlobal.push(service.$state.subscribe(function (_ref) {
+          var payload = _ref.payload,
+              updater = _ref.updater;
 
           try {
             if (updater.identity === _this3.senderIdentity) return;
@@ -8023,9 +7979,9 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
       // this.initPageDataService();
       if (this.dataTranManager.pageDataService) {
         // this.dataTranManager.pageDataService.$state.subscribe(state => {
-        var sub = this.dataTranManager.pageDataService.$state.subscribe(function (_ref4) {
-          var payload = _ref4.payload,
-              updater = _ref4.updater;
+        var sub = this.dataTranManager.pageDataService.$state.subscribe(function (_ref2) {
+          var payload = _ref2.payload,
+              updater = _ref2.updater;
 
           try {
             if (updater.identity === _this4.senderIdentity) return;
@@ -8109,7 +8065,6 @@ function setGlobalCommandCallback(key, callback) {
 }
 function setPageDataCallback(callback, path) {
   var vm = this;
-  console.log('calling setPageDataCallback');
   vm.setPageDataCallback(callback, path);
 }
 function sendPageCommand(command, argument) {
