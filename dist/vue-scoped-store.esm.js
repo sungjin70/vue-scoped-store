@@ -7711,7 +7711,6 @@ function sendPageData(data, path, sendOpt) {
 }
 function setPageDataCallback(callback, path) {
   const vm = this;
-  console.log('calling setPageDataCallback');
   vm.setPageDataCallback(callback, path);
 }
 function sendPageCommand(command, argument) {

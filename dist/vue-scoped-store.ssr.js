@@ -8065,7 +8065,6 @@ function setGlobalCommandCallback(key, callback) {
 }
 function setPageDataCallback(callback, path) {
   var vm = this;
-  console.log('calling setPageDataCallback');
   vm.setPageDataCallback(callback, path);
 }
 function sendPageCommand(command, argument) {
