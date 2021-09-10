@@ -36,37 +36,6 @@ export default class ScopedStoreComponent extends Vue {
     private pageDataService!:any;
 
     created() {
-        // console.log('ScopedStoreComponent.created()');
-
-        // const subject = new Subject<number>();
- 
-        // subject.subscribe({
-        //     next: (v) => console.log(`observerA: ${v}`)
-        // });
-        // subject.subscribe({
-        //     next: (v) => console.log(`observerB: ${v}`)
-        // });
-        
-        // subject.next(1);
-        // subject.next(2);
-        // subject.next(3);
-
-        const subject = new BehaviorSubject({a:0}); // 0 is the initial value
- 
-        // let a = subject.subscribe(({a}) => {
-        //     console.log(`observerA: ${a}`)
-        // })
-
-        subject.asObservable().subscribe( ({a}) => console.log(`observerA: ${a}`))
-         
-        subject.next({a:1});
-        subject.next({a:2});
-         
-        let b = subject.subscribe({
-          next: ({a}) => console.log(`observerB: ${a}`)
-        });
-         
-        subject.next({a:3});
 
         this.init();
     }

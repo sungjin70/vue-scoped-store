@@ -7715,43 +7715,6 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
   _createClass(ScopedStoreComponent, [{
     key: "created",
     value: function created() {
-      // console.log('ScopedStoreComponent.created()');
-      // const subject = new Subject<number>();
-      // subject.subscribe({
-      //     next: (v) => console.log(`observerA: ${v}`)
-      // });
-      // subject.subscribe({
-      //     next: (v) => console.log(`observerB: ${v}`)
-      // });
-      // subject.next(1);
-      // subject.next(2);
-      // subject.next(3);
-      var subject = new BehaviorSubject({
-        a: 0
-      }); // 0 is the initial value
-      // let a = subject.subscribe(({a}) => {
-      //     console.log(`observerA: ${a}`)
-      // })
-
-      subject.asObservable().subscribe(function (_ref) {
-        var a = _ref.a;
-        return console.log("observerA: ".concat(a));
-      });
-      subject.next({
-        a: 1
-      });
-      subject.next({
-        a: 2
-      });
-      subject.subscribe({
-        next: function next(_ref2) {
-          var a = _ref2.a;
-          return console.log("observerB: ".concat(a));
-        }
-      });
-      subject.next({
-        a: 3
-      });
       this.init();
     }
   }, {
@@ -7987,9 +7950,9 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
       var service = this.dataTranManager.findOfCreateGlobalService(this.globalDataServiceKey);
 
       if (service) {
-        this.subscriptionsForGlobal.push(service.$state.subscribe(function (_ref3) {
-          var payload = _ref3.payload,
-              updater = _ref3.updater;
+        this.subscriptionsForGlobal.push(service.$state.subscribe(function (_ref) {
+          var payload = _ref.payload,
+              updater = _ref.updater;
 
           try {
             if (updater.identity === _this3.senderIdentity) return;
@@ -8023,9 +7986,9 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
       // this.initPageDataService();
       if (this.dataTranManager.pageDataService) {
         // this.dataTranManager.pageDataService.$state.subscribe(state => {
-        var sub = this.dataTranManager.pageDataService.$state.subscribe(function (_ref4) {
-          var payload = _ref4.payload,
-              updater = _ref4.updater;
+        var sub = this.dataTranManager.pageDataService.$state.subscribe(function (_ref2) {
+          var payload = _ref2.payload,
+              updater = _ref2.updater;
 
           try {
             if (updater.identity === _this4.senderIdentity) return;
