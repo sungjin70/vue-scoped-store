@@ -5531,13 +5531,11 @@ class Observable {
     const {
       operator
     } = this;
-    const sink = toSubscriber(observerOrNext, error, complete); // console.log('subscribe called', observerOrNext, sink, operator);
+    const sink = toSubscriber(observerOrNext, error, complete);
 
     if (operator) {
-      console.log('operator.call(sink, this.source)', observerOrNext, sink, operator);
       operator.call(sink, this.source);
     } else {
-      console.log('sink.add((this.source as any) || this._trySubscribe(sink))', observerOrNext, sink, operator);
       sink.add(this.source || this._trySubscribe(sink));
     }
 
@@ -5548,7 +5546,6 @@ class Observable {
 
   _trySubscribe(sink) {
     try {
-      console.log('_trySubscribe(sink: Subscriber<T>) called', sink);
       return this._subscribe(sink);
     } catch (err) {
       sink.error(err);
@@ -5837,8 +5834,6 @@ class Subject extends Observable {
 
 
   _subscribe(subscriber) {
-    console.log('_subscribe(subscriber: Subscriber<T>):');
-
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     } else if (this.hasError) {
@@ -5848,7 +5843,6 @@ class Subject extends Observable {
       subscriber.complete();
       return Subscription.EMPTY;
     } else {
-      console.log('_subscribe(subscriber: Subscriber<T>): } else {');
       this.observers.push(subscriber);
       return new SubjectSubscription(this, subscriber);
     }
@@ -7402,7 +7396,6 @@ let ScopedStoreComponent = Component(_class = class ScopedStoreComponent extends
 
   init() {
     const vm = this;
-    console.log('ScopedStoreComponent.init()');
     let ps = vm.$options.pageStore;
 
     if (typeof ps === 'function') {

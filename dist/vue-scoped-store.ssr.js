@@ -5727,13 +5727,11 @@ var Observable = /*#__PURE__*/function () {
     key: "subscribe",
     value: function subscribe(observerOrNext, error, complete) {
       var operator = this.operator;
-      var sink = toSubscriber(observerOrNext, error, complete); // console.log('subscribe called', observerOrNext, sink, operator);
+      var sink = toSubscriber(observerOrNext, error, complete);
 
       if (operator) {
-        console.log('operator.call(sink, this.source)', observerOrNext, sink, operator);
         operator.call(sink, this.source);
       } else {
-        console.log('sink.add((this.source as any) || this._trySubscribe(sink))', observerOrNext, sink, operator);
         sink.add(this.source || this._trySubscribe(sink));
       }
 
@@ -5745,7 +5743,6 @@ var Observable = /*#__PURE__*/function () {
     key: "_trySubscribe",
     value: function _trySubscribe(sink) {
       try {
-        console.log('_trySubscribe(sink: Subscriber<T>) called', sink);
         return this._subscribe(sink);
       } catch (err) {
         sink.error(err);
@@ -6085,8 +6082,6 @@ var Subject = /*#__PURE__*/function (_Observable) {
   }, {
     key: "_subscribe",
     value: function _subscribe(subscriber) {
-      console.log('_subscribe(subscriber: Subscriber<T>):');
-
       if (this.closed) {
         throw new ObjectUnsubscribedError();
       } else if (this.hasError) {
@@ -6096,7 +6091,6 @@ var Subject = /*#__PURE__*/function (_Observable) {
         subscriber.complete();
         return Subscription.EMPTY;
       } else {
-        console.log('_subscribe(subscriber: Subscriber<T>): } else {');
         this.observers.push(subscriber);
         return new SubjectSubscription(this, subscriber);
       }
@@ -7742,7 +7736,6 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
       var _this2 = this;
 
       var vm = this;
-      console.log('ScopedStoreComponent.init()');
       var ps = vm.$options.pageStore;
 
       if (typeof ps === 'function') {
