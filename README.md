@@ -1,32 +1,31 @@
-# vue-scoped-store
+# ScopedStore
 
 English | [한글](README.ko.md)
 
 
-vue-scoped-store is a library for Vue application that allows easy state management across components and pages.
+ScopedStore is a library for Vue application that allows easy state management across components and pages.
 <br />
-The goal of the vue-scoped-store is to provide an easy way to share state, especially between components or pages.
+The goal of the ScopedStore is to provide an easy way to share state, especially between components or pages.
 <br />
-vue-scoped-store provides some simple and easy ways to synchronize the values of variables declared in Vue's data option property across multiple components.
+ScopedStore provides some simple and easy ways to synchronize the values of variables declared in Vue's data option property across multiple components.
 <br />
-
-You can think of this library as [Vuex](https://vuex.vuejs.org) to make it easier to understand the concept.
+You can think of this library as [Vuex](https://vuex.vuejs.org) in some ways to make it easier to understand the concept. 
 <br />
-But this library is designed to help you share states without understanding a somewhat complex patterns you need to know to use Vuex.
+However, this library is designed to help you share states without understanding the somewhat complex patterns that you have to know when you use Vuex.
 <br />
-This library, Of course, does not replace all of Vuex's features, but in many scenarios, this library can solve the state sharing problem.
+This library, of course, does not replace all parts of Vuex, but in many scenarios, this library can solve the state sharing problem.
 <br />
 
 
 ### Installation
 
 ``` bash
-npm install vue-scoped-store --save
+npm install vue-store --save
 ```
 
 ``` ts
 import Vue from 'vue'
-import ScopedStore from "vue-scoped-store";
+import ScopedStore from "vue-store";
 
 Vue.use(ScopedStore);
 ```
@@ -38,7 +37,7 @@ Vue.use(ScopedStore);
 ``` ts
     "types": [
       ...
-      "node_modules/vue-scoped-store/vue-scoped-store.d.ts"
+      "node_modules/vue-store/vue-store.d.ts"
     ],
 ```
 
@@ -47,7 +46,7 @@ Vue.use(ScopedStore);
 
 ### Basic Usage
 
-As the purpose of the vue-scoped-store is to make it easy for Vue developers to use state-sharing, this library does not require learning any new concepts to use.
+As the purpose of the ScopedStore is to make it easy for Vue developers to use state-sharing, this library does not require learning any new concepts to use.
 <br />
 With only a few simple example codes, You can understand how this library works and how to use it.
 
@@ -80,7 +79,7 @@ See how simple it is to synchronize the values of the helloWorld variables inclu
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import HelloWorldGlobalStore from '@/components/HelloWorldGlobalStore.vue';
-import { GlobalStore } from 'vue-scoped-store';
+import { GlobalStore } from 'vue-store';
 
 @Component({
   components: {
@@ -114,7 +113,7 @@ export default class Home extends Vue {
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { GlobalStore } from 'vue-scoped-store';
+import { GlobalStore } from 'vue-store';
 
 @Component
 export default class extends Vue {
@@ -127,11 +126,11 @@ export default class extends Vue {
 ```
 
 Once a variable is decorated with @GlobalStore, all variables named the same name in the component are synchronized to have the same value.
-If one of the variables with @GlobalStore changes, the change be propagated to the other variables that have the same name.
+If one of the variables with @GlobalStore changes, the change be populated to the other variables that have the same name.
 These values are preserved within the variable even if you navigate to another page.
 
-> Although this is technically inaccurate, with @GlobalStore all variables which have the same name can be 
-> thought as very one variable in the sense that all these variables have the same values at any moment like a global variable does.
+> Although this is technically inaccurate, with @GlobalStore, all variables which have the same name can be 
+> thought of as only one variable. All of these variables have the same values at any moment like a global variable does.
 
 Please watch this video to see how easy it is to synchronize variable values using @GlobalStore.
 
@@ -158,7 +157,7 @@ This is exactly what you input on the first page.
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { GlobalStore } from 'vue-scoped-store';
+import { GlobalStore } from 'vue-store';
 
 @Component
 export default class Home extends Vue {
@@ -203,7 +202,7 @@ Here's an example of using @PageStore. please compare it to the @GlobalStore sho
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import HelloWorldPageStore from '@/components/HelloWorldPageStore.vue'; // @ is an alias to /src
-import { PageStore, AsPage } from 'vue-scoped-store';
+import { PageStore, AsPage } from 'vue-store';
 
 @Component({
   components: {
@@ -218,8 +217,8 @@ export default class Home extends Vue {
   @PageStore()
   private hellowWorld = '';
 
-  // @AsPage is something that let vue-scoped-store know that this component is a page. 
-  // so that vue-scoped-store can destroy all variables which belong to this page 
+  // @AsPage is something that let ScopedStore know that this component is a page. 
+  // so that ScopedStore can destroy all variables which belong to this page 
   // when the page is about to destroy.
   @AsPage()
   private isPage = true;
@@ -249,7 +248,7 @@ export default class Home extends Vue {
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { PageStore } from 'vue-scoped-store';
+import { PageStore } from 'vue-store';
 
 @Component
 export default class extends Vue {
@@ -269,13 +268,11 @@ export default class extends Vue {
 
 @AsPage, which was not required in @GlobalStore, is required to manage page scope variables.
 <br />
-If you declare @AsPage in a component, then vue-scoped-store know that this component is a page and delete the value of the shared variables too when the component is destroyed.
+If you declare @AsPage in a component, then ScopedStore knows that this component is a page and deletes the value of the shared variables when the component is destroyed.
 
-#### vue-scoped-store Wiki
+#### ScopedStore Wiki
 
-What we've discussed so far is part of the vue-scoped-store.
+What we've discussed so far is part of the ScopedStore.
 <br />
-Please consult [Wiki](https://github.com/sungjin70/vue-scoped-store/wiki) to learn vue-scoped-store further.
-
-
+Please consult [Wiki](https://github.com/sungjin70/vue-scoped-store/wiki) to learn ScopedStore further.
 

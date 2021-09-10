@@ -1,5 +1,5 @@
 import {BaseStoreService} from './base-store-service';
-import { Observable } from 'rxjs';
+import { Observable } from '../rxjs-simple';
 import clonedeep from 'lodash.clonedeep';
 import set from 'lodash.set';
 
