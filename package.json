@@ -1,6 +1,6 @@
 {
   "name": "vueStore",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "description": "A library to share states among components and/or pages for Vue",
   "main": "dist/vue-scoped-store.ssr.js",
   "browser": "dist/vue-scoped-store.esm.js",
