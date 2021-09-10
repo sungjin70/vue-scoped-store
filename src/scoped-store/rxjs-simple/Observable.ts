@@ -73,13 +73,9 @@ export class Observable<T> implements Subscribable<T> {
     const {operator} = this
     const sink = toSubscriber(observerOrNext, error, complete)
 
-    // console.log('subscribe called', observerOrNext, sink, operator);
-
     if (operator) {
-      console.log('operator.call(sink, this.source)', observerOrNext, sink, operator);
       operator.call(sink, this.source)
     } else {
-      console.log('sink.add((this.source as any) || this._trySubscribe(sink))', observerOrNext, sink, operator);
       sink.add((this.source as any) || this._trySubscribe(sink))
     }
 
@@ -89,7 +85,6 @@ export class Observable<T> implements Subscribable<T> {
   /** @deprecated This is an internal implementation detail, do not use. */
   _trySubscribe(sink: Subscriber<T>): TeardownLogic {
     try {
-      console.log('_trySubscribe(sink: Subscriber<T>) called', sink);
       return this._subscribe(sink)
     } catch (err) {
       sink.error(err)

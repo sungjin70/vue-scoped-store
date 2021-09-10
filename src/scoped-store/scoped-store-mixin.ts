@@ -5,10 +5,10 @@ import isEqual from 'lodash.isequal';
 import cloneDeep from 'lodash.clonedeep';
 import get from 'lodash.get';
 
+import { Subscription } from './rxjs-simple';
+
 import {AnyTypeStoreService, StringTypeCommand} from "./core/any-type-store-service";
 import {scopedStoreManager} from "./scoped-store-manager";
-import { BehaviorSubject, Subject, Subscription } from './rxjs-simple';
-import { distinctUntilChanged, map } from './rxjs-simple/operators';
 
 export interface ScopedStore {
 }
@@ -59,8 +59,6 @@ export default class ScopedStoreComponent extends Vue {
 
     private init() {
         const vm = this as any;
-
-        console.log('ScopedStoreComponent.init()');
 
         let ps = vm.$options.pageStore;
         if (typeof ps === 'function') {
