@@ -1,26 +1,26 @@
-# vue-scoped-store
+# ScopedStore
 
 [English](README.md) | 한글
 
-vue-scoped-store는 Vue어플리케이션에서 컴포넌트 및 페이지 사이에서 쉽게 상태관리를 할 수 있는 라이브러리입니다.
+ScopedStore는 Vue어플리케이션에서 컴포넌트 및 페이지 사이에서 쉽게 상태관리를 할 수 있는 라이브러리입니다.
 <br />
-vue-scoped-store의 목표는 컴포넌트 또는 페이지 간에 상태를 공유하는 쉬운 방법을 제공하는 것입니다.
+ScopedStore의 목표는 컴포넌트 또는 페이지 간에 상태를 공유하는 쉬운 방법을 제공하는 것입니다.
 <br />
-vue-scoped-store는 Vue의 data옵션에 선언된 변수들의 값을 여러 컴포넌트에서 동기화할 수 있는 단순한 방법을 제공합니다.
+ScopedStore는 Vue의 data옵션에 선언된 변수들의 값을 여러 컴포넌트에서 동기화할 수 있는 단순한 방법을 제공합니다.
 <br />
 이 라이브러리를 [Vuex](https://vuex.vuejs.org)와 비슷하게 상태 공유 라이브러리라고 보면 이해하기쉽지만, Vuex를 사용하려면 알아야하는 다소 복잡한 패턴을 이해하지 않고 상태공유를 할 수 있도록 고안되었습니다.
-vue-scoped-store가 Vuex의 모든 기능을 대체하지는 않지만 많은 시나리오에서 이 라이브러리로 데이터 상태공유문제를 해결 할 수 있습니다. 
+ScopedStore가 Vuex의 모든 기능을 대체하지는 않지만 많은 시나리오에서 이 라이브러리로 데이터 상태공유문제를 해결 할 수 있습니다. 
 
 
 ### 설치
 
 ``` bash
-npm install vue-scoped-store --save
+npm install vue-store --save
 ```
 
 ``` ts
 import Vue from 'vue'
-import ScopedStore from "vue-scoped-store";
+import ScopedStore from "vue-store";
 
 Vue.use(ScopedStore);
 ```
@@ -32,7 +32,7 @@ Vue.use(ScopedStore);
 ``` ts
     "types": [
       ...
-      "node_modules/vue-scoped-store/vue-scoped-store.d.ts"
+      "node_modules/vue-store/vue-store.d.ts"
     ],
 ```
 
@@ -41,7 +41,7 @@ Vue.use(ScopedStore);
 
 ### 기본 사용방법
 
-vue-scoped-store의 목적이 Vue개발자라면 누구나 쉽게 상태공유 기능을 사용 할 수 있도록 하는 것이기 때문에 이 라이브로리를 사용하기 위해 새로 이해해야할 개념이 거의 없습니다.
+ScopedStore의 목적이 Vue개발자라면 누구나 쉽게 상태공유 기능을 사용 할 수 있도록 하는 것이기 때문에 이 라이브로리를 사용하기 위해 새로 이해해야할 개념이 거의 없습니다.
 여러분은 단순한 예제코드만으로 이 라이브러리가 어떻게 동작하는지 이해 할 수 있습니다.
 
 
@@ -72,7 +72,7 @@ vue-scoped-store의 목적이 Vue개발자라면 누구나 쉽게 상태공유 �
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import HelloWorldGlobalStore from '@/components/HelloWorldGlobalStore.vue';
-import { GlobalStore } from 'vue-scoped-store';
+import { GlobalStore } from 'vue-store';
 
 @Component({
   components: {
@@ -106,7 +106,7 @@ export default class Home extends Vue {
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { GlobalStore } from 'vue-scoped-store';
+import { GlobalStore } from 'vue-store';
 
 @Component
 export default class extends Vue {
@@ -149,7 +149,7 @@ This is exactly what you input on the first page.
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { GlobalStore } from 'vue-scoped-store';
+import { GlobalStore } from 'vue-store';
 
 @Component
 export default class Home extends Vue {
@@ -191,7 +191,7 @@ export default class Home extends Vue {
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import HelloWorldPageStore from '@/components/HelloWorldPageStore.vue'; // @ is an alias to /src
-import { PageStore, AsPage } from 'vue-scoped-store';
+import { PageStore, AsPage } from 'vue-store';
 
 @Component({
   components: {
@@ -235,7 +235,7 @@ export default class Home extends Vue {
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { PageStore } from 'vue-scoped-store';
+import { PageStore } from 'vue-store';
 
 @Component
 export default class extends Vue {
@@ -253,12 +253,12 @@ export default class extends Vue {
 ```
 
 전역 범위의 변수 관리 때는 필요 없었던 @AsPage가 페이지 범위에는 필요합니다.
-@AsPage가 있는 컴포넌트는 vue-scoped-store가 그 컴포넌트가 페이지임을 알게 해주고 컴포넌트가 소멸되는 시점에 공유된 변수들의 데이터도 함께 삭제합니다.
+@AsPage가 있는 컴포넌트는 ScopedStore가 그 컴포넌트가 페이지임을 알게 해주고 컴포넌트가 소멸되는 시점에 공유된 변수들의 데이터도 함께 삭제합니다.
 
 
-#### vue-scoped-store Wiki
+#### ScopedStore Wiki
 
-지금까지는 vue-scoped-store의 아주 일부 기능을 보여 드렸습니다.
+지금까지는 ScopedStore의 아주 일부 기능을 보여 드렸습니다.
 <br />
 더 자세한 내용은 Wiki를 확인하시기 바랍니다.
 

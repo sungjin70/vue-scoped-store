@@ -7,7 +7,8 @@ import get from 'lodash.get';
 
 import {AnyTypeStoreService, StringTypeCommand} from "./core/any-type-store-service";
 import {scopedStoreManager} from "./scoped-store-manager";
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subject, Subscription } from './rxjs-simple';
+import { distinctUntilChanged, map } from './rxjs-simple/operators';
 
 export interface ScopedStore {
 }
@@ -36,6 +37,37 @@ export default class ScopedStoreComponent extends Vue {
 
     created() {
         // console.log('ScopedStoreComponent.created()');
+
+        // const subject = new Subject<number>();
+ 
+        // subject.subscribe({
+        //     next: (v) => console.log(`observerA: ${v}`)
+        // });
+        // subject.subscribe({
+        //     next: (v) => console.log(`observerB: ${v}`)
+        // });
+        
+        // subject.next(1);
+        // subject.next(2);
+        // subject.next(3);
+
+        const subject = new BehaviorSubject({a:0}); // 0 is the initial value
+ 
+        // let a = subject.subscribe(({a}) => {
+        //     console.log(`observerA: ${a}`)
+        // })
+
+        subject.asObservable().subscribe( ({a}) => console.log(`observerA: ${a}`))
+         
+        subject.next({a:1});
+        subject.next({a:2});
+         
+        let b = subject.subscribe({
+          next: ({a}) => console.log(`observerB: ${a}`)
+        });
+         
+        subject.next({a:3});
+
         this.init();
     }
 
@@ -59,7 +91,7 @@ export default class ScopedStoreComponent extends Vue {
     private init() {
         const vm = this as any;
 
-        // console.log('ScopedStoreComponent.init()');
+        console.log('ScopedStoreComponent.init()');
 
         let ps = vm.$options.pageStore;
         if (typeof ps === 'function') {
@@ -274,9 +306,8 @@ export default class ScopedStoreComponent extends Vue {
         // this.initPageDataService();
 
         if (this.dataTranManager.pageDataService) {
-            this.subscriptionsForPage.push(
-                // this.dataTranManager.pageDataService.$state.subscribe(state => {
-                this.dataTranManager.pageDataService.$state.subscribe(({payload,updater}) => {
+            // this.dataTranManager.pageDataService.$state.subscribe(state => {
+            let sub = this.dataTranManager.pageDataService.$state.subscribe(({payload,updater}) => {
                     try {
                         if (updater.identity === this.senderIdentity)
                             return;
@@ -288,7 +319,7 @@ export default class ScopedStoreComponent extends Vue {
                         console.warn('setPageDataCallback', e);
                     }
                 })
-            );
+            this.subscriptionsForPage.push(sub);
         }
     }
 

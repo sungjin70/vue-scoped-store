@@ -1,5 +1,5 @@
-import { BehaviorSubject, Subject, Observable } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { BehaviorSubject, Subject, Observable } from '../rxjs-simple';
+import { distinctUntilChanged, map } from '../rxjs-simple/operators';
 
 export const isPrimitive = (value: any): boolean => {
   const type = typeof value;
@@ -20,14 +20,16 @@ export class BaseStoreService<ST, CT> {
   }
 
   protected select<K>(mapFn: (state: ST) => K): Observable<K> {
-    return this.state$.asObservable().pipe(
+    // return this.state$.asObservable().pipe(
+    return this.state$.pipe(
       map((state: ST) => mapFn(state)),
       distinctUntilChanged()
     );
   }
 
   protected selectCommand<K>(mapFn: (state: CT) => K): Observable<K> {
-    return this.commandMapper$.asObservable().pipe(
+    // return this.commandMapper$.asObservable().pipe(
+      return this.commandMapper$.pipe(
       map((state: CT) => mapFn(state))
     );
   }
