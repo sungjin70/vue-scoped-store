@@ -5,7 +5,7 @@ import isEqual from 'lodash.isequal';
 import cloneDeep from 'lodash.clonedeep';
 import get from 'lodash.get';
 
-import { Subscription } from './rxjs-simple';
+import { Subscription, BehaviorSubject } from './rxjs-simple';
 
 import {AnyTypeStoreService, StringTypeCommand} from "./core/any-type-store-service";
 import {scopedStoreManager} from "./scoped-store-manager";
@@ -37,6 +37,21 @@ export default class ScopedStoreComponent extends Vue {
 
     created() {
 
+        // console.log(`created() mixin`);
+        // const subject = new BehaviorSubject(0); // 0 is the initial value
+    
+        // const obs = subject.asObservable();
+        // obs.subscribe({
+        //   next: (v) => console.log(`asObservable: ${v}`)
+        // });
+        
+        // // subject.subscribe({
+        // //   next: (v) => console.log(`observerB: ${v}`)
+        // // });
+
+        // subject.next(1);
+        // subject.next(2);
+        
         this.init();
     }
 

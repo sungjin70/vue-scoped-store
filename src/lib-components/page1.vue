@@ -179,6 +179,9 @@ export default Vue.extend(
           nestedNumberVal1:101,
         }
       };
+    },
+    created() {
+      consol.log('page1.vue created()');
     }
   }
 }

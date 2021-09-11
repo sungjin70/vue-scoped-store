@@ -10,6 +10,7 @@ import {Subscription} from './Subscription'
 import {observable as Symbol_observable} from './symbol/observable'
 import {pipeFromArray} from './util/pipe'
 import {toSubscriber} from './util/toSubscriber'
+import { Subject } from '.'
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
@@ -76,10 +77,32 @@ export class Observable<T> implements Subscribable<T> {
     if (operator) {
       operator.call(sink, this.source)
     } else {
-      sink.add((this.source as any) || this._trySubscribe(sink))
+
+      let tl:TeardownLogic;
+      if (this.source && !this.canAddObserver(this.source)) {
+        tl = function() {};
+      }
+      else {
+        tl = this._trySubscribe(sink);
+      }
+        
+      sink.add(tl);
+
+      // sink.add((this.source as any) || this._trySubscribe(sink))
+
+      //sink._addParentTeardownLogic((this.source as any) || this._trySubscribe(sink))
+
     }
 
     return sink
+  }
+
+  canAddObserver(source:Subscribable<any>) {
+    if (source instanceof Subject) {
+      return source.observers.findIndex(e=> e == source) === -1;
+    }
+    else 
+      return false;
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */

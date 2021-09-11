@@ -6,7 +6,7 @@ import Component from 'vue-class-component';
 export default class extends Vue {
 
  created() {
-   console.log('index.vue created()');
+  //  console.log('index.vue created()');
  }
 }
 </script>

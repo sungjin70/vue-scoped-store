@@ -27,10 +27,10 @@ import Component from 'vue-class-component';
       deep:true, //an option of watch
       //immediate:true, //an option of watch
       onBeforeSend: function(val:any, oldVal:any, options:{proceed:boolean}) {
-        console.log('onBeforeSend for pageObject in child-with-options1', val, oldVal, options);
+        console.log('onBeforeSend for pageObject in child-with-options5', val, oldVal, options);
       },
       onBeforeReceive: function(val:any, oldVal:any, options:{proceed:boolean}) {
-        console.log('onBeforeReceive for pageObject in child-with-options1', val, oldVal, options);
+        console.log('onBeforeReceive for pageObject in child-with-options5', val, oldVal, options);
       },
     },
     myCounter:{
@@ -40,10 +40,10 @@ import Component from 'vue-class-component';
       //immediate:true, //an option of watch
       shareOnCreated:true,
       // onBeforeSend: function(val:any, oldVal:any, options:{proceed:boolean}) {
-      //   console.log('onBeforeSend for carCounter in child-with-options1', val, oldVal, options);
+      //   console.log('onBeforeSend for carCounter in child-with-options5', val, oldVal, options);
       // },
       // onBeforeReceive: function(val:any, oldVal:any, options:{proceed:boolean}) {
-      //   console.log('onBeforeReceive for carCounter in child-with-options1', val, oldVal, options);
+      //   console.log('onBeforeReceive for carCounter in child-with-options5', val, oldVal, options);
       // },
     },
   },
