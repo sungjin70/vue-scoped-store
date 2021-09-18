@@ -5732,10 +5732,28 @@ var Observable = /*#__PURE__*/function () {
       if (operator) {
         operator.call(sink, this.source);
       } else {
-        sink.add(this.source || this._trySubscribe(sink));
+        var tl;
+
+        if (this.source && !this.canAddObserver(this.source)) {
+          tl = function tl() {};
+        } else {
+          tl = this._trySubscribe(sink);
+        }
+
+        sink.add(tl); // sink.add((this.source as any) || this._trySubscribe(sink))
+        //sink._addParentTeardownLogic((this.source as any) || this._trySubscribe(sink))
       }
 
       return sink;
+    }
+  }, {
+    key: "canAddObserver",
+    value: function canAddObserver(source) {
+      if (source instanceof Subject) {
+        return source.observers.findIndex(function (e) {
+          return e == source;
+        }) === -1;
+      } else return false;
     }
     /** @deprecated This is an internal implementation detail, do not use. */
 
@@ -7709,6 +7727,17 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
   _createClass(ScopedStoreComponent, [{
     key: "created",
     value: function created() {
+      // console.log(`created() mixin`);
+      // const subject = new BehaviorSubject(0); // 0 is the initial value
+      // const obs = subject.asObservable();
+      // obs.subscribe({
+      //   next: (v) => console.log(`asObservable: ${v}`)
+      // });
+      // // subject.subscribe({
+      // //   next: (v) => console.log(`observerB: ${v}`)
+      // // });
+      // subject.next(1);
+      // subject.next(2);
       this.init();
     }
   }, {
@@ -7765,18 +7794,15 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
               isForPage: true
             };
 
-            _this2.setupStoreProperty(args);
+            _this2.setupStoreProperty(args); // if (opt.shareOnCreated) {
+            //     if (vm[key] !== undefined) {
+            //         args.recentlySent = vm.sendPageData(vm[key], storeKey,{key, path:storeKey});
+            //     }
+            //     else {
+            //         console.warn(`undefined cannot share so shareOnCreated will be ignored. [${key}]`);        
+            //     }
+            // }
 
-            if (opt.shareOnCreated) {
-              if (vm[key] !== undefined) {
-                args.recentlySent = vm.sendPageData(vm[key], storeKey, {
-                  key: key,
-                  path: storeKey
-                });
-              } else {
-                console.warn("undefined cannot share so shareOnCreated will be ignored. [".concat(key, "]"));
-              }
-            }
 
             _this2.pathMapForPage.set(key, opt);
           } else {
@@ -7805,7 +7831,15 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
               isForPage: false
             };
 
-            _this2.setupStoreProperty(args);
+            _this2.setupStoreProperty(args); // if (opt.shareOnCreated) {
+            //     if (vm[key] !== undefined) {
+            //         args.recentlySent = vm.sendGlobalData(vm[key], storeKey,{key, path:storeKey});
+            //     }
+            //     else {
+            //         console.warn(`undefined cannot share so shareOnCreated will be ignored. [${key}]`);        
+            //     }
+            // }
+
 
             _this2.pathMapForGlobal.set(key, opt);
           }
@@ -7885,7 +7919,7 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
             };
 
             try {
-              onBeforeReceive(data, args.vm[args.key], callbackOpt);
+              onBeforeReceive.call(args.vm, data, args.vm[args.key], callbackOpt);
               acceptData = callbackOpt.proceed;
             } catch (e) {
               console.warn(e);
@@ -7911,18 +7945,12 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
             recentlyRecevied = lodash_clonedeep(args.vm[args.key]); // console.log('data updated with received one', vm[key]);
 
             if (onReceived) {
-              onReceived(args.vm[args.key]);
+              onReceived.call(args.vm, args.vm[args.key]); // onReceived(args.vm[args.key]);
             }
           }
         }
       }, args.storeKey);
-    } // private initPageDataService() {
-    //     if (!this.dataTranManager.pageDataService) {
-    //         this.dataTranManager.pageDataService = new AnyTypeStoreService();
-    //         console.log("dataTranManager.pageDataService created");
-    //     }
-    // }
-
+    }
   }, {
     key: "sendGlobalData",
     value: function sendGlobalData(data, storePath, sendOpt) {
@@ -8161,11 +8189,11 @@ function GlobalStoreBeforeReceive(key) {
 }
 function GlobalStoreReceived(key) {
   return createDecorator(function (componentOptions, handler) {
-    componentOptions.pageStore = componentOptions.pageStore || Object.create(null);
-    var pageStore = componentOptions.pageStore;
-    var propOptions = pageStore[key] || {};
+    componentOptions.globalStore = componentOptions.globalStore || Object.create(null);
+    var globalStore = componentOptions.globalStore;
+    var propOptions = globalStore[key] || {};
     var originalMethod = componentOptions.methods[handler];
-    pageStore[key] = _objectSpread2(_objectSpread2({}, propOptions), {}, {
+    globalStore[key] = _objectSpread2(_objectSpread2({}, propOptions), {}, {
       onReceived: originalMethod
     }); // console.log('PageStoreonBeforeReceive.createDecorator',componentOptions,key,pageStore);
   });

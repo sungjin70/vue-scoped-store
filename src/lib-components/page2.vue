@@ -133,14 +133,13 @@ export default class extends Vue {
   }
 
   created() {
-    console.log('created : $sendPageData', this.pageObject);
+    // console.log('created : $sendPageData', this.pageObject);
     this.$sendPageData(this.pageObject, 'pageObject');
     this.$setPageDataCallback((data:any) => {
       console.log('page2.vue : $setPageDataCallback', data);
       this.pageObject = data;
     }, 'pageObject');
 
-    // this.$sendPageData(this.pageObject, 'pageObject');
     this.$setGlobalDataCallback((data:any) => {
       console.log('page2.vue : $setGlobalDataCallback', data);
       this.globalObject = data;

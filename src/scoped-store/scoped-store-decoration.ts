@@ -92,11 +92,11 @@ export function GlobalStoreBeforeReceive(key:string) {
 
 export function GlobalStoreReceived(key:string) {
   return createDecorator((componentOptions, handler) => {
-    componentOptions.pageStore = componentOptions.pageStore || Object.create(null);
-    const pageStore: any = componentOptions.pageStore;
-    const propOptions = pageStore[key] || {};
+    componentOptions.globalStore = componentOptions.globalStore || Object.create(null);
+    const globalStore: any = componentOptions.globalStore;
+    const propOptions = globalStore[key] || {};
     const originalMethod = componentOptions.methods[handler];
-    pageStore[key] = {...propOptions, onReceived:originalMethod};
+    globalStore[key] = {...propOptions, onReceived:originalMethod};
     // console.log('PageStoreonBeforeReceive.createDecorator',componentOptions,key,pageStore);
   })
 }

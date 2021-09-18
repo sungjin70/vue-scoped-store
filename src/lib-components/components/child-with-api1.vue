@@ -3,7 +3,7 @@
       <p><h2>{{title}}</h2></p>
     <span>myObject.strValue1 : </span>
     <br />
-    <input v-model="myObject.strValue1" />
+    <input v-model="pageObject_strValue1" />
     <br />
     <span>myCounter : </span>
     <br />
@@ -37,8 +37,23 @@ export default class extends Vue {
       return 'child-with-api1 1';
   }
 
+  get pageObject_strValue1() {
+    try {
+      return this.myObject.strValue1;
+    } catch (error) {
+      return "";
+    }
+  }
+
+  set pageObject_strValue1(value:string) {
+    try {
+      this.myObject.strValue1 = value;
+    } catch (error) {
+    }
+  }  
+
   created() {
-    console.log('created')
+    // console.log('created')
     this.$setPageDataCallback((data:any) => {
       console.log('child1.vue : $setPageDataCallback', data);
       this.myObject = data;

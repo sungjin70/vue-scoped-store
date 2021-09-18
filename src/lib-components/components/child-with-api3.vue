@@ -28,10 +28,10 @@ export default class extends Vue {
   }
 
   created() {
-    console.log('created')
+    // console.log('created')
     this.$setPageDataCallback((data:any) => {
       set(this.myObject,'nestedObj.nestedStrVal1',data);
-      console.log('child-with-api3.vue : $setPageDataCallback', data, this.myObject);
+      // console.log('child-with-api3.vue : $setPageDataCallback', data, this.myObject);
     }, 'pageObject.nestedObj.nestedStrVal1');
   }
 

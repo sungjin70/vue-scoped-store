@@ -32,9 +32,9 @@ import Component from 'vue-class-component';
       // onBeforeSend: function(val:any, oldVal:any, options:{proceed:boolean}) {
       //   console.log('onBeforeSend for pageObject in child-with-options1', val, oldVal, options);
       // },
-      // onBeforeReceive: function(val:any, oldVal:any, options:{proceed:boolean}) {
-      //   console.log('onBeforeReceive for pageObject in child-with-options1', val, oldVal, options);
-      // },
+      onBeforeReceive: function(val:any, oldVal:any, options:{proceed:boolean}) {
+        console.log('onBeforeReceive for pageObject in child-with-options1', val, oldVal, options);
+      },
     },
     myCounter:{
       //direction:'both', //read / write / both  - default:both
