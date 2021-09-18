@@ -4,12 +4,20 @@
     <span>nestedStrVal1 (path:pageObject.nestedObj.nestedStrVal1) : </span>
     <br />
     <input v-model="nestedStrVal1" />
+    <br />
+    <br />
+    <p>
+      <b>globalArray : </b>{{globalArray}} 
+    </p>
+    <button @click="updateGlobalArray()">update globalArray</button>
+    <button @click="addToGlobalArray()">Add Item to globalArray</button>
   </div>
 </template>
 
 <script lang='ts'>
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { GlobalStore } from '../../scoped-store/scoped-store-decoration';
 
 @Component({
   pageStore:{
@@ -31,8 +39,24 @@ export default class extends Vue {
 
   private nestedStrVal1:string = "nestedStrVal1 default";
 
+  @GlobalStore()
+  private globalArray = [];  
+
   get title() {
       return 'child-with-options component 7';
   }
+
+  updateGlobalArray() {
+    this.globalArray = [
+      {aa:'aa100', bb:'bb100'},
+      {aa:'aa200', bb:'bb200'},
+      {aa:'aa300', bb:'bb300'},
+      ];
+  }
+
+  addToGlobalArray() {
+    this.globalArray.push({aa:'aa400', bb:'bb400'});
+  }
+
 }
 </script>

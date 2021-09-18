@@ -5536,10 +5536,25 @@ class Observable {
     if (operator) {
       operator.call(sink, this.source);
     } else {
-      sink.add(this.source || this._trySubscribe(sink));
+      let tl;
+
+      if (this.source && !this.canAddObserver(this.source)) {
+        tl = function () {};
+      } else {
+        tl = this._trySubscribe(sink);
+      }
+
+      sink.add(tl); // sink.add((this.source as any) || this._trySubscribe(sink))
+      //sink._addParentTeardownLogic((this.source as any) || this._trySubscribe(sink))
     }
 
     return sink;
+  }
+
+  canAddObserver(source) {
+    if (source instanceof Subject) {
+      return source.observers.findIndex(e => e == source) === -1;
+    } else return false;
   }
   /** @deprecated This is an internal implementation detail, do not use. */
 
@@ -7373,6 +7388,17 @@ let ScopedStoreComponent = Component(_class = class ScopedStoreComponent extends
   }
 
   created() {
+    // console.log(`created() mixin`);
+    // const subject = new BehaviorSubject(0); // 0 is the initial value
+    // const obs = subject.asObservable();
+    // obs.subscribe({
+    //   next: (v) => console.log(`asObservable: ${v}`)
+    // });
+    // // subject.subscribe({
+    // //   next: (v) => console.log(`observerB: ${v}`)
+    // // });
+    // subject.next(1);
+    // subject.next(2);
     this.init();
   }
 
@@ -7424,18 +7450,14 @@ let ScopedStoreComponent = Component(_class = class ScopedStoreComponent extends
             storeKey,
             isForPage: true
           };
-          this.setupStoreProperty(args);
-
-          if (opt.shareOnCreated) {
-            if (vm[key] !== undefined) {
-              args.recentlySent = vm.sendPageData(vm[key], storeKey, {
-                key,
-                path: storeKey
-              });
-            } else {
-              console.warn(`undefined cannot share so shareOnCreated will be ignored. [${key}]`);
-            }
-          }
+          this.setupStoreProperty(args); // if (opt.shareOnCreated) {
+          //     if (vm[key] !== undefined) {
+          //         args.recentlySent = vm.sendPageData(vm[key], storeKey,{key, path:storeKey});
+          //     }
+          //     else {
+          //         console.warn(`undefined cannot share so shareOnCreated will be ignored. [${key}]`);        
+          //     }
+          // }
 
           this.pathMapForPage.set(key, opt);
         } else {
@@ -7463,7 +7485,15 @@ let ScopedStoreComponent = Component(_class = class ScopedStoreComponent extends
             storeKey,
             isForPage: false
           };
-          this.setupStoreProperty(args);
+          this.setupStoreProperty(args); // if (opt.shareOnCreated) {
+          //     if (vm[key] !== undefined) {
+          //         args.recentlySent = vm.sendGlobalData(vm[key], storeKey,{key, path:storeKey});
+          //     }
+          //     else {
+          //         console.warn(`undefined cannot share so shareOnCreated will be ignored. [${key}]`);        
+          //     }
+          // }
+
           this.pathMapForGlobal.set(key, opt);
         }
       });
@@ -7541,7 +7571,7 @@ let ScopedStoreComponent = Component(_class = class ScopedStoreComponent extends
           };
 
           try {
-            onBeforeReceive(data, args.vm[args.key], callbackOpt);
+            onBeforeReceive.call(args.vm, data, args.vm[args.key], callbackOpt);
             acceptData = callbackOpt.proceed;
           } catch (e) {
             console.warn(e);
@@ -7567,18 +7597,12 @@ let ScopedStoreComponent = Component(_class = class ScopedStoreComponent extends
           recentlyRecevied = lodash_clonedeep(args.vm[args.key]); // console.log('data updated with received one', vm[key]);
 
           if (onReceived) {
-            onReceived(args.vm[args.key]);
+            onReceived.call(args.vm, args.vm[args.key]); // onReceived(args.vm[args.key]);
           }
         }
       }
     }, args.storeKey);
-  } // private initPageDataService() {
-  //     if (!this.dataTranManager.pageDataService) {
-  //         this.dataTranManager.pageDataService = new AnyTypeStoreService();
-  //         console.log("dataTranManager.pageDataService created");
-  //     }
-  // }
-
+  }
 
   sendGlobalData(data, storePath, sendOpt) {
     const service = this.dataTranManager.findOfCreateGlobalService(this.globalDataServiceKey);
@@ -7811,11 +7835,11 @@ function GlobalStoreBeforeReceive(key) {
 }
 function GlobalStoreReceived(key) {
   return createDecorator((componentOptions, handler) => {
-    componentOptions.pageStore = componentOptions.pageStore || Object.create(null);
-    const pageStore = componentOptions.pageStore;
-    const propOptions = pageStore[key] || {};
+    componentOptions.globalStore = componentOptions.globalStore || Object.create(null);
+    const globalStore = componentOptions.globalStore;
+    const propOptions = globalStore[key] || {};
     const originalMethod = componentOptions.methods[handler];
-    pageStore[key] = { ...propOptions,
+    globalStore[key] = { ...propOptions,
       onReceived: originalMethod
     }; // console.log('PageStoreonBeforeReceive.createDecorator',componentOptions,key,pageStore);
   });

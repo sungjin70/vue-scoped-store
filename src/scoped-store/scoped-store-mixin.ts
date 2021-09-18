@@ -97,14 +97,14 @@ export default class ScopedStoreComponent extends Vue {
                 const args:SetupStorePropertyArg = {vm,key,keyStore:ps,recentlySent:{},storeKey,isForPage:true};
                 this.setupStoreProperty(args);
 
-                if (opt.shareOnCreated) {
-                    if (vm[key] !== undefined) {
-                        args.recentlySent = vm.sendPageData(vm[key], storeKey,{key, path:storeKey});
-                    }
-                    else {
-                        console.warn(`undefined cannot share so shareOnCreated will be ignored. [${key}]`);        
-                    }
-                }
+                // if (opt.shareOnCreated) {
+                //     if (vm[key] !== undefined) {
+                //         args.recentlySent = vm.sendPageData(vm[key], storeKey,{key, path:storeKey});
+                //     }
+                //     else {
+                //         console.warn(`undefined cannot share so shareOnCreated will be ignored. [${key}]`);        
+                //     }
+                // }
                 this.pathMapForPage.set(key, opt);
             }
             else {
@@ -125,6 +125,14 @@ export default class ScopedStoreComponent extends Vue {
                 const storeKey = (opt.path || key) as string;
                 const args:SetupStorePropertyArg = {vm,key,keyStore:gs,recentlySent:{},storeKey,isForPage:false};
                 this.setupStoreProperty(args);
+                // if (opt.shareOnCreated) {
+                //     if (vm[key] !== undefined) {
+                //         args.recentlySent = vm.sendGlobalData(vm[key], storeKey,{key, path:storeKey});
+                //     }
+                //     else {
+                //         console.warn(`undefined cannot share so shareOnCreated will be ignored. [${key}]`);        
+                //     }
+                // }
 
                 this.pathMapForGlobal.set(key, opt);
             }
@@ -189,7 +197,7 @@ export default class ScopedStoreComponent extends Vue {
                 if (onBeforeReceive) {
                     const callbackOpt = {proceed:true, key:args.key, path:args.storeKey, updaterPath};
                     try {
-                        onBeforeReceive(data, args.vm[args.key], callbackOpt);
+                        onBeforeReceive.call(args.vm, data, args.vm[args.key], callbackOpt);
                         acceptData = callbackOpt.proceed;
                     }
                     catch(e) {
@@ -223,19 +231,13 @@ export default class ScopedStoreComponent extends Vue {
                     recentlyRecevied = cloneDeep(args.vm[args.key]);
                     // console.log('data updated with received one', vm[key]);
                     if (onReceived) {
-                        onReceived(args.vm[args.key]);
+                        onReceived.call(args.vm, args.vm[args.key]);
+                        // onReceived(args.vm[args.key]);
                     }
                 }
             }
         }, args.storeKey);
     }
-
-    // private initPageDataService() {
-    //     if (!this.dataTranManager.pageDataService) {
-    //         this.dataTranManager.pageDataService = new AnyTypeStoreService();
-    //         console.log("dataTranManager.pageDataService created");
-    //     }
-    // }
 
     private readonly senderIdentity = {};
     private readonly globalDataServiceKey = "$$GLOBAL_STORE_SERVICE$$";

@@ -61,6 +61,14 @@
           <button @click="myGlobalCounter = Number(myGlobalCounter) + 10">myGlobalCounter + 10</button>
         </td>
       </tr>
+      <tr>
+        <td colspan="2">
+          <p>
+            <b>globalArray : </b>{{globalArray}} 
+          </p>
+          <button @click="updateGlobalArray()">update globalArray</button>
+        </td>
+      </tr>
     </table>
 
     <table width='100%' height='500'>
@@ -117,6 +125,8 @@ export default class extends Vue {
   @AsPage()
   private isPage = true;
 
+  @GlobalStore()
+  private globalArray = [];
   
   @GlobalStore({deep:true})
   private globalObject: any = {
@@ -145,6 +155,16 @@ export default class extends Vue {
         nestedNumberVal1:101,
       }
     };
+
+    this.updateGlobalArray();
+  }
+
+  updateGlobalArray() {
+    this.globalArray = [
+      {aa:'aa1', bb:'bb1'},
+      {aa:'aa2', bb:'bb2'},
+      {aa:'aa3', bb:'bb3'},
+      ];
   }
 
   @PageStoreBeforeSend('pageObject')
