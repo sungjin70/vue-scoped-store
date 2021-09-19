@@ -7265,11 +7265,11 @@ class AnyTypeStoreService extends BaseStoreService {
       };
       if (!state.payload) state.payload = {};
       lodash_set(state.payload, path, copy);
-    }
+    } // setTimeout(() => {
 
-    setTimeout(() => {
-      this.setState(state);
-    }, 0);
+
+    this.setState(state); // }, 0);
+
     return copy;
   }
 
@@ -7388,17 +7388,6 @@ let ScopedStoreComponent = Component(_class = class ScopedStoreComponent extends
   }
 
   created() {
-    // console.log(`created() mixin`);
-    // const subject = new BehaviorSubject(0); // 0 is the initial value
-    // const obs = subject.asObservable();
-    // obs.subscribe({
-    //   next: (v) => console.log(`asObservable: ${v}`)
-    // });
-    // // subject.subscribe({
-    // //   next: (v) => console.log(`observerB: ${v}`)
-    // // });
-    // subject.next(1);
-    // subject.next(2);
     this.init();
   }
 
@@ -7450,15 +7439,7 @@ let ScopedStoreComponent = Component(_class = class ScopedStoreComponent extends
             storeKey,
             isForPage: true
           };
-          this.setupStoreProperty(args); // if (opt.shareOnCreated) {
-          //     if (vm[key] !== undefined) {
-          //         args.recentlySent = vm.sendPageData(vm[key], storeKey,{key, path:storeKey});
-          //     }
-          //     else {
-          //         console.warn(`undefined cannot share so shareOnCreated will be ignored. [${key}]`);        
-          //     }
-          // }
-
+          this.setupStoreProperty(args);
           this.pathMapForPage.set(key, opt);
         } else {
           console.warn(`duplicated store key is not allowed. [${key}]`);
@@ -7485,15 +7466,7 @@ let ScopedStoreComponent = Component(_class = class ScopedStoreComponent extends
             storeKey,
             isForPage: false
           };
-          this.setupStoreProperty(args); // if (opt.shareOnCreated) {
-          //     if (vm[key] !== undefined) {
-          //         args.recentlySent = vm.sendGlobalData(vm[key], storeKey,{key, path:storeKey});
-          //     }
-          //     else {
-          //         console.warn(`undefined cannot share so shareOnCreated will be ignored. [${key}]`);        
-          //     }
-          // }
-
+          this.setupStoreProperty(args);
           this.pathMapForGlobal.set(key, opt);
         }
       });
@@ -7510,7 +7483,7 @@ let ScopedStoreComponent = Component(_class = class ScopedStoreComponent extends
 
     const onBeforeSend = (val, oldVal) => {
       // console.log('const onBeforeSend = (val:any, oldVal:any)', 
-      //      val, oldVal,recentlyRecevied,isEqual(recentlyRecevied, val));
+      //     args.key, val, oldVal,recentlyRecevied,isEqual(recentlyRecevied, val));
       if (!lodash_isequal(recentlyRecevied, val)) {
         let sendData = opt.direction !== 'read';
 
@@ -7537,7 +7510,8 @@ let ScopedStoreComponent = Component(_class = class ScopedStoreComponent extends
           });else args.recentlySent = args.vm.sendGlobalData(val, args.storeKey, {
             key: args.key,
             path: args.storeKey
-          });
+          }); // console.log('const onBeforeSend, after sendData', 
+          //     val, args.storeKey,{key:args.key, path:args.storeKey});
         }
       }
     };
@@ -7550,9 +7524,11 @@ let ScopedStoreComponent = Component(_class = class ScopedStoreComponent extends
     const onBeforeReceive = opt.direction !== 'write' && opt.onBeforeReceive && typeof opt.onBeforeReceive === 'function' ? opt.onBeforeReceive : null;
     const onReceived = opt.direction !== 'write' && opt.onReceived && typeof opt.onReceived === 'function' ? opt.onReceived : null;
     dataCallback((data, updater) => {
-      const updaterPath = updater && updater.path ? updater.path : ""; // console.log('dataCallback => ', updaterPath, args.recentlySent, data, args.vm[args.key]);
-      //컴포넌트 초기화 때 
-      //이 시점에 프로퍼티에 undefind가 설정되면 
+      const updaterPath = updater && updater.path ? updater.path : ""; //This function is called whenever the values of 
+      //all managed variables change, so this check is required.
+
+      if (updaterPath != args.storeKey) return; // console.log('dataCallback => ', updaterPath, args.storeKey, data, args.vm[args.key], updater);
+      //컴포넌트 초기화 때 프로퍼티에 undefind가 설정되면 
       //프로퍼티가 반응성 기능을 하지 못한다.
 
       if (data === undefined) return;
@@ -7606,13 +7582,11 @@ let ScopedStoreComponent = Component(_class = class ScopedStoreComponent extends
 
   sendGlobalData(data, storePath, sendOpt) {
     const service = this.dataTranManager.findOfCreateGlobalService(this.globalDataServiceKey);
-
-    if (service) {
-      if (!sendOpt) sendOpt = {
-        identity: this.senderIdentity
-      };else if (!sendOpt.identity) sendOpt.identity = this.senderIdentity;
-      service.sendData(data, sendOpt, storePath);
-    }
+    if (!sendOpt) sendOpt = {
+      identity: this.senderIdentity
+    };else if (!sendOpt.identity) sendOpt.identity = this.senderIdentity;
+    console.log('sendGlobalData => ', data, sendOpt, storePath);
+    service === null || service === void 0 ? void 0 : service.sendData(data, sendOpt, storePath);
   }
 
   setGlobalDataCallback(callback, storePath) {
@@ -7625,7 +7599,7 @@ let ScopedStoreComponent = Component(_class = class ScopedStoreComponent extends
       }) => {
         try {
           if (updater.identity === this.senderIdentity) return;
-          const filtered = lodash_get(payload, storePath); // console.log('setPageDataCallback => received:', payload, storePath, filtered);
+          const filtered = lodash_get(payload, storePath); // console.log('setGlobalDataCallback => received:', payload, storePath, filtered);
 
           if (filtered !== undefined) callback(filtered, updater);
         } catch (e) {

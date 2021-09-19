@@ -74,9 +74,9 @@ export class AnyTypeStoreService extends BaseStoreService<AnyTypeState, StringTy
             set(state.payload, path, copy);
         }
 
-        setTimeout(() => {
+        // setTimeout(() => {
             this.setState(state);
-        }, 0);
+        // }, 0);
 
         return copy;
     }
