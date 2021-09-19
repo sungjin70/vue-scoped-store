@@ -6497,7 +6497,77 @@ var MapSubscriber = /*#__PURE__*/function (_Subscriber) {
   }]);
 
   return MapSubscriber;
-}(Subscriber);var BaseStoreService = /*#__PURE__*/function () {
+}(Subscriber);var scopedMap = new Map();
+var globalMap = new Map();
+var hashedComponentMap = new Map();
+var debugEnabled = true;
+var scopedStoreManager = {
+  pageDataService: undefined,
+  setDebug: function setDebug(enabled) {
+    debugEnabled = enabled;
+  },
+  addPathMetaInComponent: function addPathMetaInComponent(hash, meta) {
+    if (!hashedComponentMap.has(hash)) hashedComponentMap.set(hash, []);
+    var metaArr = hashedComponentMap.get(hash);
+    metaArr === null || metaArr === void 0 ? void 0 : metaArr.push(meta);
+    hashedComponentMap.set(hash, metaArr);
+  },
+  getPathMetaInComponent: function getPathMetaInComponent(hash) {
+    return hashedComponentMap.get(hash);
+  },
+  getPathMetaInComponentCount: function getPathMetaInComponentCount(hash) {
+    var pathMetas = hashedComponentMap.get(hash);
+    return !pathMetas ? 0 : pathMetas.length;
+  },
+  findOfCreateScopedService: function findOfCreateScopedService(key) {
+    if (!scopedMap.has(key)) {
+      scopedMap.set(key, new AnyTypeStoreService());
+    }
+
+    return scopedMap.get(key);
+  },
+  hasScopedService: function hasScopedService(key) {
+    return scopedMap.has(key);
+  },
+  getScopedService: function getScopedService(key) {
+    if (!scopedMap.has(key)) {
+      throw "getting service with key=".concat(key, " failed");
+    }
+
+    return scopedMap.get(key);
+  },
+  removeScopedService: function removeScopedService(key) {
+    if (!this.hasScopedService(key)) return;else {
+      var service = scopedMap.get(key);
+      if (service != undefined) service.stop();
+      scopedMap.delete(key);
+    }
+  },
+  findOfCreateGlobalService: function findOfCreateGlobalService(key) {
+    if (!globalMap.has(key)) {
+      globalMap.set(key, new AnyTypeStoreService());
+    }
+
+    return globalMap.get(key);
+  },
+  hasGlobalService: function hasGlobalService(key) {
+    return globalMap.has(key);
+  },
+  getGlobalService: function getGlobalService(key) {
+    if (!globalMap.has(key)) {
+      throw "getting service with key=".concat(key, " failed");
+    }
+
+    return globalMap.get(key);
+  },
+  removeGlobalService: function removeGlobalService(key) {
+    if (!this.hasGlobalService(key)) return;else {
+      var service = globalMap.get(key);
+      if (service != undefined) service.stop();
+      globalMap.delete(key);
+    }
+  }
+};var BaseStoreService = /*#__PURE__*/function () {
   function BaseStoreService(initialState) {
     _classCallCheck(this, BaseStoreService);
 
@@ -6529,7 +6599,21 @@ var MapSubscriber = /*#__PURE__*/function (_Subscriber) {
   }, {
     key: "setState",
     value: function setState(newState) {
-      this.state$.next(_objectSpread2(_objectSpread2({}, this.state), newState));
+      var label = 'ScopedStore states';
+
+      if (debugEnabled) {
+        console.group(label);
+        console.info('previous:', this.state);
+      }
+
+      var state = _objectSpread2(_objectSpread2({}, this.state), newState);
+
+      this.state$.next(state);
+
+      if (debugEnabled) {
+        console.info('current:', state);
+        console.groupEnd();
+      }
     }
   }, {
     key: "setCommand",
@@ -7563,22 +7647,7 @@ var AnyTypeStoreService = /*#__PURE__*/function (_BaseStoreService) {
     }));
 
     return _this;
-  } // private selectDataFromOthers(receiver:string) {
-  //     return this.select(state => state)
-  //         .filter(({updater}) => receiver != updater)
-  //         .map(state => state.payload);
-  // }
-  // public selectData(path:string, receiver?:string) {
-  //     let result;
-  //     if (receiver) {
-  //         result = this.selectDataFromOthers(receiver)
-  //     }
-  //     else {
-  //         result = this.select(state => state.payload);
-  //     }
-  //     return result.map(payload => _.get(payload, path));
-  // }
-
+  }
 
   _createClass(AnyTypeStoreService, [{
     key: "sendData",
@@ -7619,73 +7688,7 @@ var AnyTypeStoreService = /*#__PURE__*/function (_BaseStoreService) {
   }]);
 
   return AnyTypeStoreService;
-}(BaseStoreService);var scopedMap = new Map();
-var globalMap = new Map();
-var hashedComponentMap = new Map();
-var scopedStoreManager = {
-  pageDataService: undefined,
-  addPathMetaInComponent: function addPathMetaInComponent(hash, meta) {
-    if (!hashedComponentMap.has(hash)) hashedComponentMap.set(hash, []);
-    var metaArr = hashedComponentMap.get(hash);
-    metaArr === null || metaArr === void 0 ? void 0 : metaArr.push(meta);
-    hashedComponentMap.set(hash, metaArr);
-  },
-  getPathMetaInComponent: function getPathMetaInComponent(hash) {
-    return hashedComponentMap.get(hash);
-  },
-  getPathMetaInComponentCount: function getPathMetaInComponentCount(hash) {
-    var pathMetas = hashedComponentMap.get(hash);
-    return !pathMetas ? 0 : pathMetas.length;
-  },
-  findOfCreateScopedService: function findOfCreateScopedService(key) {
-    if (!scopedMap.has(key)) {
-      scopedMap.set(key, new AnyTypeStoreService());
-    }
-
-    return scopedMap.get(key);
-  },
-  hasScopedService: function hasScopedService(key) {
-    return scopedMap.has(key);
-  },
-  getScopedService: function getScopedService(key) {
-    if (!scopedMap.has(key)) {
-      throw "getting service with key=".concat(key, " failed");
-    }
-
-    return scopedMap.get(key);
-  },
-  removeScopedService: function removeScopedService(key) {
-    if (!this.hasScopedService(key)) return;else {
-      var service = scopedMap.get(key);
-      if (service != undefined) service.stop();
-      scopedMap.delete(key);
-    }
-  },
-  findOfCreateGlobalService: function findOfCreateGlobalService(key) {
-    if (!globalMap.has(key)) {
-      globalMap.set(key, new AnyTypeStoreService());
-    }
-
-    return globalMap.get(key);
-  },
-  hasGlobalService: function hasGlobalService(key) {
-    return globalMap.has(key);
-  },
-  getGlobalService: function getGlobalService(key) {
-    if (!globalMap.has(key)) {
-      throw "getting service with key=".concat(key, " failed");
-    }
-
-    return globalMap.get(key);
-  },
-  removeGlobalService: function removeGlobalService(key) {
-    if (!this.hasGlobalService(key)) return;else {
-      var service = globalMap.get(key);
-      if (service != undefined) service.stop();
-      globalMap.delete(key);
-    }
-  }
-};var _class;
+}(BaseStoreService);var _class;
 
 var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
   _inherits(ScopedStoreComponent, _Vue);
@@ -7725,6 +7728,7 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
   _createClass(ScopedStoreComponent, [{
     key: "created",
     value: function created() {
+      // console.log('ScopedStoreComponent.created()');
       this.init();
     }
   }, {
@@ -7870,11 +7874,11 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
       var onBeforeReceive = opt.direction !== 'write' && opt.onBeforeReceive && typeof opt.onBeforeReceive === 'function' ? opt.onBeforeReceive : null;
       var onReceived = opt.direction !== 'write' && opt.onReceived && typeof opt.onReceived === 'function' ? opt.onReceived : null;
       dataCallback(function (data, updater) {
-        var updaterPath = updater && updater.path ? updater.path : ""; //This function is called whenever the values of 
+        var updaterPath = updater && updater.path ? updater.path : ""; // console.log('dataCallback => ', updaterPath, args.storeKey, data, args.vm[args.key], updater);
+        //This function is called whenever the values of 
         //all managed variables change, so this check is required.
 
-        if (updaterPath != args.storeKey) return; // console.log('dataCallback => ', updaterPath, args.storeKey, data, args.vm[args.key], updater);
-        //컴포넌트 초기화 때 프로퍼티에 undefind가 설정되면 
+        if (updaterPath != args.storeKey) return; //컴포넌트 초기화 때 프로퍼티에 undefind가 설정되면 
         //프로퍼티가 반응성 기능을 하지 못한다.
 
         if (data === undefined) return;
@@ -7903,7 +7907,9 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
           if (acceptData) {
             if (Array.isArray(data)) {
               var targetArray = args.vm[args.key];
-              targetArray.length = 0;
+              if (targetArray) targetArray.length = 0;else {
+                args.vm[args.key] = targetArray = [];
+              }
               data.forEach(function (item) {
                 targetArray.push(item);
               }); // recentlyRecevied = data;
@@ -7931,8 +7937,8 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
       var service = this.dataTranManager.findOfCreateGlobalService(this.globalDataServiceKey);
       if (!sendOpt) sendOpt = {
         identity: this.senderIdentity
-      };else if (!sendOpt.identity) sendOpt.identity = this.senderIdentity;
-      console.log('sendGlobalData => ', data, sendOpt, storePath);
+      };else if (!sendOpt.identity) sendOpt.identity = this.senderIdentity; // console.log('sendGlobalData => ', data, sendOpt, storePath);
+
       service === null || service === void 0 ? void 0 : service.sendData(data, sendOpt, storePath);
     }
   }, {
@@ -7943,6 +7949,7 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
       var service = this.dataTranManager.findOfCreateGlobalService(this.globalDataServiceKey);
 
       if (service) {
+        var isFirst = true;
         this.subscriptionsForGlobal.push(service.$state.subscribe(function (_ref) {
           var payload = _ref.payload,
               updater = _ref.updater;
@@ -7951,7 +7958,22 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
             if (updater.identity === _this3.senderIdentity) return;
             var filtered = lodash_get(payload, storePath); // console.log('setGlobalDataCallback => received:', payload, storePath, filtered);
 
-            if (filtered !== undefined) callback(filtered, updater);
+            if (filtered !== undefined) {
+              if (isFirst) {
+                /*
+                Required when a component is created and called for the first time.
+                Modify the updater so that the first call is unconditionally received.
+                */
+                var updaterPath = updater && updater.path ? updater.path : "";
+
+                var tUpdater = _objectSpread2(_objectSpread2({}, updater), {}, {
+                  path: storePath
+                });
+
+                callback(filtered, tUpdater);
+                isFirst = false;
+              } else callback(filtered, updater);
+            }
           } catch (e) {
             console.warn('setGlobalDataCallback', e);
           }
@@ -8171,7 +8193,7 @@ function GlobalStoreReceived(key) {
   });
 }// Import vue components
 
-var install = function installVueScopedStore(Vue) {
+var install = function installVueScopedStore(Vue, options) {
   Vue.mixin(ScopedStoreComponent);
   Vue.prototype.$sendGlobalData = sendGlobalData;
   Vue.prototype.$setGlobalDataCallback = setGlobalDataCallback;
@@ -8180,9 +8202,15 @@ var install = function installVueScopedStore(Vue) {
   Vue.prototype.$sendPageData = sendPageData;
   Vue.prototype.$setPageDataCallback = setPageDataCallback;
   Vue.prototype.$sendPageCommand = sendPageCommand;
-  Vue.prototype.$setPageCommandCallback = setPageCommandCallback; // Object.entries(components).forEach(([componentName, component]) => {
+  Vue.prototype.$setPageCommandCallback = setPageCommandCallback;
+  console.log("installVueScopedStore() => options", options);
+
+  if (options && options.debug) {
+    scopedStoreManager.setDebug(!!options.debug);
+  } // Object.entries(components).forEach(([componentName, component]) => {
   //   Vue.component(componentName, component);
   // });
+
 }; // Create module definition for Vue.use()
 // each can be registered via Vue.component()
 // export * from '@/lib-components/index';

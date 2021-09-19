@@ -1,6 +1,8 @@
 import { BehaviorSubject, Subject, Observable } from '../rxjs-simple';
 import { distinctUntilChanged, map } from '../rxjs-simple/operators';
 
+import { debugEnabled } from '../scoped-store-manager';
+
 export const isPrimitive = (value: any): boolean => {
   const type = typeof value;
   return value == null || (type !== "object" && type !== "function");
@@ -35,10 +37,22 @@ export class BaseStoreService<ST, CT> {
   }
 
   protected setState(newState: Partial<ST>) {
-    this.state$.next({
+    const label = 'ScopedStore states';
+    if (debugEnabled) {
+      console.group(label);
+      console.info('previous:', this.state);
+    }
+
+    const state = {
       ...this.state,
       ...newState,
-    });
+    };
+    this.state$.next(state);
+
+    if (debugEnabled) {
+      console.info('current:', state);
+      console.groupEnd();
+    }
   }
 
   protected setCommand(newCommand: CT) {

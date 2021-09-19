@@ -36,6 +36,7 @@ export default class ScopedStoreComponent extends Vue {
     private pageDataService!:any;
 
     created() {
+        // console.log('ScopedStoreComponent.created()');
         this.init();
     }
 
@@ -153,12 +154,12 @@ export default class ScopedStoreComponent extends Vue {
         dataCallback((data:any,updater?:any) => {
             const updaterPath = updater && updater.path ? (updater.path as string) : "";
 
+            // console.log('dataCallback => ', updaterPath, args.storeKey, data, args.vm[args.key], updater);
+
             //This function is called whenever the values of 
             //all managed variables change, so this check is required.
             if (updaterPath != args.storeKey)
                 return;
-
-            // console.log('dataCallback => ', updaterPath, args.storeKey, data, args.vm[args.key], updater);
 
             //컴포넌트 초기화 때 프로퍼티에 undefind가 설정되면 
             //프로퍼티가 반응성 기능을 하지 못한다.
@@ -182,8 +183,13 @@ export default class ScopedStoreComponent extends Vue {
 
                 if (acceptData) {
                     if (Array.isArray(data)) {
-                        const targetArray = args.vm[args.key] as Array<any>;
-                        targetArray.length = 0;
+                        let targetArray = args.vm[args.key] as Array<any>;
+                        if (targetArray)
+                            targetArray.length = 0;
+                        else {
+                            args.vm[args.key] = targetArray = [];
+                        }
+
                         (data as Array<any>).forEach((item) => {
                             targetArray.push(item);
                         });
@@ -224,13 +230,14 @@ export default class ScopedStoreComponent extends Vue {
         else if (!sendOpt.identity)
             sendOpt.identity = this.senderIdentity;
         
-        console.log('sendGlobalData => ', data, sendOpt, storePath);
+        // console.log('sendGlobalData => ', data, sendOpt, storePath);
         service?.sendData(data, sendOpt, storePath);
     }
 
     public setGlobalDataCallback(callback: (data: any, updater?:any) => void, storePath:string) {
         const service : AnyTypeStoreService | undefined  = this.dataTranManager.findOfCreateGlobalService(this.globalDataServiceKey);
         if (service) {
+            let isFirst = true;
             this.subscriptionsForGlobal.push(
                 service.$state.subscribe(({payload,updater}) => {
                     try {
@@ -238,8 +245,20 @@ export default class ScopedStoreComponent extends Vue {
                             return;
                         const filtered = get(payload, storePath);
                         // console.log('setGlobalDataCallback => received:', payload, storePath, filtered);
-                        if (filtered !== undefined)
-                            callback(filtered, updater);
+                        if (filtered !== undefined) {
+                            if (isFirst) {
+                                /*
+                                Required when a component is created and called for the first time.
+                                Modify the updater so that the first call is unconditionally received.
+                                */
+                                const updaterPath = updater && updater.path ? (updater.path as string) : "";
+                                const tUpdater = {...updater, path:storePath};
+                                callback(filtered, tUpdater);
+                                isFirst = false;
+                            }
+                            else
+                                callback(filtered, updater);
+                        }
                     } catch (e) {
                         console.warn('setGlobalDataCallback', e);
                     }

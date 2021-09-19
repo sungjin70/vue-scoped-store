@@ -4,6 +4,7 @@ import {AnyTypeStoreService} from './core/any-type-store-service';
 const scopedMap = new Map<string,AnyTypeStoreService>();
 const globalMap = new Map<string,AnyTypeStoreService>();
 const hashedComponentMap = new Map<string, any[]>();
+export let debugEnabled = true;
 
 export interface ScopedStoreManager {
     pageDataService?:AnyTypeStoreService;
@@ -18,10 +19,14 @@ export interface ScopedStoreManager {
     hasGlobalService:(key:string) => boolean;
     getGlobalService:(key:string) => AnyTypeStoreService|undefined;
     removeGlobalService:(key:string) => void;
+    setDebug:(enabled:boolean) => void;
 }
 
 export const scopedStoreManager : ScopedStoreManager = {
     pageDataService:undefined,
+    setDebug(enabled:boolean) {
+        debugEnabled = enabled;
+    },
     addPathMetaInComponent(hash:string, meta:{path:string,options?:{}}) {
         if (!hashedComponentMap.has(hash))
             hashedComponentMap.set(hash,[]);

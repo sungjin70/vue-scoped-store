@@ -29,24 +29,6 @@ export class AnyTypeStoreService extends BaseStoreService<AnyTypeState, StringTy
       super(initialState)
     }
 
-    // private selectDataFromOthers(receiver:string) {
-    //     return this.select(state => state)
-    //         .filter(({updater}) => receiver != updater)
-    //         .map(state => state.payload);
-    // }
-
-    // public selectData(path:string, receiver?:string) {
-    //     let result;
-    //     if (receiver) {
-    //         result = this.selectDataFromOthers(receiver)
-    //     }
-    //     else {
-    //         result = this.select(state => state.payload);
-    //     }
-        
-    //     return result.map(payload => _.get(payload, path));
-    // }
-
     public sendData(payload: any, sendOpt:{}, path?:string) {
         let copy = clonedeep(payload);
         // console.log('sendData (after cloneDeep)', payload, copy);
