@@ -7583,8 +7583,6 @@ var AnyTypeStoreService = /*#__PURE__*/function (_BaseStoreService) {
   _createClass(AnyTypeStoreService, [{
     key: "sendData",
     value: function sendData(payload, sendOpt, path) {
-      var _this2 = this;
-
       var copy = lodash_clonedeep(payload); // console.log('sendData (after cloneDeep)', payload, copy);
 
       var state;
@@ -7601,11 +7599,11 @@ var AnyTypeStoreService = /*#__PURE__*/function (_BaseStoreService) {
         };
         if (!state.payload) state.payload = {};
         lodash_set(state.payload, path, copy);
-      }
+      } // setTimeout(() => {
 
-      setTimeout(function () {
-        _this2.setState(state);
-      }, 0);
+
+      this.setState(state); // }, 0);
+
       return copy;
     }
   }, {
@@ -7727,17 +7725,6 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
   _createClass(ScopedStoreComponent, [{
     key: "created",
     value: function created() {
-      // console.log(`created() mixin`);
-      // const subject = new BehaviorSubject(0); // 0 is the initial value
-      // const obs = subject.asObservable();
-      // obs.subscribe({
-      //   next: (v) => console.log(`asObservable: ${v}`)
-      // });
-      // // subject.subscribe({
-      // //   next: (v) => console.log(`observerB: ${v}`)
-      // // });
-      // subject.next(1);
-      // subject.next(2);
       this.init();
     }
   }, {
@@ -7794,15 +7781,7 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
               isForPage: true
             };
 
-            _this2.setupStoreProperty(args); // if (opt.shareOnCreated) {
-            //     if (vm[key] !== undefined) {
-            //         args.recentlySent = vm.sendPageData(vm[key], storeKey,{key, path:storeKey});
-            //     }
-            //     else {
-            //         console.warn(`undefined cannot share so shareOnCreated will be ignored. [${key}]`);        
-            //     }
-            // }
-
+            _this2.setupStoreProperty(args);
 
             _this2.pathMapForPage.set(key, opt);
           } else {
@@ -7831,15 +7810,7 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
               isForPage: false
             };
 
-            _this2.setupStoreProperty(args); // if (opt.shareOnCreated) {
-            //     if (vm[key] !== undefined) {
-            //         args.recentlySent = vm.sendGlobalData(vm[key], storeKey,{key, path:storeKey});
-            //     }
-            //     else {
-            //         console.warn(`undefined cannot share so shareOnCreated will be ignored. [${key}]`);        
-            //     }
-            // }
-
+            _this2.setupStoreProperty(args);
 
             _this2.pathMapForGlobal.set(key, opt);
           }
@@ -7858,7 +7829,7 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
 
       var onBeforeSend = function onBeforeSend(val, oldVal) {
         // console.log('const onBeforeSend = (val:any, oldVal:any)', 
-        //      val, oldVal,recentlyRecevied,isEqual(recentlyRecevied, val));
+        //     args.key, val, oldVal,recentlyRecevied,isEqual(recentlyRecevied, val));
         if (!lodash_isequal(recentlyRecevied, val)) {
           var sendData = opt.direction !== 'read';
 
@@ -7885,7 +7856,8 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
             });else args.recentlySent = args.vm.sendGlobalData(val, args.storeKey, {
               key: args.key,
               path: args.storeKey
-            });
+            }); // console.log('const onBeforeSend, after sendData', 
+            //     val, args.storeKey,{key:args.key, path:args.storeKey});
           }
         }
       };
@@ -7898,9 +7870,11 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
       var onBeforeReceive = opt.direction !== 'write' && opt.onBeforeReceive && typeof opt.onBeforeReceive === 'function' ? opt.onBeforeReceive : null;
       var onReceived = opt.direction !== 'write' && opt.onReceived && typeof opt.onReceived === 'function' ? opt.onReceived : null;
       dataCallback(function (data, updater) {
-        var updaterPath = updater && updater.path ? updater.path : ""; // console.log('dataCallback => ', updaterPath, args.recentlySent, data, args.vm[args.key]);
-        //컴포넌트 초기화 때 
-        //이 시점에 프로퍼티에 undefind가 설정되면 
+        var updaterPath = updater && updater.path ? updater.path : ""; //This function is called whenever the values of 
+        //all managed variables change, so this check is required.
+
+        if (updaterPath != args.storeKey) return; // console.log('dataCallback => ', updaterPath, args.storeKey, data, args.vm[args.key], updater);
+        //컴포넌트 초기화 때 프로퍼티에 undefind가 설정되면 
         //프로퍼티가 반응성 기능을 하지 못한다.
 
         if (data === undefined) return;
@@ -7955,13 +7929,11 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
     key: "sendGlobalData",
     value: function sendGlobalData(data, storePath, sendOpt) {
       var service = this.dataTranManager.findOfCreateGlobalService(this.globalDataServiceKey);
-
-      if (service) {
-        if (!sendOpt) sendOpt = {
-          identity: this.senderIdentity
-        };else if (!sendOpt.identity) sendOpt.identity = this.senderIdentity;
-        service.sendData(data, sendOpt, storePath);
-      }
+      if (!sendOpt) sendOpt = {
+        identity: this.senderIdentity
+      };else if (!sendOpt.identity) sendOpt.identity = this.senderIdentity;
+      console.log('sendGlobalData => ', data, sendOpt, storePath);
+      service === null || service === void 0 ? void 0 : service.sendData(data, sendOpt, storePath);
     }
   }, {
     key: "setGlobalDataCallback",
@@ -7977,7 +7949,7 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
 
           try {
             if (updater.identity === _this3.senderIdentity) return;
-            var filtered = lodash_get(payload, storePath); // console.log('setPageDataCallback => received:', payload, storePath, filtered);
+            var filtered = lodash_get(payload, storePath); // console.log('setGlobalDataCallback => received:', payload, storePath, filtered);
 
             if (filtered !== undefined) callback(filtered, updater);
           } catch (e) {

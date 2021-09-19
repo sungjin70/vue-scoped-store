@@ -36,22 +36,6 @@ export default class ScopedStoreComponent extends Vue {
     private pageDataService!:any;
 
     created() {
-
-        // console.log(`created() mixin`);
-        // const subject = new BehaviorSubject(0); // 0 is the initial value
-    
-        // const obs = subject.asObservable();
-        // obs.subscribe({
-        //   next: (v) => console.log(`asObservable: ${v}`)
-        // });
-        
-        // // subject.subscribe({
-        // //   next: (v) => console.log(`observerB: ${v}`)
-        // // });
-
-        // subject.next(1);
-        // subject.next(2);
-        
         this.init();
     }
 
@@ -96,15 +80,6 @@ export default class ScopedStoreComponent extends Vue {
                 const storeKey = (opt.path || key) as string;
                 const args:SetupStorePropertyArg = {vm,key,keyStore:ps,recentlySent:{},storeKey,isForPage:true};
                 this.setupStoreProperty(args);
-
-                // if (opt.shareOnCreated) {
-                //     if (vm[key] !== undefined) {
-                //         args.recentlySent = vm.sendPageData(vm[key], storeKey,{key, path:storeKey});
-                //     }
-                //     else {
-                //         console.warn(`undefined cannot share so shareOnCreated will be ignored. [${key}]`);        
-                //     }
-                // }
                 this.pathMapForPage.set(key, opt);
             }
             else {
@@ -125,14 +100,6 @@ export default class ScopedStoreComponent extends Vue {
                 const storeKey = (opt.path || key) as string;
                 const args:SetupStorePropertyArg = {vm,key,keyStore:gs,recentlySent:{},storeKey,isForPage:false};
                 this.setupStoreProperty(args);
-                // if (opt.shareOnCreated) {
-                //     if (vm[key] !== undefined) {
-                //         args.recentlySent = vm.sendGlobalData(vm[key], storeKey,{key, path:storeKey});
-                //     }
-                //     else {
-                //         console.warn(`undefined cannot share so shareOnCreated will be ignored. [${key}]`);        
-                //     }
-                // }
 
                 this.pathMapForGlobal.set(key, opt);
             }
@@ -151,7 +118,8 @@ export default class ScopedStoreComponent extends Vue {
         // let recentlySent = {}; // to prevent feedback
         const onBeforeSend = (val:any, oldVal:any) : any => {
             // console.log('const onBeforeSend = (val:any, oldVal:any)', 
-            //      val, oldVal,recentlyRecevied,isEqual(recentlyRecevied, val));
+            //     args.key, val, oldVal,recentlyRecevied,isEqual(recentlyRecevied, val));
+                
             if (!isEqual(recentlyRecevied, val)) {
                 let sendData = opt.direction !== 'read';
                 if (onBeforeSendCallback) {
@@ -171,6 +139,9 @@ export default class ScopedStoreComponent extends Vue {
                         args.recentlySent = args.vm.sendPageData(val, args.storeKey,{key:args.key, path:args.storeKey});
                     else
                         args.recentlySent = args.vm.sendGlobalData(val, args.storeKey,{key:args.key, path:args.storeKey});
+
+                    // console.log('const onBeforeSend, after sendData', 
+                    //     val, args.storeKey,{key:args.key, path:args.storeKey});
                 }
             }
         }
@@ -182,10 +153,14 @@ export default class ScopedStoreComponent extends Vue {
         dataCallback((data:any,updater?:any) => {
             const updaterPath = updater && updater.path ? (updater.path as string) : "";
 
-            // console.log('dataCallback => ', updaterPath, args.recentlySent, data, args.vm[args.key]);
+            //This function is called whenever the values of 
+            //all managed variables change, so this check is required.
+            if (updaterPath != args.storeKey)
+                return;
 
-            //컴포넌트 초기화 때 
-            //이 시점에 프로퍼티에 undefind가 설정되면 
+            // console.log('dataCallback => ', updaterPath, args.storeKey, data, args.vm[args.key], updater);
+
+            //컴포넌트 초기화 때 프로퍼티에 undefind가 설정되면 
             //프로퍼티가 반응성 기능을 하지 못한다.
             if (data === undefined)
                 return;
@@ -244,13 +219,13 @@ export default class ScopedStoreComponent extends Vue {
 
     public sendGlobalData(data:any, storePath:string, sendOpt?:any) {
         const service : AnyTypeStoreService | undefined  = this.dataTranManager.findOfCreateGlobalService(this.globalDataServiceKey);
-        if (service) {
-            if (!sendOpt) 
-                sendOpt = {identity:this.senderIdentity};
-            else if (!sendOpt.identity)
-                sendOpt.identity = this.senderIdentity;
-            service.sendData(data, sendOpt, storePath);
-        }
+        if (!sendOpt) 
+            sendOpt = {identity:this.senderIdentity};
+        else if (!sendOpt.identity)
+            sendOpt.identity = this.senderIdentity;
+        
+        console.log('sendGlobalData => ', data, sendOpt, storePath);
+        service?.sendData(data, sendOpt, storePath);
     }
 
     public setGlobalDataCallback(callback: (data: any, updater?:any) => void, storePath:string) {
@@ -262,7 +237,7 @@ export default class ScopedStoreComponent extends Vue {
                         if (updater.identity === this.senderIdentity)
                             return;
                         const filtered = get(payload, storePath);
-                        // console.log('setPageDataCallback => received:', payload, storePath, filtered);
+                        // console.log('setGlobalDataCallback => received:', payload, storePath, filtered);
                         if (filtered !== undefined)
                             callback(filtered, updater);
                     } catch (e) {
