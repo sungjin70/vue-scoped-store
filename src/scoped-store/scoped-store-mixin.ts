@@ -224,7 +224,7 @@ export default class ScopedStoreComponent extends Vue {
         else if (!sendOpt.identity)
             sendOpt.identity = this.senderIdentity;
         
-        console.log('sendGlobalData => ', data, sendOpt, storePath);
+        // console.log('sendGlobalData => ', data, sendOpt, storePath);
         service?.sendData(data, sendOpt, storePath);
     }
 
