@@ -285,7 +285,7 @@ Please consult [Wiki](https://github.com/sungjin70/vue-scoped-store/wiki) to lea
 
 What we've discussed so far is part of the ScopedStore.
 This library provides more APIs and sample codes for developers to use in practice.
-Please can consult the following resources.
+You can consult the following resources.
 
 
 #### ScopedStore Wiki
