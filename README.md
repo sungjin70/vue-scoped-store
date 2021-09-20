@@ -281,11 +281,11 @@ Please consult [Wiki](https://github.com/sungjin70/vue-scoped-store/wiki) to lea
 
 
 
-### 더 자세히 알아보기
+### More information on the Scoped Store
 
 What we've discussed so far is part of the ScopedStore.
 This library provides more APIs and sample codes for developers to use in practice.
-Please can consult the following resources.
+You can consult the following resources.
 
 
 #### ScopedStore Wiki
@@ -298,7 +298,7 @@ Please can consult the following resources.
 * [Basic demo](https://github.com/sungjin70/scoped-store-basic-demo)
 
 
-* [A Demo that shows the overall features](https://github.com/sungjin70/vue-scoped-store-demo)
+* [A demo that shows the overall features](https://github.com/sungjin70/vue-scoped-store-demo)
 
 
 * [A ToDo implementation using ScopedStore](https://github.com/sungjin70/scoped-store-todo-demo)
