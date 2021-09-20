@@ -298,7 +298,7 @@ Please can consult the following resources.
 * [Basic demo](https://github.com/sungjin70/scoped-store-basic-demo)
 
 
-* [A Demo that shows the overall features](https://github.com/sungjin70/vue-scoped-store-demo)
+* [A demo that shows the overall features](https://github.com/sungjin70/vue-scoped-store-demo)
 
 
 * [A ToDo implementation using ScopedStore](https://github.com/sungjin70/scoped-store-todo-demo)
