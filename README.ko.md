@@ -22,7 +22,10 @@ npm install vue-store --save
 import Vue from 'vue'
 import ScopedStore from "vue-store";
 
+//ScopedStore 플러그인 설정
 Vue.use(ScopedStore);
+//콘솔 디버그 로그를 활성화 하려면 이 코드를 대신 사용
+//Vue.use(ScopedStore, {debug:process.env.NODE_ENV == 'development'});
 ```
 
 
@@ -256,12 +259,29 @@ export default class extends Vue {
 @AsPage가 있는 컴포넌트는 ScopedStore가 그 컴포넌트가 페이지임을 알게 해주고 컴포넌트가 소멸되는 시점에 공유된 변수들의 데이터도 함께 삭제합니다.
 
 
-#### ScopedStore Wiki
+
+### 더 자세히 알아보기
 
 지금까지는 ScopedStore의 아주 일부 기능을 보여 드렸습니다.
-<br />
-더 자세한 내용은 Wiki를 확인하시기 바랍니다.
-
-https://github.com/sungjin70/vue-scoped-store/wiki
+본 라이브러리는 개발자가 실무에서 사용 할 수 있도록 더 많은 API와 샘플코드를 제공합니다. 
 
 
+#### ScopedStore Wiki
+
+[ScopedStore Wiki](https://github.com/sungjin70/vue-scoped-store/wiki)
+
+
+#### 에제 소스코드 
+
+* 기초 데모
+https://github.com/sungjin70/scoped-store-basic-demo
+
+
+* 전반적인 기능을 보여주는 데모
+https://github.com/sungjin70/vue-scoped-store-demo
+
+
+* ToDo 구현 예제
+https://github.com/sungjin70/scoped-store-todo-demo
+
+https://user-images.githubusercontent.com/86173989/133948747-fa784777-61f2-46d3-bc31-c768fc8d8900.mp4

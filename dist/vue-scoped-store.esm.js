@@ -6188,7 +6188,7 @@ class MapSubscriber extends Subscriber {
 const scopedMap = new Map();
 const globalMap = new Map();
 const hashedComponentMap = new Map();
-let debugEnabled = true;
+let debugEnabled = false;
 const scopedStoreManager = {
   pageDataService: undefined,
 
@@ -6310,7 +6310,19 @@ class BaseStoreService {
   }
 
   setCommand(newCommand) {
+    const label = 'ScopedStore command';
+
+    if (debugEnabled) {
+      console.group(label);
+      console.info('previous:', this.state);
+    }
+
     this.commandMapper$.next(newCommand);
+
+    if (debugEnabled) {
+      console.info('current:', newCommand);
+      console.groupEnd();
+    }
   }
 
   stop() {

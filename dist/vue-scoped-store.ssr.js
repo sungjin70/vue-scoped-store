@@ -6500,7 +6500,7 @@ var MapSubscriber = /*#__PURE__*/function (_Subscriber) {
 }(Subscriber);var scopedMap = new Map();
 var globalMap = new Map();
 var hashedComponentMap = new Map();
-var debugEnabled = true;
+var debugEnabled = false;
 var scopedStoreManager = {
   pageDataService: undefined,
   setDebug: function setDebug(enabled) {
@@ -6618,7 +6618,19 @@ var scopedStoreManager = {
   }, {
     key: "setCommand",
     value: function setCommand(newCommand) {
+      var label = 'ScopedStore command';
+
+      if (debugEnabled) {
+        console.group(label);
+        console.info('previous:', this.state);
+      }
+
       this.commandMapper$.next(newCommand);
+
+      if (debugEnabled) {
+        console.info('current:', newCommand);
+        console.groupEnd();
+      }
     }
   }, {
     key: "stop",
