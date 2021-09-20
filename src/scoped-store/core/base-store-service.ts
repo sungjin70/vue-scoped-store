@@ -56,7 +56,16 @@ export class BaseStoreService<ST, CT> {
   }
 
   protected setCommand(newCommand: CT) {
+    const label = 'ScopedStore command';
+    if (debugEnabled) {
+      console.group(label);
+      console.info('previous:', this.state);
+    }
     this.commandMapper$.next(newCommand);
+    if (debugEnabled) {
+      console.info('current:', newCommand);
+      console.groupEnd();
+    }
   }
 
   public stop() {

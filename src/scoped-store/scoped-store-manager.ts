@@ -4,7 +4,7 @@ import {AnyTypeStoreService} from './core/any-type-store-service';
 const scopedMap = new Map<string,AnyTypeStoreService>();
 const globalMap = new Map<string,AnyTypeStoreService>();
 const hashedComponentMap = new Map<string, any[]>();
-export let debugEnabled = true;
+export let debugEnabled = false;
 
 export interface ScopedStoreManager {
     pageDataService?:AnyTypeStoreService;
