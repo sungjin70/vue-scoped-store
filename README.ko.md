@@ -271,17 +271,14 @@ export default class extends Vue {
 [ScopedStore Wiki](https://github.com/sungjin70/vue-scoped-store/wiki)
 
 
-#### 에제 소스코드 
+#### 예제 소스코드 
 
-* 기초 데모
-https://github.com/sungjin70/scoped-store-basic-demo
-
-
-* 전반적인 기능을 보여주는 데모
-https://github.com/sungjin70/vue-scoped-store-demo
+* [기초 데모](https://github.com/sungjin70/scoped-store-basic-demo)
 
 
-* ToDo 구현 예제
-https://github.com/sungjin70/scoped-store-todo-demo
+* [전반적인 기능을 보여주는 데모](https://github.com/sungjin70/vue-scoped-store-demo)
+
+
+* [ToDo 구현 예제](https://github.com/sungjin70/scoped-store-todo-demo)
 
 https://user-images.githubusercontent.com/86173989/133948747-fa784777-61f2-46d3-bc31-c768fc8d8900.mp4

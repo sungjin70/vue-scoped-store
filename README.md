@@ -295,15 +295,12 @@ Please can consult the following resources.
 
 #### Sample codes 
 
-* Basic demo
-https://github.com/sungjin70/scoped-store-basic-demo
+* [Basic demo](https://github.com/sungjin70/scoped-store-basic-demo)
 
 
-* A Demo that shows the overall features
-https://github.com/sungjin70/vue-scoped-store-demo
+* [A Demo that shows the overall features](https://github.com/sungjin70/vue-scoped-store-demo)
 
 
-* A ToDo implementation using ScopedStore
-https://github.com/sungjin70/scoped-store-todo-demo
+* [A ToDo implementation using ScopedStore](https://github.com/sungjin70/scoped-store-todo-demo)
 
 https://user-images.githubusercontent.com/86173989/133948747-fa784777-61f2-46d3-bc31-c768fc8d8900.mp4
