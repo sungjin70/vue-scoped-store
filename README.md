@@ -293,7 +293,7 @@ You can consult the following resources.
 [ScopedStore Wiki](https://github.com/sungjin70/vue-scoped-store/wiki)
 
 
-#### Sample codes 
+#### ScopedStore examples 
 
 * [Basic demo](https://github.com/sungjin70/scoped-store-basic-demo)
 
