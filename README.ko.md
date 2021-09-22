@@ -4,11 +4,11 @@
 
 ScopedStore는 Vue어플리케이션에서 컴포넌트 및 페이지 사이에서 쉽게 상태관리를 할 수 있는 라이브러리입니다.
 <br />
-ScopedStore의 목표는 컴포넌트 또는 페이지 간에 상태를 공유하는 쉬운 방법을 제공하는 것입니다.
+ScopedStore의 목표는 컴포넌트들, 또는 페이지들 사이의 상태를 공유하는 쉬운 방법을 제공하는 것입니다.
 <br />
 ScopedStore는 Vue의 data옵션에 선언된 변수들의 값을 여러 컴포넌트에서 동기화할 수 있는 단순한 방법을 제공합니다.
 <br />
-이 라이브러리를 [Vuex](https://vuex.vuejs.org)와 비슷하게 상태 공유 라이브러리라고 보면 이해하기쉽지만, Vuex를 사용하려면 알아야하는 다소 복잡한 패턴을 이해하지 않고 상태공유를 할 수 있도록 고안되었습니다.
+이 라이브러리를 [Vuex](https://vuex.vuejs.org)와 비슷하게 상태 공유 라이브러리라고 보면 이해하기 쉽지만, Vuex를 사용하려면 알아야 하는 다소 복잡한 패턴을 이해하지 않고 상태공유를 할 수 있도록 고안되었습니다.
 ScopedStore가 Vuex의 모든 기능을 대체하지는 않지만 많은 시나리오에서 이 라이브러리로 데이터 상태공유문제를 해결 할 수 있습니다. 
 
 
@@ -44,16 +44,16 @@ Vue.use(ScopedStore);
 
 ### 기본 사용방법
 
-ScopedStore의 목적이 Vue개발자라면 누구나 쉽게 상태공유 기능을 사용 할 수 있도록 하는 것이기 때문에 이 라이브로리를 사용하기 위해 새로 이해해야할 개념이 많지 않습니다.
+ScopedStore의 목적이 Vue개발자라면 누구나 쉽게 상태공유 기능을 사용 할 수 있도록 하는 것이기 때문에 이 라이브러리를 사용하기 위해 새로 이해해야 할 개념이 많지 않습니다.
 여러분은 단순한 예제코드만으로 이 라이브러리가 어떻게 동작하는지 이해 할 수 있습니다.
 
 
 #### @GlobalStore 데코레이터로 어플리케이션 전역범위 공유
 
-@GlobalStore 데코레이터를 이용해 변수값을 어플레케이션 전역에서 공유하는 예입니다.
+@GlobalStore 데코레이터를 이용해 변수값을 어플리케이션 전역에서 공유하는 예입니다.
 <br />
 다음 예에서 페이지 뷰(GlobalStore.vue)와 그 안에 포함된 컴포넌트(GlobalStore.vue)는 동일한 이름의 변수(hellowWorld)를 각각 소유하고 있습니다.
-각 컴포넌트에 포함된 hellowWorld 변수의 값을 동기화 하는 방법이 얼마나 간단한지 확인 해 보십시요.
+각 컴포넌트에 포함된 hellowWorld 변수의 값을 동기화 하는 방법이 얼마나 간단한지 확인해 보십시요.
 
 `GlobalStore.vue`
 
@@ -121,20 +121,20 @@ export default class extends Vue {
 </script>
 ```
 
-속성에 @GlobalStore를 달아주면, 서로다른 컴포넌트들에 포함된 동일한 이름의 모든 속성들은 동일한 값을 가지게됩니다.
+속성에 @GlobalStore를 달아주면, 서로 다른 컴포넌트들에 포함된 동일한 이름의 모든 속성들은 동일한 값을 가지게 됩니다.
 @GlobalStore가 달린 속성 중 하나의 값이 변경되면 그 변경된 값은 이름이 같은 속성들 사이에서 공유됩니다.
 이렇게 설정된 값은 화면 이동을 하더라도 속성 안에 보존됩니다.
 
 > 기술적으로 정확한 표현은 아니지만 @GlobalStore로 장식된 이름이 같은 속성들을
 > 하나의 어플리케이션 전역변수처럼 생각하면 편합니다.
 
-이 동영상을 통해 @GlobalStore를 속성에 장식해주면 얼마나 쉽게 상태가 서로 다른 컴포넌트 간에 공유될 수 있는지 확인해보시기 바랍니다.
+이 동영상을 통해 @GlobalStore를 속성에 장식해주면 얼마나 쉽게 상태가 서로 다른 컴포넌트 간에 공유될 수 있는지 확인해 보시기 바랍니다.
 
 https://user-images.githubusercontent.com/86173989/131511985-44353feb-cb0d-487d-9f8a-7eb294eb7cd1.mp4
 
 [CodeSandbox에서 대모 실행해보기](https://codesandbox.io/s/github/sungjin70/scoped-store-basic-demo)
 <br />
-이 영상에서 첫회면에서 설정한 값이 About.vue로 화면 이동한 후에도 보존되는 것을 발견하셨을 겁니다.
+이 영상에서 첫면에서 설정한 값이 About.vue로 화면 이동한 후에도 보존되는 것을 발견하셨을 겁니다.
 About.vue의 소스코드입니다.
 
 `About.vue`
@@ -281,7 +281,7 @@ export default class extends Vue {
 
 * to-do 구현 예제
   - [to-do - TypeScript와 데코레이터 사용](https://github.com/sungjin70/scoped-store-todo-demo)
-  - [to-do - TypeScript와 데코레이터 사용 않함](https://github.com/sungjin70/scoped-store-todo-demo-wod)
+  - [to-do - TypeScript와 데코레이터 사용 안함](https://github.com/sungjin70/scoped-store-todo-demo-wod)
 
 
 https://user-images.githubusercontent.com/86173989/133948747-fa784777-61f2-46d3-bc31-c768fc8d8900.mp4
