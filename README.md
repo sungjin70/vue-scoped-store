@@ -290,7 +290,7 @@ You can consult the following resources.
 
 #### ScopedStore Wiki
 
-[ScopedStore Wiki](https://github.com/sungjin70/vue-scoped-store/wiki)
+[Go to Wiki](https://github.com/sungjin70/vue-scoped-store/wiki)
 
 
 #### ScopedStore examples 
