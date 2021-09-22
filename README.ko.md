@@ -268,7 +268,7 @@ export default class extends Vue {
 
 #### ScopedStore Wiki
 
-[ScopedStore Wiki](https://github.com/sungjin70/vue-scoped-store/wiki)
+[위키 바로가기](https://github.com/sungjin70/vue-scoped-store/wiki)
 
 
 #### 예제 소스코드 
