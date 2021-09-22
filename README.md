@@ -303,4 +303,8 @@ You can consult the following resources.
 
 * [A ToDo implementation using ScopedStore](https://github.com/sungjin70/scoped-store-todo-demo)
 
+* A ToDo implementation using ScopedStore
+  - [to-do - With TypeScript and decorators](https://github.com/sungjin70/scoped-store-todo-demo)
+  - [to-do - Without TypeScript and decorators](https://github.com/sungjin70/scoped-store-todo-demo-wod)
+
 https://user-images.githubusercontent.com/86173989/133948747-fa784777-61f2-46d3-bc31-c768fc8d8900.mp4
