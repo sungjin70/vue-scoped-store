@@ -180,11 +180,11 @@ It's time to talk about what the page scope is.
 
 #### Sharing across page scope using @PageStore
 
-The @PageStore Decorator also allows you to share any value of variables as the @GlobalStore does.
+The @PageStore Decorator also allows you to share any value of properties as the @GlobalStore does.
 <br />
-But the difference from @GlobalStore is that the values stored in the variables vanish when the user moves the page to another.
+But the difference from @GlobalStore is that the values stored in properties vanish when the user moves a page to another.
 <br />
-In other words, the lifetime of a value of a variable with @PageStore is equal to the lifetime of the page component.
+In other words, the lifetime of a value of a property with @PageStore is equal to the lifetime of a page component.
 <br />
 With this way, where variable values are automatically initialized after page movement, it makes memory management easier in many web development scenarios.
 <br />
