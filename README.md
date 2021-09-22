@@ -128,7 +128,7 @@ export default class extends Vue {
 </script>
 ```
 
-Once a variable is decorated with @GlobalStore, all variables named the same name in the component are synchronized to have the same value.
+Once a variable is decorated with @GlobalStore, all variables named the same name in the components are synchronized to have the same value.
 If one of the variables with @GlobalStore changes, the change be populated to the other variables that have the same name.
 These values are preserved within the variable even if you navigate to another page.
 
