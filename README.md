@@ -128,12 +128,12 @@ export default class extends Vue {
 </script>
 ```
 
-Once a variable is decorated with @GlobalStore, all variables named the same name in the component are synchronized to have the same value.
-If one of the variables with @GlobalStore changes, the change be populated to the other variables that have the same name.
-These values are preserved within the variable even if you navigate to another page.
+Once a property is decorated with @GlobalStore, all property named the same name in different components are synchronized to have the same value.
+If one of the properties with @GlobalStore changes, the change be populated to the other properties that have the same name.
+These values are preserved within properties even if you navigate to another page.
 
-> Although this is technically inaccurate, with @GlobalStore, all variables which have the same name can be 
-> thought of as only one variable. All of these variables have the same values at any moment like a global variable does.
+> Although this is technically inaccurate, with @GlobalStore, all properties which have the same name can be 
+> thought of as only one global variable. All of these properties have the same values at any moment like a global variable does.
 
 Please watch this video to see how easy it is to synchronize variable values using @GlobalStore.
 
@@ -180,11 +180,11 @@ It's time to talk about what the page scope is.
 
 #### Sharing across page scope using @PageStore
 
-The @PageStore Decorator also allows you to share any value of variables as the @GlobalStore does.
+The @PageStore Decorator also allows you to share any value of properties as the @GlobalStore does.
 <br />
-But the difference from @GlobalStore is that the values stored in the variables vanish when the user moves the page to another.
+But the difference from @GlobalStore is that the values stored in properties vanish when the user moves a page to another.
 <br />
-In other words, the lifetime of a value of a variable with @PageStore is equal to the lifetime of the page component.
+In other words, the lifetime of a value of a property with @PageStore is equal to the lifetime of a page component.
 <br />
 With this way, where variable values are automatically initialized after page movement, it makes memory management easier in many web development scenarios.
 <br />
@@ -281,7 +281,7 @@ Please consult [Wiki](https://github.com/sungjin70/vue-scoped-store/wiki) to lea
 
 
 
-### More information on the ScopedStore
+### More information on ScopedStore
 
 What we've discussed so far is part of the ScopedStore.
 This library provides more APIs and sample codes for developers to use in practice.
