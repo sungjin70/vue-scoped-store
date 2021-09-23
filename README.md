@@ -3,7 +3,7 @@
 English | [한글](README.ko.md)
 
 
-ScopedStore is a library for Vue application that allows easy state management across components and pages.
+ScopedStore is a library for Vue application that allows easy state management across different components and pages.
 <br />
 The goal of the ScopedStore is to provide an easy way to share state, especially between components or pages.
 <br />
@@ -300,8 +300,6 @@ You can consult the following resources.
 
 * [A demo that shows the overall features](https://github.com/sungjin70/vue-scoped-store-demo)
 
-
-* [A ToDo implementation using ScopedStore](https://github.com/sungjin70/scoped-store-todo-demo)
 
 * A to-do implementation using ScopedStore
   - [to-do - With TypeScript and decorators](https://github.com/sungjin70/scoped-store-todo-demo)
