@@ -301,8 +301,6 @@ You can consult the following resources.
 * [A demo that shows the overall features](https://github.com/sungjin70/vue-scoped-store-demo)
 
 
-* [A ToDo implementation using ScopedStore](https://github.com/sungjin70/scoped-store-todo-demo)
-
 * A to-do implementation using ScopedStore
   - [to-do - With TypeScript and decorators](https://github.com/sungjin70/scoped-store-todo-demo)
   - [to-do - Without TypeScript and decorators](https://github.com/sungjin70/scoped-store-todo-demo-wod)
