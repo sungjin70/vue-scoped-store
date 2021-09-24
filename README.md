@@ -298,7 +298,7 @@ You can consult the following resources.
 * [Basic demo](https://github.com/sungjin70/scoped-store-basic-demo)
 
 
-* [A demo that shows the overall features](https://github.com/sungjin70/vue-scoped-store-demo)
+* [API demo that shows overall features](https://github.com/sungjin70/vue-scoped-store-demo)
 
 
 * A to-do implementation using ScopedStore
