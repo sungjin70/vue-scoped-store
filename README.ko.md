@@ -276,12 +276,12 @@ export default class extends Vue {
 * [기초 데모](https://github.com/sungjin70/scoped-store-basic-demo)
 
 
-* [전반적인 기능을 보여주는 데모](https://github.com/sungjin70/vue-scoped-store-demo)
+* [전반적인 기능을 보여주는 API 데모](https://github.com/sungjin70/vue-scoped-store-demo)
 
 
 * to-do 구현 예제
-  - [to-do - TypeScript와 데코레이터 사용](https://github.com/sungjin70/scoped-store-todo-demo)
-  - [to-do - TypeScript와 데코레이터 사용 안함](https://github.com/sungjin70/scoped-store-todo-demo-wod)
+  - [to-do : TypeScript와 데코레이터 사용](https://github.com/sungjin70/scoped-store-todo-demo)
+  - [to-do : TypeScript와 데코레이터 사용 안함](https://github.com/sungjin70/scoped-store-todo-demo-wod)
 
 
 https://user-images.githubusercontent.com/86173989/133948747-fa784777-61f2-46d3-bc31-c768fc8d8900.mp4
