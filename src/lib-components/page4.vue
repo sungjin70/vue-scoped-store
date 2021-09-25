@@ -126,7 +126,7 @@ export default class extends Vue {
   private isPage = true;
 
   @GlobalStore()
-  private globalArray = [];
+  private globalArray: any[] = [];  
   
   @GlobalStore({deep:true})
   private globalObject: any = {

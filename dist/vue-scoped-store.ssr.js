@@ -7702,6 +7702,23 @@ var AnyTypeStoreService = /*#__PURE__*/function (_BaseStoreService) {
   return AnyTypeStoreService;
 }(BaseStoreService);var _class;
 
+var acceptOrNot = function acceptOrNot(fromKey, toKey) {
+  var fromArr = fromKey.split('.');
+  var toArr = toKey.split('.');
+
+  if (fromArr.length > toArr.length) {
+    for (var i = 0; i < toArr.length; i++) {
+      if (toArr[i] !== fromArr[i]) return false;
+    }
+  } else {
+    for (var _i = 0; _i < fromArr.length; _i++) {
+      if (toArr[_i] !== fromArr[_i]) return false;
+    }
+  }
+
+  return true;
+};
+
 var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
   _inherits(ScopedStoreComponent, _Vue);
 
@@ -7886,14 +7903,14 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
       var onBeforeReceive = opt.direction !== 'write' && opt.onBeforeReceive && typeof opt.onBeforeReceive === 'function' ? opt.onBeforeReceive : null;
       var onReceived = opt.direction !== 'write' && opt.onReceived && typeof opt.onReceived === 'function' ? opt.onReceived : null;
       dataCallback(function (data, updater) {
+        //컴포넌트 초기화 때 프로퍼티에 undefind가 설정되면 
+        //프로퍼티가 반응성 기능을 하지 못한다.
+        if (data === undefined) return;
         var updaterPath = updater && updater.path ? updater.path : ""; // console.log('dataCallback => ', updaterPath, args.storeKey, data, args.vm[args.key], updater);
         //This function is called whenever the values of 
         //all managed variables change, so this check is required.
 
-        if (updaterPath != args.storeKey) return; //컴포넌트 초기화 때 프로퍼티에 undefind가 설정되면 
-        //프로퍼티가 반응성 기능을 하지 못한다.
-
-        if (data === undefined) return;
+        if (!acceptOrNot(updaterPath, args.storeKey)) return;
         var nested = updaterPath.length > args.storeKey.length && updaterPath.startsWith(args.storeKey);
 
         if (_typeof$1(data) !== "object" && args.vm[args.key] !== data || args.recentlySent != data && args.vm[args.key] != data || nested) {
