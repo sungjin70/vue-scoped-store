@@ -27,6 +27,9 @@ const isNarrowPath = (storeKey:string) => {
 }
 
 const acceptOrNot = (fromKey:string, toKey:string) => {
+    if (fromKey == toKey)
+        return true;
+
     const fromArr = fromKey.split('.');
     const toArr = toKey.split('.');
     if (fromArr.length > toArr.length) {

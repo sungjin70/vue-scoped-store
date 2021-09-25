@@ -7703,6 +7703,7 @@ var AnyTypeStoreService = /*#__PURE__*/function (_BaseStoreService) {
 }(BaseStoreService);var _class;
 
 var acceptOrNot = function acceptOrNot(fromKey, toKey) {
+  if (fromKey == toKey) return true;
   var fromArr = fromKey.split('.');
   var toArr = toKey.split('.');
 
