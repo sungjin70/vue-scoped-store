@@ -7382,6 +7382,7 @@ class AnyTypeStoreService extends BaseStoreService {
 var _class;
 
 const acceptOrNot = (fromKey, toKey) => {
+  if (fromKey == toKey) return true;
   const fromArr = fromKey.split('.');
   const toArr = toKey.split('.');
 
