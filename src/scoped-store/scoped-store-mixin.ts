@@ -22,6 +22,29 @@ interface SetupStorePropertyArg {
     isForPage:boolean
 }
 
+const isNarrowPath = (storeKey:string) => {
+    return storeKey.indexOf('.') > 0;
+}
+
+const acceptOrNot = (fromKey:string, toKey:string) => {
+    const fromArr = fromKey.split('.');
+    const toArr = toKey.split('.');
+    if (fromArr.length > toArr.length) {
+        for (let i=0;i<toArr.length;i++) {
+            if (toArr[i] !== fromArr[i])
+                return false;
+        }
+    }
+    else {
+        for (let i=0;i<fromArr.length;i++) {
+            if (toArr[i] !== fromArr[i])
+                return false;
+        }
+    }
+
+    return true;
+}
+
 @Component
 export default class ScopedStoreComponent extends Vue {
 
@@ -109,12 +132,14 @@ export default class ScopedStoreComponent extends Vue {
         }
     }
 
-
     private setupStoreProperty(args:SetupStorePropertyArg) {
         const opt = args.keyStore[args.key];
         // const storeKey = (opt.path || key) as string;
         // console.log('registering scopped store for key=', key, storeKey);
-        const onBeforeSendCallback = opt.direction !== 'read' && opt.onBeforeSend && typeof opt.onBeforeSend === 'function' ? opt.onBeforeSend : null;
+        const onBeforeSendCallback = 
+                opt.direction !== 'read' 
+                && opt.onBeforeSend 
+                && typeof opt.onBeforeSend === 'function' ? opt.onBeforeSend : null;
         let recentlyRecevied = {}; // to prevent feedback
         // let recentlySent = {}; // to prevent feedback
         const onBeforeSend = (val:any, oldVal:any) : any => {
@@ -152,18 +177,18 @@ export default class ScopedStoreComponent extends Vue {
         const onBeforeReceive = opt.direction !== 'write' && opt.onBeforeReceive && typeof opt.onBeforeReceive === 'function' ? opt.onBeforeReceive : null;
         const onReceived = opt.direction !== 'write' && opt.onReceived && typeof opt.onReceived === 'function' ? opt.onReceived : null;
         dataCallback((data:any,updater?:any) => {
-            const updaterPath = updater && updater.path ? (updater.path as string) : "";
+            //컴포넌트 초기화 때 프로퍼티에 undefind가 설정되면 
+            //프로퍼티가 반응성 기능을 하지 못한다.
+            if (data === undefined)
+                return;
+
+            const updaterPath = updater && updater.path ? updater.path as string : "";
 
             // console.log('dataCallback => ', updaterPath, args.storeKey, data, args.vm[args.key], updater);
 
             //This function is called whenever the values of 
             //all managed variables change, so this check is required.
-            if (updaterPath != args.storeKey)
-                return;
-
-            //컴포넌트 초기화 때 프로퍼티에 undefind가 설정되면 
-            //프로퍼티가 반응성 기능을 하지 못한다.
-            if (data === undefined)
+            if (!acceptOrNot(updaterPath, args.storeKey))
                 return;
             
             const nested = updaterPath.length > args.storeKey.length && updaterPath.startsWith(args.storeKey);

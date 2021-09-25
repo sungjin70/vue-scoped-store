@@ -40,7 +40,7 @@ export default class extends Vue {
   private nestedStrVal1:string = "nestedStrVal1 default";
 
   @GlobalStore()
-  private globalArray = [];  
+  private globalArray: any[] = [];  
 
   get title() {
       return 'child-with-options component 7';

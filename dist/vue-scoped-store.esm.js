@@ -7381,6 +7381,23 @@ class AnyTypeStoreService extends BaseStoreService {
 
 var _class;
 
+const acceptOrNot = (fromKey, toKey) => {
+  const fromArr = fromKey.split('.');
+  const toArr = toKey.split('.');
+
+  if (fromArr.length > toArr.length) {
+    for (let i = 0; i < toArr.length; i++) {
+      if (toArr[i] !== fromArr[i]) return false;
+    }
+  } else {
+    for (let i = 0; i < fromArr.length; i++) {
+      if (toArr[i] !== fromArr[i]) return false;
+    }
+  }
+
+  return true;
+};
+
 let ScopedStoreComponent = Component(_class = class ScopedStoreComponent extends Vue {
   constructor(...args) {
     super(...args);
@@ -7540,14 +7557,14 @@ let ScopedStoreComponent = Component(_class = class ScopedStoreComponent extends
     const onBeforeReceive = opt.direction !== 'write' && opt.onBeforeReceive && typeof opt.onBeforeReceive === 'function' ? opt.onBeforeReceive : null;
     const onReceived = opt.direction !== 'write' && opt.onReceived && typeof opt.onReceived === 'function' ? opt.onReceived : null;
     dataCallback((data, updater) => {
+      //컴포넌트 초기화 때 프로퍼티에 undefind가 설정되면 
+      //프로퍼티가 반응성 기능을 하지 못한다.
+      if (data === undefined) return;
       const updaterPath = updater && updater.path ? updater.path : ""; // console.log('dataCallback => ', updaterPath, args.storeKey, data, args.vm[args.key], updater);
       //This function is called whenever the values of 
       //all managed variables change, so this check is required.
 
-      if (updaterPath != args.storeKey) return; //컴포넌트 초기화 때 프로퍼티에 undefind가 설정되면 
-      //프로퍼티가 반응성 기능을 하지 못한다.
-
-      if (data === undefined) return;
+      if (!acceptOrNot(updaterPath, args.storeKey)) return;
       const nested = updaterPath.length > args.storeKey.length && updaterPath.startsWith(args.storeKey);
 
       if (typeof data !== "object" && args.vm[args.key] !== data || args.recentlySent != data && args.vm[args.key] != data || nested) {
