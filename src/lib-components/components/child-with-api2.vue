@@ -1,6 +1,6 @@
 <template>
   <div>
-      <p><h2>{{title}}</h2></p>
+    <h2>{{title}}</h2>
     <span>numberValue1 (path:pageObject.numberValue1) : </span>
     <br />
     <input v-model="numberValue1" type="number" />

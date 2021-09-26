@@ -1,6 +1,6 @@
 <template>
   <div>
-      <p><h2>{{title}}</h2></p>
+    <h2>{{title}}</h2>
     <span>nestedNumberVal1 (path:pageObject.nestedObj.nestedNumberVal1) : </span>
     <br />
     <input v-model="nestedNumberVal1" type="number" />
