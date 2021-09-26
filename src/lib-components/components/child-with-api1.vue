@@ -1,11 +1,11 @@
 <template>
   <div>
-      <p><h2>{{title}}</h2></p>
-    <span>pageObject.strValue1 (as strValue1) : </span>
+    <h2>{{title}}</h2>
+    <span>strValue1 (path:pageObject.strValue1) : </span>
     <br />
     <input v-model="strValue1" />
     <br />
-    <span>myCounter : </span>
+    <span>myCounter (path: pageCounter): </span>
     <br />
     <input v-model="myCounter" type="number" />
   </div>
@@ -17,8 +17,7 @@ import Component from 'vue-class-component';
 
 @Component({
   watch: {
-    'strValue1' : {
-      deep: true,
+    strValue1 : {
       handler (newVal : any, oldVal: any) {
         if (newVal != oldVal) 
         {

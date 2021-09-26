@@ -1,7 +1,7 @@
 <template>
   <div>
-      <p><h2>{{title}}</h2></p>
-    <span>myObject.nestedObj.nestedStrVal1 (as nestedStrVal1): </span>
+    <h2>{{title}}</h2>
+    <span>nestedStrVal1 (path:pageObject.nestedObj.nestedStrVal1): </span>
     <br />
     <input v-model="nestedStrVal1" />
   </div>

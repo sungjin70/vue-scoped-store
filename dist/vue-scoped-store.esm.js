@@ -7673,13 +7673,16 @@ let ScopedStoreComponent = Component(_class = class ScopedStoreComponent extends
             }
             data.forEach(item => {
               targetArray.push(item);
-            }); // recentlyRecevied = data;
+            });
+            data = [...data]; // recentlyRecevied = data;
             //vm[key] = recentlyRecevied = [...data];
           } else if (typeof data == "object") {
             //vm[key] = recentlyRecevied = {...data};
             Object.getOwnPropertyNames(data).forEach(val => {
               Vue.set(args.vm[args.key], val, data[val]);
-            }); // recentlyRecevied = data;
+            });
+            args.vm[args.key] = { ...args.vm[args.key]
+            }; // recentlyRecevied = data;
           } else // vm[key] = recentlyRecevied = data;
             args.vm[args.key] = data;
 
