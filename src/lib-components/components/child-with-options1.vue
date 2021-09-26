@@ -5,13 +5,15 @@
     <br />
     <input v-model="myCounter" type="number" />
     <br />
-    <span>myObject.strValue1 : </span>
+    <span>myObject.strValue1 (path:pageObject.strValue1): </span>
     <br />
     <input v-model="myObject.strValue1" />
     <br />
+    <span>myObject.strValue2 (path:pageObject.strValue2): </span>
+    <br />
     <input v-model="myObject.strValue2" />
     <br />
-    <span>pageObject:{{myObject}}</span>
+    <span>myObject (path:pageObject):{{myObject}}</span>
     <br />
     pageBoolean : <input v-model="pageBoolean" type="checkbox" /> : {{pageBoolean}}
     

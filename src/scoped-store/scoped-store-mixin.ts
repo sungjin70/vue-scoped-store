@@ -10,6 +10,8 @@ import { Subscription, BehaviorSubject } from './rxjs-simple';
 import {AnyTypeStoreService, StringTypeCommand} from "./core/any-type-store-service";
 import {scopedStoreManager} from "./scoped-store-manager";
 
+import {WeakRef} from '@ungap/weakrefs';
+
 export interface ScopedStore {
 }
 
@@ -19,7 +21,7 @@ interface SetupStorePropertyArg {
     keyStore:any;
     recentlySent:any;
     storeKey:string;
-    isForPage:boolean
+    isForPage:boolean;
 }
 
 const isNarrowPath = (storeKey:string) => {
@@ -47,6 +49,8 @@ const acceptOrNot = (fromKey:string, toKey:string) => {
 
     return true;
 }
+
+const globalDataServiceKey = "$$GLOBAL_STORE_SERVICE$$";
 
 @Component
 export default class ScopedStoreComponent extends Vue {
@@ -187,7 +191,7 @@ export default class ScopedStoreComponent extends Vue {
 
             const updaterPath = updater && updater.path ? updater.path as string : "";
 
-            // console.log('dataCallback => ', updaterPath, args.storeKey, data, args.vm[args.key], updater);
+            console.log('dataCallback => ', !updaterPath ? '(empty)':updaterPath, args.storeKey, data, args.vm[args.key], updater);
 
             //This function is called whenever the values of 
             //all managed variables change, so this check is required.
@@ -249,27 +253,26 @@ export default class ScopedStoreComponent extends Vue {
     }
 
     private readonly senderIdentity = {};
-    private readonly globalDataServiceKey = "$$GLOBAL_STORE_SERVICE$$";
 
     public sendGlobalData(data:any, storePath:string, sendOpt?:any) {
-        const service : AnyTypeStoreService | undefined  = this.dataTranManager.findOfCreateGlobalService(this.globalDataServiceKey);
+        const service : AnyTypeStoreService | undefined  = this.dataTranManager.findOfCreateGlobalService(globalDataServiceKey);
         if (!sendOpt) 
-            sendOpt = {identity:this.senderIdentity};
+            sendOpt = {identity:new WeakRef(this.senderIdentity), path:storePath};
         else if (!sendOpt.identity)
-            sendOpt.identity = this.senderIdentity;
+            sendOpt.identity = new WeakRef(this.senderIdentity);
         
         // console.log('sendGlobalData => ', data, sendOpt, storePath);
         service?.sendData(data, sendOpt, storePath);
     }
 
     public setGlobalDataCallback(callback: (data: any, updater?:any) => void, storePath:string) {
-        const service : AnyTypeStoreService | undefined  = this.dataTranManager.findOfCreateGlobalService(this.globalDataServiceKey);
+        const service : AnyTypeStoreService | undefined  = this.dataTranManager.findOfCreateGlobalService(globalDataServiceKey);
         if (service) {
             let isFirst = true;
             this.subscriptionsForGlobal.push(
                 service.$state.subscribe(({payload,updater}) => {
                     try {
-                        if (updater.identity === this.senderIdentity)
+                        if (updater.identity?.deref() === this.senderIdentity)
                             return;
                         const filtered = get(payload, storePath);
                         // console.log('setGlobalDataCallback => received:', payload, storePath, filtered);
@@ -295,17 +298,18 @@ export default class ScopedStoreComponent extends Vue {
         }
     }
 
-    public sendPageData(data:any, path:string, sendOpt?:any) {
+    public sendPageData(data:any, storePath:string, sendOpt?:any) {
         // if (!this.dataTranManager.pageDataService)
         //     this.dataTranManager.pageDataService = new AnyTypeStoreService();
 
-        // console.log('sendPageData', data, path);
+        // console.log('sendPageData', data, storePath);
+
         if (!sendOpt) 
-            sendOpt = {identity:this.senderIdentity};
+            sendOpt = {identity:new WeakRef(this.senderIdentity), path:storePath};
         else if (!sendOpt.identity)
-            sendOpt.identity = this.senderIdentity;
+            sendOpt.identity = new WeakRef(this.senderIdentity);
             
-        return this.dataTranManager.pageDataService?.sendData(data, sendOpt, path);
+        return this.dataTranManager.pageDataService?.sendData(data, sendOpt, storePath);
     }
 
     public setPageDataCallback(callback: (data: any, updater?:any) => void, storePath:string) {
@@ -315,7 +319,7 @@ export default class ScopedStoreComponent extends Vue {
             // this.dataTranManager.pageDataService.$state.subscribe(state => {
             let sub = this.dataTranManager.pageDataService.$state.subscribe(({payload,updater}) => {
                     try {
-                        if (updater.identity === this.senderIdentity)
+                        if (updater.identity?.deref() === this.senderIdentity)
                             return;
                         const filtered = get(payload, storePath);
                         // console.log('setPageDataCallback => received:', payload, storePath, filtered);
