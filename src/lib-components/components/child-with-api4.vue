@@ -1,9 +1,9 @@
 <template>
   <div>
       <p><h2>{{title}}</h2></p>
-    <span>myObject.nestedObj.nestedNumberVal1 : </span>
+    <span>nestedNumberVal1 (path:pageObject.nestedObj.nestedNumberVal1) : </span>
     <br />
-    <input v-model="myObject_nestedObj_nestedNumberVal1" type="number" />
+    <input v-model="nestedNumberVal1" type="number" />
   </div>
 </template>
 
@@ -13,40 +13,40 @@ import Component from 'vue-class-component';
 
 @Component({
   watch: {
-    'myObject.nestedObj.nestedNumberVal1' : function (newVal : any, oldVal: any) {
+    nestedNumberVal1 : function (newVal : any, oldVal: any) {
       this.$sendPageData(newVal,'pageObject.nestedObj.nestedNumberVal1');
     },
   },
 })
 export default class extends Vue {
 
-  private myObject: any = null
+  private nestedNumberVal1 = -1;
 
   get title() {
-      return 'child component 4';
+      return 'child-with-api 4';
   }
 
-  get myObject_nestedObj_nestedNumberVal1() {
-    try {
-      return this.myObject.nestedObj.nestedNumberVal1;
-    } catch (error) {
-      return "";
-    }
-  }
+  // get myObject_nestedObj_nestedNumberVal1() {
+  //   try {
+  //     return this.myObject.nestedObj.nestedNumberVal1;
+  //   } catch (error) {
+  //     return "";
+  //   }
+  // }
 
-  set myObject_nestedObj_nestedNumberVal1(value:string) {
-    try {
-      this.myObject.nestedObj.nestedNumberVal1 = value;
-    } catch (error) {
-    }
-  }  
+  // set myObject_nestedObj_nestedNumberVal1(value:string) {
+  //   try {
+  //     this.myObject.nestedObj.nestedNumberVal1 = value;
+  //   } catch (error) {
+  //   }
+  // }  
 
   created() {
     // console.log('created')
     this.$setPageDataCallback((data:any) => {
       console.log('child4.vue : $setPageDataCallback', data);
-      this.myObject = data;
-    },'pageObject');
+      this.nestedNumberVal1 = data;
+    },'pageObject.nestedObj.nestedNumberVal1');
   }
 }
 </script>

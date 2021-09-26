@@ -196,6 +196,39 @@ function _get(target, property, receiver) {
   }
 
   return _get(target, property, receiver || target);
+}
+
+function _toConsumableArray$1(arr) {
+  return _arrayWithoutHoles$1(arr) || _iterableToArray$1(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread$1();
+}
+
+function _arrayWithoutHoles$1(arr) {
+  if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+}
+
+function _iterableToArray$1(iter) {
+  if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+}
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+}
+
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+
+  return arr2;
+}
+
+function _nonIterableSpread$1() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }/**
   * vue-class-component v7.2.6
   * (c) 2015-present Evan You
@@ -8018,13 +8051,15 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
               }
               data.forEach(function (item) {
                 targetArray.push(item);
-              }); // recentlyRecevied = data;
+              });
+              data = _toConsumableArray$1(data); // recentlyRecevied = data;
               //vm[key] = recentlyRecevied = [...data];
             } else if (_typeof$1(data) == "object") {
               //vm[key] = recentlyRecevied = {...data};
               Object.getOwnPropertyNames(data).forEach(function (val) {
                 Vue__default['default'].set(args.vm[args.key], val, data[val]);
-              }); // recentlyRecevied = data;
+              });
+              args.vm[args.key] = _objectSpread2({}, args.vm[args.key]); // recentlyRecevied = data;
             } else // vm[key] = recentlyRecevied = data;
               args.vm[args.key] = data;
 

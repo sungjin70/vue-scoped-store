@@ -222,9 +222,11 @@ export default class ScopedStoreComponent extends Vue {
                             args.vm[args.key] = targetArray = [];
                         }
 
-                        (data as Array<any>).forEach((item) => {
+                        data.forEach((item) => {
                             targetArray.push(item);
                         });
+
+                        data = [...data];
                         // recentlyRecevied = data;
                         //vm[key] = recentlyRecevied = [...data];
                     }
@@ -235,6 +237,7 @@ export default class ScopedStoreComponent extends Vue {
                                 Vue.set(args.vm[args.key], val, data[val]);
                             }
                         );
+                        args.vm[args.key] = {...args.vm[args.key]};
                         // recentlyRecevied = data;
                     }
                     else

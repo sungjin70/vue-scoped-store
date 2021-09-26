@@ -94,13 +94,26 @@ import child4 from './components/child-with-api4.vue';
   },
   pageStore:{
     isPage:true,
+    pageObject:{
+      deep:true, //an option of watch
+    },
   },
   watch: {
       pageCounter: function (newValue:any, oldValue:any) {
-        this.$sendPageData(newValue, 'pageCounter');
+        if (newValue != oldValue)
+          this.$sendPageData(newValue, 'pageCounter');
       },
       globalCounter: function (newValue:any, oldValue:any) {
-        this.$sendGlobalData(newValue, 'globalCounter');
+        if (newValue != oldValue)
+          this.$sendGlobalData(newValue, 'globalCounter');
+      },
+      globalObject: {
+        deep:true,
+        handler(newValue:any, oldValue:any) {
+          console.log('globalObject handler :', newValue, oldValue);
+          if (newValue != oldValue)
+            this.$sendGlobalData(newValue, 'globalObject');
+        }
       },
   },
 })
@@ -134,11 +147,6 @@ export default class extends Vue {
 
   created() {
     // console.log('created : $sendPageData', this.pageObject);
-    this.$sendPageData(this.pageObject, 'pageObject');
-    this.$setPageDataCallback((data:any) => {
-      console.log('page2.vue : $setPageDataCallback', data);
-      this.pageObject = data;
-    }, 'pageObject');
 
     this.$setGlobalDataCallback((data:any) => {
       console.log('page2.vue : $setGlobalDataCallback', data);
@@ -146,10 +154,15 @@ export default class extends Vue {
     }, 'globalObject');
 
     //Don't do this, it will end up causing an infinite feedback
-    // this.$setGlobalDataCallback((data:any) => {
-    //   console.log('page2.vue : $setGlobalDataCallback', data);
-    //   this.globalCounter = data;
-    // }, 'globalCounter');
+    this.$setGlobalDataCallback((data:any) => {
+      // console.log('page2.vue : $setGlobalDataCallback', data);
+      this.globalCounter = data;
+    }, 'globalCounter');
+
+    this.$setPageDataCallback((data:any) => {
+      // console.log('page2.vue : $setGlobalDataCallback', data);
+      this.pageCounter = data;
+    }, 'pageCounter');
   }
 
   // updateByDeepCopy(path: string, value: any) {
