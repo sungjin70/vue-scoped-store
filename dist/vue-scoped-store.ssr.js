@@ -301,7 +301,7 @@ function createDecorator(factory) {
     });
   };
 }
-function isPrimitive(value) {
+function isPrimitive$1(value) {
   var type = _typeof(value);
 
   return value == null || type !== 'object' && type !== 'function';
@@ -460,7 +460,7 @@ function forwardStaticMembers(Extended, Original, Super) {
 
       var superDescriptor = Object.getOwnPropertyDescriptor(Super, key);
 
-      if (!isPrimitive(descriptor.value) && superDescriptor && superDescriptor.value === descriptor.value) {
+      if (!isPrimitive$1(descriptor.value) && superDescriptor && superDescriptor.value === descriptor.value) {
         return;
       }
     } // Warn if the users manually declare reserved properties
@@ -6567,7 +6567,12 @@ var scopedStoreManager = {
       globalMap.delete(key);
     }
   }
-};var BaseStoreService = /*#__PURE__*/function () {
+};var isPrimitive = function isPrimitive(value) {
+  var type = _typeof$1(value);
+
+  return value == null || type !== "object" && type !== "function";
+};
+var BaseStoreService = /*#__PURE__*/function () {
   function BaseStoreService(initialState) {
     _classCallCheck(this, BaseStoreService);
 
@@ -7664,7 +7669,18 @@ var AnyTypeStoreService = /*#__PURE__*/function (_BaseStoreService) {
   _createClass(AnyTypeStoreService, [{
     key: "sendData",
     value: function sendData(payload, sendOpt, path) {
-      var copy = lodash_clonedeep(payload); // console.log('sendData (after cloneDeep)', payload, copy);
+      var copy = payload;
+      /*
+      It can be seen that this will have a negative impact on performance,
+      it is necessary to avoid problems related to memory leakage and object reference.
+      */
+
+      if (!isPrimitive(payload)) {
+        // copy = JSON.parse(JSON.stringify(payload));
+        // console.log('sendData (after JSON.stringify)', payload, copy);
+        //Cloneep has better performance then JSON.stringify.
+        copy = lodash_clonedeep(payload); // console.log('sendData (after cloneDeep)', payload, copy);
+      }
 
       var state;
 
@@ -7680,11 +7696,10 @@ var AnyTypeStoreService = /*#__PURE__*/function (_BaseStoreService) {
         };
         if (!state.payload) state.payload = {};
         lodash_set(state.payload, path, copy);
-      } // setTimeout(() => {
+      }
 
-
-      this.setState(state); // }, 0);
-
+      console.log('sendData setState(state)', state, path);
+      this.setState(state);
       return copy;
     }
   }, {
@@ -7700,7 +7715,68 @@ var AnyTypeStoreService = /*#__PURE__*/function (_BaseStoreService) {
   }]);
 
   return AnyTypeStoreService;
-}(BaseStoreService);var _class;
+}(BaseStoreService);/*! (c) Andrea Giammarchi - ISC */
+var self$1 = undefined || /* istanbul ignore next */ {};
+try {
+  self$1.WeakRef = WeakRef;
+  /* istanbul ignore next */
+  self$1.FinalizationGroup = FinalizationGroup;
+}
+catch (o_O) {
+  // requires a global WeakMap (IE11+)
+  (function (WeakMap, defineProperties) {
+    var wr = new WeakMap;
+    function WeakRef(value) {
+      wr.set(this, value);
+    }
+    defineProperties(
+      WeakRef.prototype,
+      {
+        deref: {
+          value: function deref() {
+            return wr.get(this);
+          }
+        }
+      }
+    );
+
+    var fg = new WeakMap;
+    function FinalizationGroup(fn) {
+      fg.set(this, []);
+    }
+    defineProperties(
+      FinalizationGroup.prototype,
+      {
+        register: {
+          value: function register(value, name) {
+            var names = fg.get(this);
+            if (names.indexOf(name) < 0)
+              names.push(name);
+          }
+        },
+        unregister: {
+          value: function unregister(value, name) {
+            var names = fg.get(this);
+            var i = names.indexOf(name);
+            if (-1 < i)
+              names.splice(i, 1);
+            return -1 < i;
+          }
+        },
+        cleanupSome: {
+          value: function cleanupSome(fn) {
+            fn(fg.get(this));
+          }
+        }
+      }
+    );
+
+    self$1.WeakRef = WeakRef;
+    self$1.FinalizationGroup = FinalizationGroup;
+
+  }(WeakMap, Object.defineProperties));
+}
+const {WeakRef, FinalizationGroup} = self$1;var _class;
 
 var acceptOrNot = function acceptOrNot(fromKey, toKey) {
   if (fromKey == toKey) return true;
@@ -7719,6 +7795,8 @@ var acceptOrNot = function acceptOrNot(fromKey, toKey) {
 
   return true;
 };
+
+var globalDataServiceKey = "$$GLOBAL_STORE_SERVICE$$";
 
 var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
   _inherits(ScopedStoreComponent, _Vue);
@@ -7749,8 +7827,6 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
     _defineProperty$1(_assertThisInitialized(_this), "isPage", false);
 
     _defineProperty$1(_assertThisInitialized(_this), "senderIdentity", {});
-
-    _defineProperty$1(_assertThisInitialized(_this), "globalDataServiceKey", "$$GLOBAL_STORE_SERVICE$$");
 
     return _this;
   }
@@ -7907,8 +7983,8 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
         //컴포넌트 초기화 때 프로퍼티에 undefind가 설정되면 
         //프로퍼티가 반응성 기능을 하지 못한다.
         if (data === undefined) return;
-        var updaterPath = updater && updater.path ? updater.path : ""; // console.log('dataCallback => ', updaterPath, args.storeKey, data, args.vm[args.key], updater);
-        //This function is called whenever the values of 
+        var updaterPath = updater && updater.path ? updater.path : "";
+        console.log('dataCallback => ', !updaterPath ? '(empty)' : updaterPath, args.storeKey, data, args.vm[args.key], updater); //This function is called whenever the values of 
         //all managed variables change, so this check is required.
 
         if (!acceptOrNot(updaterPath, args.storeKey)) return;
@@ -7964,10 +8040,11 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
   }, {
     key: "sendGlobalData",
     value: function sendGlobalData(data, storePath, sendOpt) {
-      var service = this.dataTranManager.findOfCreateGlobalService(this.globalDataServiceKey);
+      var service = this.dataTranManager.findOfCreateGlobalService(globalDataServiceKey);
       if (!sendOpt) sendOpt = {
-        identity: this.senderIdentity
-      };else if (!sendOpt.identity) sendOpt.identity = this.senderIdentity; // console.log('sendGlobalData => ', data, sendOpt, storePath);
+        identity: new WeakRef(this.senderIdentity),
+        path: storePath
+      };else if (!sendOpt.identity) sendOpt.identity = new WeakRef(this.senderIdentity); // console.log('sendGlobalData => ', data, sendOpt, storePath);
 
       service === null || service === void 0 ? void 0 : service.sendData(data, sendOpt, storePath);
     }
@@ -7976,7 +8053,7 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
     value: function setGlobalDataCallback(callback, storePath) {
       var _this3 = this;
 
-      var service = this.dataTranManager.findOfCreateGlobalService(this.globalDataServiceKey);
+      var service = this.dataTranManager.findOfCreateGlobalService(globalDataServiceKey);
 
       if (service) {
         var isFirst = true;
@@ -7985,7 +8062,9 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
               updater = _ref.updater;
 
           try {
-            if (updater.identity === _this3.senderIdentity) return;
+            var _updater$identity;
+
+            if (((_updater$identity = updater.identity) === null || _updater$identity === void 0 ? void 0 : _updater$identity.deref()) === _this3.senderIdentity) return;
             var filtered = lodash_get(payload, storePath); // console.log('setGlobalDataCallback => received:', payload, storePath, filtered);
 
             if (filtered !== undefined) {
@@ -8012,16 +8091,17 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
     }
   }, {
     key: "sendPageData",
-    value: function sendPageData(data, path, sendOpt) {
+    value: function sendPageData(data, storePath, sendOpt) {
       var _this$dataTranManager;
 
       // if (!this.dataTranManager.pageDataService)
       //     this.dataTranManager.pageDataService = new AnyTypeStoreService();
-      // console.log('sendPageData', data, path);
+      // console.log('sendPageData', data, storePath);
       if (!sendOpt) sendOpt = {
-        identity: this.senderIdentity
-      };else if (!sendOpt.identity) sendOpt.identity = this.senderIdentity;
-      return (_this$dataTranManager = this.dataTranManager.pageDataService) === null || _this$dataTranManager === void 0 ? void 0 : _this$dataTranManager.sendData(data, sendOpt, path);
+        identity: new WeakRef(this.senderIdentity),
+        path: storePath
+      };else if (!sendOpt.identity) sendOpt.identity = new WeakRef(this.senderIdentity);
+      return (_this$dataTranManager = this.dataTranManager.pageDataService) === null || _this$dataTranManager === void 0 ? void 0 : _this$dataTranManager.sendData(data, sendOpt, storePath);
     }
   }, {
     key: "setPageDataCallback",
@@ -8036,7 +8116,9 @@ var ScopedStoreComponent = Component(_class = /*#__PURE__*/function (_Vue) {
               updater = _ref2.updater;
 
           try {
-            if (updater.identity === _this4.senderIdentity) return;
+            var _updater$identity2;
+
+            if (((_updater$identity2 = updater.identity) === null || _updater$identity2 === void 0 ? void 0 : _updater$identity2.deref()) === _this4.senderIdentity) return;
             var filtered = lodash_get(payload, storePath); // console.log('setPageDataCallback => received:', payload, storePath, filtered);
 
             if (filtered !== undefined) callback(filtered, updater);

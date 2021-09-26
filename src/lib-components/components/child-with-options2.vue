@@ -1,7 +1,7 @@
 <template>
   <div>
       <p><h2>{{title}}</h2></p>
-    <span>myNumber (pageObject.numberValue1) : </span>
+    <span>myNumber (path:pageObject.numberValue1) : </span>
     <br />
     <input v-model="myNumber" type="number" />
   </div>

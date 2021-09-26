@@ -1,7 +1,7 @@
 <template>
   <div>
       <p><h2>{{title}}</h2></p>
-    <span>nestedStrVal1 (pageObject.nestedObj.nestedStrVal1) : </span>
+    <span>nestedStrVal1 (path : pageObject.nestedObj.nestedStrVal1) : </span>
     <br />
     <input v-model="nestedStrVal1" />
   </div>
@@ -39,6 +39,5 @@ export default class extends Vue {
   get title() {
       return 'child-with-options component 3';
   }
-
 }
 </script>

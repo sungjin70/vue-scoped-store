@@ -28,7 +28,7 @@
             ]
         },
         "lib": [
-            "esnext",
+            "ESNext",
             "dom",
             "dom.iterable",
             "scripthost"
@@ -44,7 +44,7 @@
         "tests/**/*.ts",
         "tests/**/*.tsx",
         "/*.d.ts"
-, "src/scoped-store/methods/global-data-callback.js"    ],
+, "src/scoped-store/methods/global-data-callback.js", "src/scoped-store/helpers/weakrefs.js"    ],
     "exclude": [
         "node_modules",
         "dist"

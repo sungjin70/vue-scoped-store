@@ -1,4 +1,4 @@
-import {BaseStoreService} from './base-store-service';
+import {BaseStoreService, isPrimitive} from './base-store-service';
 import { Observable } from '../rxjs-simple';
 import clonedeep from 'lodash.clonedeep';
 import set from 'lodash.set';
@@ -30,8 +30,21 @@ export class AnyTypeStoreService extends BaseStoreService<AnyTypeState, StringTy
     }
 
     public sendData(payload: any, sendOpt:{}, path?:string) {
-        let copy = clonedeep(payload);
-        // console.log('sendData (after cloneDeep)', payload, copy);
+        let copy = payload;
+        
+        /*
+        It can be seen that this will have a negative impact on performance,
+        it is necessary to avoid problems related to memory leakage and object reference.
+        */
+        if (!isPrimitive(payload)) {
+            // copy = JSON.parse(JSON.stringify(payload));
+            // console.log('sendData (after JSON.stringify)', payload, copy);
+
+            //Cloneep has better performance then JSON.stringify.
+            copy = clonedeep(payload);
+            // console.log('sendData (after cloneDeep)', payload, copy);
+        }
+
         let state:any;
         if (!path) {
             state = {
@@ -56,9 +69,9 @@ export class AnyTypeStoreService extends BaseStoreService<AnyTypeState, StringTy
             set(state.payload, path, copy);
         }
 
-        // setTimeout(() => {
-            this.setState(state);
-        // }, 0);
+        console.log('sendData setState(state)', state, path);
+
+        this.setState(state);
 
         return copy;
     }
