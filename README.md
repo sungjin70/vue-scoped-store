@@ -3,11 +3,9 @@
 English | [한글](README.ko.md)
 
 
-ScopedStore is a library for Vue application that allows easy state management across different components and pages.
+ScopedStore is a library for Vue application that gives the ways that manage state. The goal of ScopedStore is to provide an easy way to share state, especially between components or pages.
 <br />
-The goal of the ScopedStore is to provide an easy way to share state, especially between components or pages.
-<br />
-ScopedStore provides some simple and easy ways to synchronize the values of variables declared in Vue's data option property across multiple components.
+ScopedStore provides simple and easy ways to synchronize the values of variables declared in Vue's data option property across multiple components.
 <br />
 You can think of this library as [Vuex](https://vuex.vuejs.org) in some ways to make it easier to understand the concept. 
 <br />
@@ -49,7 +47,7 @@ Vue.use(ScopedStore);
 
 ### Basic Usage
 
-As the purpose of the ScopedStore is to make it easy for Vue developers to use state-sharing, there are not many new concepts to learn to use this library.
+As the purpose of ScopedStore is to make it easy for Vue developers to use state-sharing, there are not many new concepts to learn to use this library.
 <br />
 With only a few simple example codes, You can understand how this library works and how to use it.
 
@@ -58,7 +56,7 @@ With only a few simple example codes, You can understand how this library works 
 
 This is an example of using the @GlobalStore decorator to share values of variable in component's data property across components.
 <br />
-`GlobalStore.vue`, which is a component that functions as a page view, and a component contained in it, which is called `HelloWorldGlobalStore.vue`, each have a variable with the same name that named helloWorld.
+`GlobalStore.vue`, which is a component that functions as a page view, and a component contained in it, which is called `HelloWorldGlobalStore.vue`, each have a variable with the same name that called helloWorld.
 <br />
 See how simple it is to synchronize the values of the helloWorld variables included in each component.
 
@@ -128,7 +126,7 @@ export default class extends Vue {
 </script>
 ```
 
-Once a property is decorated with @GlobalStore, all property named the same name in different components are synchronized to have the same value.
+Once a property is decorated with @GlobalStore, all properties named the same name in different components are synchronized to have the same value.
 If one of the properties with @GlobalStore changes, the change will be populated to the other properties that have the same name.
 These values are preserved within properties even if you navigate to another page.
 
@@ -180,15 +178,15 @@ It's time to talk about what the page scope is.
 
 #### Sharing across page scope using @PageStore
 
-The @PageStore Decorator also allows you to share any value of properties as the @GlobalStore does.
+The @PageStore decorator also allows you to share any value of properties as the @GlobalStore does.
 <br />
-But the difference from @GlobalStore is that the values stored in properties vanish when the user moves a page to another.
+But the difference from @GlobalStore is that the values stored in properties vanish when the user moves from one page to another.
 <br />
-In other words, the lifetime of a value of a property with @PageStore is equal to the lifetime of a page component.
+In other words, the lifetime of a property value with @PageStore is equal to the lifetime of a page component.
 <br />
-With this way, where variable values are automatically initialized after page movement, it makes memory management easier in many web development scenarios.
+This way, variable values that managed by ScopedStore are automatically initialized after page movement, making memory management easier in many development scenarios.
 <br />
-Here's an example of using @PageStore. please compare it to the @GlobalStore shown above.
+Here's an example of using @PageStore. Please compare it to the @GlobalStore shown above.
 
 `PageStore.vue`
 
