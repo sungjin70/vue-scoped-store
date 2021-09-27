@@ -49,7 +49,7 @@ Vue.use(ScopedStore);
 
 ### Basic Usage
 
-As the purpose of the ScopedStore is to make it easy for Vue developers to use state-sharing, this library does not require learning any new concepts to use.
+As the purpose of the ScopedStore is to make it easy for Vue developers to use state-sharing, there are not many new concepts to learn to use this library.
 <br />
 With only a few simple example codes, You can understand how this library works and how to use it.
 
