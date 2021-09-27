@@ -129,7 +129,7 @@ export default class extends Vue {
 ```
 
 Once a property is decorated with @GlobalStore, all property named the same name in different components are synchronized to have the same value.
-If one of the properties with @GlobalStore changes, the change be populated to the other properties that have the same name.
+If one of the properties with @GlobalStore changes, the change will be populated to the other properties that have the same name.
 These values are preserved within properties even if you navigate to another page.
 
 > Although this is technically inaccurate, with @GlobalStore, all properties which have the same name can be 
