@@ -123,6 +123,7 @@ export default class extends Vue {
   @PageStore({path:"pageCounter"})
   private myPageCounter:number = 100;
 
+  // the deprecated syntax
   // @AsPage()
   // private isPage = true;
 

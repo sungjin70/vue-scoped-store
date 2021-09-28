@@ -203,8 +203,13 @@ Here's an example of using @PageStore. Please compare it to the @GlobalStore sho
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import HelloWorldPageStore from '@/components/HelloWorldPageStore.vue'; // @ is an alias to /src
-import { PageStore, AsPage } from 'vue-store';
+import { PageStore, Page } from 'vue-store';
 
+
+// @Page is something that let ScopedStore know that this component is a page. 
+// so that ScopedStore can destroy all variables which belong to this page 
+// when the page is about to destroy.
+@Page
 @Component({
   components: {
     HelloWorldPageStore,
@@ -217,12 +222,6 @@ export default class Home extends Vue {
   // this variable will only last while the page appears on the screen.
   @PageStore()
   private hellowWorld = '';
-
-  // @AsPage is something that let ScopedStore know that this component is a page. 
-  // so that ScopedStore can destroy all variables which belong to this page 
-  // when the page is about to destroy.
-  @AsPage()
-  private isPage = true;
 
   created() : void {
     this.hellowWorld = 'Default message';
@@ -251,6 +250,10 @@ export default class Home extends Vue {
 import { Component, Vue } from 'vue-property-decorator';
 import { PageStore } from 'vue-store';
 
+/*
+There's no @Page here 
+since this component is not a page.
+*/
 @Component
 export default class extends Vue {
   // The value of the helloWorld variable in this component is synchronized 
@@ -259,17 +262,13 @@ export default class extends Vue {
   @PageStore()
   private hellowWorld = '';
 
-  /*
-  There's no @AsPage here 
-  since this component is not a page.
-  */
 }
 </script>
 ```
 
-@AsPage, which was not required in @GlobalStore, is required to manage page scope variables.
+@Page, which was not required in @GlobalStore, is required to manage page scope variables.
 <br />
-If you declare @AsPage in a component, then ScopedStore knows that this component is a page and deletes the value of the shared variables when the component is destroyed.
+If you declare @Page in a component, then ScopedStore knows that this component is a page and deletes the value of the shared variables when the component is destroyed.
 
 #### ScopedStore Wiki
 

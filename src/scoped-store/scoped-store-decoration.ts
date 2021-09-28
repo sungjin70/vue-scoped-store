@@ -12,7 +12,7 @@ function page<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue>)  
   const pageStore: any = componentOptions.pageStore;
   pageStore['isPage'] = true;
 
-  console.log('@Page initilizing... ', componentOptions);
+  // console.log('@Page initilizing... ', componentOptions);
 
   return Component;
 }

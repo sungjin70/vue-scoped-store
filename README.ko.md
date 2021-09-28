@@ -194,8 +194,12 @@ export default class Home extends Vue {
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import HelloWorldPageStore from '@/components/HelloWorldPageStore.vue'; // @ is an alias to /src
-import { PageStore, AsPage } from 'vue-store';
+import { PageStore, Page } from 'vue-store';
 
+// 페이지 컴포넌트에 @Page를 장식합니다.
+// 이 데코레이터가 있는 컴포넌트가 소멸될 때
+// 페이지 범위 변수들의 값도 같이 사라집니다.
+@Page
 @Component({
   components: {
     HelloWorldPageStore,
@@ -206,12 +210,6 @@ export default class Home extends Vue {
   // 변수 값이 화면 범위에서 공유됩니다.
   @PageStore()
   private hellowWorld = '';
-
-  // 페이지 컴포넌트에 @AsPage를 선언합니다.
-  // 이 데코레이터가 있는 컴포넌트가 소멸될 때
-  // 페이지 범위 변수들의 값도 같이 사라집니다.
-  @AsPage()
-  private isPage = true;
 
   created() : void {
     this.hellowWorld = 'Default message';
@@ -240,6 +238,10 @@ export default class Home extends Vue {
 import { Component, Vue } from 'vue-property-decorator';
 import { PageStore } from 'vue-store';
 
+  /*
+  페이지 컴포넌트가 아니기 때문에
+  여기는 @Page가 없습니다
+  */
 @Component
 export default class extends Vue {
   // 이 컴포넌트 안의 hellowWorld변수 값은
@@ -247,16 +249,12 @@ export default class extends Vue {
   @PageStore()
   private hellowWorld = '';
 
-  /*
-  페이지 컴포넌트가 아니기 때문에
-  여기는 @AsPage가 없습니다
-  */
 }
 </script>
 ```
 
-전역 범위의 변수 관리 때는 필요 없었던 @AsPage가 페이지 범위에는 필요합니다.
-@AsPage가 있는 컴포넌트는 ScopedStore가 그 컴포넌트가 페이지임을 알게 해주고 컴포넌트가 소멸되는 시점에 공유된 변수들의 데이터도 함께 삭제합니다.
+전역 범위의 변수 관리 때는 필요 없었던 @Page가 페이지 범위에는 필요합니다.
+@Page가 있는 컴포넌트는 ScopedStore가 그 컴포넌트가 페이지임을 알게 해주고 컴포넌트가 소멸되는 시점에 공유된 변수들의 데이터도 함께 삭제합니다.
 
 
 
