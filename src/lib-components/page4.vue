@@ -102,12 +102,13 @@ import child8 from './components/child-with-options8.vue';
 import {
   PageStore,
   GlobalStore,
-  AsPage,
+  Page,
   PageStoreBeforeSend,
   PageStoreBeforeReceive,
   PageStoreReceived
 } from '../scoped-store/scoped-store-decoration';
 
+@Page
 @Component({
   components:{
     child5,
@@ -122,8 +123,9 @@ export default class extends Vue {
   @PageStore({path:"pageCounter"})
   private myPageCounter:number = 100;
 
-  @AsPage()
-  private isPage = true;
+  // the deprecated syntax
+  // @AsPage()
+  // private isPage = true;
 
   @GlobalStore()
   private globalArray: any[] = [];  

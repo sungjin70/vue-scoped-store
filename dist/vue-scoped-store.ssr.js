@@ -8243,11 +8243,20 @@ function sendPageCommand(command, argument) {
 function setPageCommandCallback(callback) {
   var vm = this;
   vm.setPageCommandCallback(callback);
-}/**
+}function AsPage() {
+  console.warn('@AsPage is the deprecated syntax. please use @Page instead');
+  return createDecorator(function (componentOptions, key) {
+    componentOptions.pageStore = componentOptions.pageStore || Object.create(null);
+    var pageStore = componentOptions.pageStore;
+    pageStore['isPage'] = true;
+  });
+}
+/**
  * decorator of a PageState property
  * 
  * @param  options
  */
+
 function PageStore() {
   var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   return createDecorator(function (componentOptions, key) {
@@ -8255,13 +8264,6 @@ function PageStore() {
     var pageStore = componentOptions.pageStore;
     var propOptions = pageStore[key] || {};
     pageStore[key] = _objectSpread2(_objectSpread2({}, propOptions), options); // console.log('PageStore.createDecorator',componentOptions,key,pageStore);
-  });
-}
-function AsPage() {
-  return createDecorator(function (componentOptions, key) {
-    componentOptions.pageStore = componentOptions.pageStore || Object.create(null);
-    var pageStore = componentOptions.pageStore;
-    pageStore['isPage'] = true;
   });
 }
 function PageStoreBeforeSend(key) {

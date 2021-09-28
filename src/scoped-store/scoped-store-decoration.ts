@@ -1,5 +1,36 @@
+import Vue, { ComponentOptions } from 'vue';
 import { createDecorator } from 'vue-class-component';
 import {PageStoreOptions, GlobalStoreOptions} from '../../vue-scoped-store';
+
+export type VueClass<V> = (new(...args: any[]) => V & Vue) & typeof Vue;
+
+function page<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue>): VC;
+function page<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue>)  {
+
+  const componentOptions = typeof Component === 'object' ? Component : (Component as any).options;
+  componentOptions.pageStore = componentOptions.pageStore || Object.create(null);
+  const pageStore: any = componentOptions.pageStore;
+  pageStore['isPage'] = true;
+
+  // console.log('@Page initilizing... ', componentOptions);
+
+  return Component;
+}
+
+export {
+	page as Page,
+}
+
+
+export function AsPage() {
+  console.warn('@AsPage is the deprecated syntax. please use @Page instead');
+  return createDecorator((componentOptions, key) => {
+  componentOptions.pageStore = componentOptions.pageStore || Object.create(null);
+  const pageStore: any = componentOptions.pageStore;
+  pageStore['isPage'] = true;
+})
+}
+
 
 /**
  * decorator of a PageState property
@@ -15,14 +46,6 @@ import {PageStoreOptions, GlobalStoreOptions} from '../../vue-scoped-store';
     pageStore[key] = {...propOptions, ...options};
     // console.log('PageStore.createDecorator',componentOptions,key,pageStore);
   })
-}
-
-export function AsPage() {
-  return createDecorator((componentOptions, key) => {
-  componentOptions.pageStore = componentOptions.pageStore || Object.create(null);
-  const pageStore: any = componentOptions.pageStore;
-  pageStore['isPage'] = true;
-})
 }
 
 export function PageStoreBeforeSend(key:string) {

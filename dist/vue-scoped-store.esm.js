@@ -7856,11 +7856,28 @@ function setPageCommandCallback(callback) {
   vm.setPageCommandCallback(callback);
 }
 
+function page(Component) {
+  const componentOptions = typeof Component === 'object' ? Component : Component.options;
+  componentOptions.pageStore = componentOptions.pageStore || Object.create(null);
+  const pageStore = componentOptions.pageStore;
+  pageStore['isPage'] = true;
+  console.log('@Page initilizing... ', componentOptions);
+  return Component;
+}
+function AsPage() {
+  console.warn('@AsPage is the deprecated syntax. please use @Page instead');
+  return createDecorator((componentOptions, key) => {
+    componentOptions.pageStore = componentOptions.pageStore || Object.create(null);
+    const pageStore = componentOptions.pageStore;
+    pageStore['isPage'] = true;
+  });
+}
 /**
  * decorator of a PageState property
  * 
  * @param  options
  */
+
 function PageStore(options = {}) {
   return createDecorator((componentOptions, key) => {
     componentOptions.pageStore = componentOptions.pageStore || Object.create(null);
@@ -7869,13 +7886,6 @@ function PageStore(options = {}) {
     pageStore[key] = { ...propOptions,
       ...options
     }; // console.log('PageStore.createDecorator',componentOptions,key,pageStore);
-  });
-}
-function AsPage() {
-  return createDecorator((componentOptions, key) => {
-    componentOptions.pageStore = componentOptions.pageStore || Object.create(null);
-    const pageStore = componentOptions.pageStore;
-    pageStore['isPage'] = true;
   });
 }
 function PageStoreBeforeSend(key) {
@@ -7980,4 +7990,4 @@ const install = function installVueScopedStore(Vue, options) {
 // export * from '@/lib-components/index';
 
 export default install;
-export { AsPage, GlobalStore, GlobalStoreBeforeReceive, GlobalStoreBeforeSend, GlobalStoreReceived, PageStore, PageStoreBeforeReceive, PageStoreBeforeSend, PageStoreReceived };
+export { AsPage, GlobalStore, GlobalStoreBeforeReceive, GlobalStoreBeforeSend, GlobalStoreReceived, page as Page, PageStore, PageStoreBeforeReceive, PageStoreBeforeSend, PageStoreReceived };
