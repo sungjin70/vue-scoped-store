@@ -1,5 +1,6 @@
-import Vue, { PluginFunction, VueConstructor } from 'vue';
+import Vue, { ComponentOptions, PluginFunction, VueConstructor } from 'vue';
 import {VueDecorator} from 'vue-class-component';
+import { VueClass } from 'vue-class-component/lib/declarations';
 
 export interface PageStoreOptions {
   direction?: 'both'|'read'|'write';
@@ -52,7 +53,10 @@ export default VueScopedStore;
 // export const PageStore : PageStoreFunction;
 declare function PageStore(options?: PageStoreOptions) : VueDecorator;
 
+//this is deprecated.
 declare function AsPage(): VueDecorator;
+
+declare function Page<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue>): VC;
 
 // export type PageStoreBeforeSendFunction = (key: string) => VueDecorator;
 declare function PageStoreBeforeSend(key: string) : VueDecorator;
@@ -70,7 +74,7 @@ declare function GlobalStoreBeforeReceive(key: string) : VueDecorator;
 
 declare function GlobalStoreReceived(key: string) : VueDecorator;
 
-export {PageStore, AsPage, PageStoreBeforeSend, PageStoreBeforeReceive, PageStoreReceived, GlobalStore, GlobalStoreBeforeSend, GlobalStoreBeforeReceive, GlobalStoreReceived};
+export {PageStore, Page, AsPage, PageStoreBeforeSend, PageStoreBeforeReceive, PageStoreReceived, GlobalStore, GlobalStoreBeforeSend, GlobalStoreBeforeReceive, GlobalStoreReceived};
 
 
 // export const VueScopedStoreSample: VueConstructor<Vue>;

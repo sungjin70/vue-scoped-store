@@ -40,6 +40,7 @@ export default install;
 export {
   PageStore,
   AsPage,
+  Page,
   GlobalStore,
   GlobalStoreBeforeReceive,
   GlobalStoreReceived,
