@@ -7860,8 +7860,8 @@ function page(Component) {
   const componentOptions = typeof Component === 'object' ? Component : Component.options;
   componentOptions.pageStore = componentOptions.pageStore || Object.create(null);
   const pageStore = componentOptions.pageStore;
-  pageStore['isPage'] = true;
-  console.log('@Page initilizing... ', componentOptions);
+  pageStore['isPage'] = true; // console.log('@Page initilizing... ', componentOptions);
+
   return Component;
 }
 function AsPage() {
